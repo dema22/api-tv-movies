@@ -37,14 +37,9 @@ public class TvShowController {
             TvShow tvShow = restTemplate.getForObject("https://api.themoviedb.org/3/tv/" + item.getId() + "?api_key=" + apiKey + "&language=en-US", TvShow.class);
 
             // Generating the complete url for the poster path
-            tvShow.setPosterPath("https://image.tmdb.org/t/p/original/" + tvShow.getPosterPath());
+            tvShow.setPosterPath("https://image.tmdb.org/t/p/original" + tvShow.getPosterPath());
 
-            // There is CJK characters that we dont want to store in the databse.
-            boolean isEnglish = tvShow.getName().matches("^[\u0000-\u0080]+$");
-
-            if(isEnglish) {
-                tvShowService.addTvShow(tvShow);
-            }
+            tvShowService.addTvShow(tvShow);
         }
     }
 

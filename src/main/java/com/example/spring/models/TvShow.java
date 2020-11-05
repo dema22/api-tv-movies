@@ -14,6 +14,7 @@ public class TvShow {
     // Attributes
     @Id
     private Integer id;
+
     private String name;
 
     @JsonProperty("number_of_episodes")
@@ -25,7 +26,7 @@ public class TvShow {
     @JsonProperty("original_language")
     private String originalLanguage;
 
-    private String overview;
+    //private String overview;
     private Double popularity;
 
     @JsonProperty("poster_path")
@@ -75,13 +76,13 @@ public class TvShow {
         this.originalLanguage = originalLanguage;
     }
 
-    public String getOverview() {
+   /* public String getOverview() {
         return overview;
     }
 
     public void setOverview(String overview) {
         this.overview = overview;
-    }
+    }*/
 
     public Double getPopularity() {
         return popularity;
