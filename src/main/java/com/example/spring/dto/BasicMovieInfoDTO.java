@@ -1,15 +1,15 @@
 package com.example.spring.dto;
 
-public class BasicMovieInfo {
-    // attributes
+public class BasicMovieInfoDTO {
+
+    // Attributes
     private String adult;
     private Integer id;
     private String original_title;
     private Double popularity;
     private Boolean video;
 
-    // Constructor
-    public BasicMovieInfo(String adult, Integer id, String original_title, Double popularity, Boolean video) {
+    public BasicMovieInfoDTO(String adult, Integer id, String original_title, Double popularity, Boolean video) {
         this.adult = adult;
         this.id = id;
         this.original_title = original_title;
@@ -17,10 +17,10 @@ public class BasicMovieInfo {
         this.video = video;
     }
 
-    public BasicMovieInfo() {
+    public BasicMovieInfoDTO() {
     }
 
-    // getters and setters
+    // G AND S
 
     public String getAdult() {
         return adult;

@@ -1,34 +1,38 @@
 package com.example.spring.controllers;
 
-import com.example.spring.dto.BasicTvShowInfo;
+import com.example.spring.models.BasicTvShowInfo;
 import com.example.spring.models.TvShow;
+import com.example.spring.services.BasicTvShowInfoService;
 import com.example.spring.services.TvShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
-
-//import com.example.spring.dto.TvShow;
 
 @RestController
 @RequestMapping("/tvShow")
 
 public class TvShowController {
-
+    private final BasicTvShowInfoService basicTvShowInfoService;
     private final TvShowService tvShowService;
     private final RestTemplate restTemplate;
 
     @Autowired
-    public TvShowController(TvShowService tvShowService, RestTemplate restTemplate) {
+    public TvShowController(BasicTvShowInfoService basicTvShowInfoService, TvShowService tvShowService, RestTemplate restTemplate) {
+        this.basicTvShowInfoService = basicTvShowInfoService;
         this.tvShowService = tvShowService;
         this.restTemplate = restTemplate;
     }
 
-    @PostMapping("/all")
-    public void generateDataBase(@RequestBody List<BasicTvShowInfo> listBasicTvShowInfo){
-        String apiKey = "e5fa1b7231771db70b84a998344fe4e3";
+    @PostMapping("/loadTvShowTable")
+    public void generateTvShowTable(@RequestBody List<BasicTvShowInfo> listBasicTvShowInfo) {
+        try {
+            basicTvShowInfoService.saveListOfBasicTvShows(listBasicTvShowInfo);
+        }catch (OutOfMemoryError e){
+        }
+    }
+        /*String apiKey = "e5fa1b7231771db70b84a998344fe4e3";
         RestTemplate restTemplate = new RestTemplate();
 
         List<TvShow> listTvShow = new ArrayList<>();
@@ -40,8 +44,7 @@ public class TvShowController {
             tvShow.setPosterPath("https://image.tmdb.org/t/p/original" + tvShow.getPosterPath());
 
             tvShowService.addTvShow(tvShow);
-        }
-    }
+        }*/
 
     @GetMapping("/")
     public List<TvShow> getAllTvShows(){
@@ -54,15 +57,4 @@ public class TvShowController {
     public void addTvShow(@RequestBody TvShow tvShow) {
         tvShowService.addTvShow(tvShow);
     }
-
-    /*@GetMapping("/")
-    public List<UserTvShow> getAllTvShows(){
-        List<UserTvShow> userTvShows = tvShowService.getAllTvShows();
-        return userTvShows;
-    }
-
-    @DeleteMapping("/{idTvShow}")
-    public void deleteTvShow(@PathVariable Integer idTvShow){
-        tvShowService.deleteTvShow(idTvShow);
-    }*/
 }

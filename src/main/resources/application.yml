@@ -1,4 +1,8 @@
 spring.datasource.url: jdbc:mysql://127.0.0.1:3306/app_tv_movies?serverTimezone=UTC
 spring.datasource.username: root
-spring.datasource.password:
+spring.datasource.password: felipe1993
 spring.jpa.show-sql: true
+spring.hibernate.jdbc.batch_size: 25
+spring.hibernate.order_inserts: true
+spring.hibernate.order_updates: true
+
