@@ -2,36 +2,71 @@ package com.example.spring.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.List;
+
 // It will ignore all unknown properties that we did not specified in the class.
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TvShowDetailsDTO {
 
     // Attributes
+    private String backdrop_path; // agrego
+    private List<Integer> episode_run_time;// agrego
+    private List<GenreDTO> genres;// Agrego
     private String name;
     private Integer number_of_episodes;
     private Integer number_of_seasons;
     private String original_language;
     private String overview;
-    private Double popularity;
     private String poster_path;
     private String status;
+    private String tagline;// agrego
+    private VideosDTO videos;// agrego
 
     // Constructor
-    public TvShowDetailsDTO(String name, Integer number_of_episodes, Integer number_of_seasons, String original_language, String overview, Double popularity, String poster_path, String status) {
+    public TvShowDetailsDTO(String backdrop_path, List<Integer> episode_run_time, List<GenreDTO> genres, String name, Integer number_of_episodes, Integer number_of_seasons, String original_language, String overview, String poster_path, String status, String tagline, VideosDTO videos) {
+        this.backdrop_path = backdrop_path;
+        this.episode_run_time = episode_run_time;
+        this.genres = genres;
         this.name = name;
         this.number_of_episodes = number_of_episodes;
         this.number_of_seasons = number_of_seasons;
         this.original_language = original_language;
         this.overview = overview;
-        this.popularity = popularity;
         this.poster_path = poster_path;
         this.status = status;
+        this.tagline = tagline;
+        this.videos = videos;
     }
 
     public TvShowDetailsDTO() {
     }
 
     // Getters and Setters
+
+    public String getBackdrop_path() {
+        return backdrop_path;
+    }
+
+    public void setBackdrop_path(String backdrop_path) {
+        this.backdrop_path = backdrop_path;
+    }
+
+    public List<Integer> getEpisode_run_time() {
+        return episode_run_time;
+    }
+
+    public void setEpisode_run_time(List<Integer> episode_run_time) {
+        this.episode_run_time = episode_run_time;
+    }
+
+    public List<GenreDTO> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<GenreDTO> genres) {
+        this.genres = genres;
+    }
+
     public String getName() {
         return name;
     }
@@ -72,14 +107,6 @@ public class TvShowDetailsDTO {
         this.overview = overview;
     }
 
-    public Double getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(Double popularity) {
-        this.popularity = popularity;
-    }
-
     public String getPoster_path() {
         return poster_path;
     }
@@ -94,5 +121,21 @@ public class TvShowDetailsDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
+    }
+
+    public VideosDTO getVideos() {
+        return videos;
+    }
+
+    public void setVideos(VideosDTO videos) {
+        this.videos = videos;
     }
 }
