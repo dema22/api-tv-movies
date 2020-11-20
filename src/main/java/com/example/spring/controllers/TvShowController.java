@@ -6,7 +6,6 @@ import com.example.spring.services.BasicTvShowInfoService;
 import com.example.spring.services.TvShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
