@@ -20,21 +20,10 @@ public class TvShowReminderController {
         this.tvShowReminderService = tvShowReminderService;
     }
 
-    /*// MODIFICO EL METODO TEMPORALMENTE PARA DEOLVER UN TV SHOW DETAILS EN VEZ DE UN TV SHOW REMINDER
-    @GetMapping("/{idTvShowReminder}")
-    public Optional<TvShowDetails> getTvShowReminder(@PathVariable Integer idTvShowReminder){
-        return tvShowReminderService.getTvShowReminder(idTvShowReminder);
-    }*/
-
-
-
     @GetMapping("/{idTvShowReminder}")
     public TvShowReminderResponseDTO getTvShowReminderResponseDTO(@PathVariable Integer idTvShowReminder){
         return tvShowReminderService.getTvShowReminderResponseDTO(idTvShowReminder);
     }
-
-
-
 
     @PostMapping("/")
     public void addTvShowReminder(@RequestBody TvShowReminder tvShowReminder) {
