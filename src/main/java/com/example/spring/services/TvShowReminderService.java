@@ -75,7 +75,7 @@ public class TvShowReminderService {
 
         return tvShowReminderResponseDTO;
     }*/
-    
+
     public TvShowReminderResponseDTO getTvShowReminderResponseDTO (Integer idTvShowReminder) {
 
         // Get the tv show reminder of the user
