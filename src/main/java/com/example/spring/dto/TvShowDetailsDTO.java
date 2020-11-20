@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 // It will ignore all unknown properties that we did not specified in the class.
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TvShow {
+public class TvShowDetailsDTO {
+
     // Attributes
     private String name;
     private Integer number_of_episodes;
@@ -16,7 +17,7 @@ public class TvShow {
     private String status;
 
     // Constructor
-    public TvShow(String name, Integer number_of_episodes, Integer number_of_seasons, String original_language, String overview, Double popularity, String poster_path, String status) {
+    public TvShowDetailsDTO(String name, Integer number_of_episodes, Integer number_of_seasons, String original_language, String overview, Double popularity, String poster_path, String status) {
         this.name = name;
         this.number_of_episodes = number_of_episodes;
         this.number_of_seasons = number_of_seasons;
@@ -27,7 +28,7 @@ public class TvShow {
         this.status = status;
     }
 
-    public TvShow() {
+    public TvShowDetailsDTO() {
     }
 
     // Getters and Setters

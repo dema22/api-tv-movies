@@ -16,13 +16,11 @@ import java.util.List;
 public class TvShowController {
     private final BasicTvShowInfoService basicTvShowInfoService;
     private final TvShowService tvShowService;
-    private final RestTemplate restTemplate;
 
     @Autowired
-    public TvShowController(BasicTvShowInfoService basicTvShowInfoService, TvShowService tvShowService, RestTemplate restTemplate) {
+    public TvShowController(BasicTvShowInfoService basicTvShowInfoService, TvShowService tvShowService) {
         this.basicTvShowInfoService = basicTvShowInfoService;
         this.tvShowService = tvShowService;
-        this.restTemplate = restTemplate;
     }
 
     @PostMapping("/loadTvShowTable")

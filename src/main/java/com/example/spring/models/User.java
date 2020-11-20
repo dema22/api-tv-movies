@@ -1,5 +1,7 @@
 package com.example.spring.models;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,15 +12,21 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
+    @NotNull
     private Integer idUser;
 
     @Column(name = "first_name")
+    @NotNull
     private String name;
 
     @Column(name = "last_name")
+    @NotNull
     private String lastName;
 
+    @NotNull
     private String username;
+
+    @NotNull
     private String password;
 
     // Getters and Setters

@@ -1,24 +1,27 @@
 package com.example.spring.models;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "basic_tv_show_info")
+
 public class BasicTvShowInfo {
 
     @Id
     @Column(name = "id_basic_tv_show_info")
+    @NotNull
     private Integer id;
 
     @Column(name = "original_name")
+    @NotNull
     private String original_name;
 
-    /*public BasicTvShowInfo(Integer idBasicTvShowInfo, String originalName) {
-        this.idBasicTvShowInfo = idBasicTvShowInfo;
-        this.originalName = originalName;
-    }*/
-
+    // getters and setters
     public Integer getId() {
         return id;
     }

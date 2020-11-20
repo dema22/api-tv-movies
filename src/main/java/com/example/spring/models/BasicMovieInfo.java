@@ -1,5 +1,7 @@
 package com.example.spring.models;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,7 +14,10 @@ public class BasicMovieInfo {
     // Attributes
     @Id
     @Column(name = "id_basic_movie_info")
+    @NotNull
     private Integer id;
+
+    @NotNull
     private String original_title;
 
     // Getters and Setters
