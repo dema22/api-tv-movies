@@ -1,15 +1,15 @@
 package com.example.spring.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+// It will ignore all unknown properties that we did not specified in the class.
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GenreDTO {
-    @JsonIgnore
-    private Integer id;
+
     private String name;
 
     // contructor
-    public GenreDTO(Integer id, String name) {
-        this.id = id;
+    public GenreDTO(String name) {
         this.name = name;
     }
 
@@ -17,14 +17,6 @@ public class GenreDTO {
     }
 
     // getters and setters
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

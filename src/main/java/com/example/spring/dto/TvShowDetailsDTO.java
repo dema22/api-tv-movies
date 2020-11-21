@@ -9,9 +9,9 @@ import java.util.List;
 public class TvShowDetailsDTO {
 
     // Attributes
-    private String backdrop_path; // agrego
-    private List<Integer> episode_run_time;// agrego
-    private List<GenreDTO> genres;// Agrego
+    private String backdrop_path;
+    private List<Integer> episode_run_time;
+    private List<GenreDTO> genres;
     private String name;
     private Integer number_of_episodes;
     private Integer number_of_seasons;
@@ -19,11 +19,13 @@ public class TvShowDetailsDTO {
     private String overview;
     private String poster_path;
     private String status;
-    private String tagline;// agrego
-    private VideosDTO videos;// agrego
+    private String tagline;
+    private String type;
+    private VideosDTO videos;
 
     // Constructor
-    public TvShowDetailsDTO(String backdrop_path, List<Integer> episode_run_time, List<GenreDTO> genres, String name, Integer number_of_episodes, Integer number_of_seasons, String original_language, String overview, String poster_path, String status, String tagline, VideosDTO videos) {
+
+    public TvShowDetailsDTO(String backdrop_path, List<Integer> episode_run_time, List<GenreDTO> genres, String name, Integer number_of_episodes, Integer number_of_seasons, String original_language, String overview, String poster_path, String status, String tagline, String type, VideosDTO videos) {
         this.backdrop_path = backdrop_path;
         this.episode_run_time = episode_run_time;
         this.genres = genres;
@@ -35,6 +37,7 @@ public class TvShowDetailsDTO {
         this.poster_path = poster_path;
         this.status = status;
         this.tagline = tagline;
+        this.type = type;
         this.videos = videos;
     }
 
@@ -129,6 +132,14 @@ public class TvShowDetailsDTO {
 
     public void setTagline(String tagline) {
         this.tagline = tagline;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public VideosDTO getVideos() {

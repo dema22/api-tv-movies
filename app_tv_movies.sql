@@ -100,8 +100,10 @@ select * from basic_tv_show_info;
 #####
 
 select * from basic_tv_show_info where original_name = 'Stranger Things';
+select * from basic_tv_show_info where original_name = 'Friday Night Lights';
 
 
+select * from basic_movie_info where original_title = 'L’ATALANTE ';
 
 
 

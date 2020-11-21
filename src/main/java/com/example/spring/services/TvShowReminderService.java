@@ -29,53 +29,6 @@ public class TvShowReminderService {
         tvShowReminderRepository.save(tvShowReminder);
     }
 
-    // Get details of a tv show based on a Tv Show Reminder of the user.
-    // We will get the id of the object Basic Tv Show Info.
-    // Then we will use that id , to make a GET request to the THE MOVIDE DB API where we will
-    // get the full details of the tv show.
-
-    /*public TvShowDetailsDTO getTvShowDetails (TvShowReminder tvShowReminder){
-        BasicTvShowInfo basicTvShowInfo = tvShowReminder.getBasicTvShowInfo();
-
-        String apiKey = "e5fa1b7231771db70b84a998344fe4e3";
-        RestTemplate restTemplate = new RestTemplate();
-
-        TvShowDetailsDTO tvShowDetailsDTO = restTemplate.getForObject("https://api.themoviedb.org/3/tv/" + basicTvShowInfo.getId() + "?api_key=" + apiKey + "&language=en-US", TvShowDetailsDTO.class);
-
-        // Generating the complete url for the poster path
-        tvShowDetailsDTO.setPoster_path("https://image.tmdb.org/t/p/original" + tvShowDetailsDTO.getPoster_path());
-
-        return tvShowDetailsDTO;
-    }*/
-
-    /*public TvShowReminderResponseDTO getTvShowReminderResponseDTO (Integer idTvShowReminder) {
-
-        // Get the tv show reminder of the user
-        Optional<TvShowReminder> tvShowReminder = tvShowReminderRepository.findById(idTvShowReminder);
-
-        // Get current tv show reminder
-        TvShowReminder currentTvShowReminder = tvShowReminder.get();
-
-        TvShowDetailsDTO tvShowDetailsDTO = new TvShowDetailsDTO();
-        // Get the details of the show.
-        if(currentTvShowReminder.getBasicTvShowInfo() != null) {
-            tvShowDetailsDTO = this.getTvShowDetails(currentTvShowReminder);
-        }
-
-        // Build the Tv Show Reminder Response DTO with all the information we manage to get so far.
-        TvShowReminderResponseDTO tvShowReminderResponseDTO = new TvShowReminderResponseDTO();
-
-        tvShowReminderResponseDTO.setUser(currentTvShowReminder.getUser());
-        tvShowReminderResponseDTO.setUserTvShow(currentTvShowReminder.getUserTvShow());
-        tvShowReminderResponseDTO.setTvShowDetailsDTO(tvShowDetailsDTO);
-        tvShowReminderResponseDTO.setCompleted(currentTvShowReminder.getCompleted());
-        tvShowReminderResponseDTO.setCurrentSeason(currentTvShowReminder.getCurrentSeason());
-        tvShowReminderResponseDTO.setCurrentEpisode(currentTvShowReminder.getCurrentEpisode());
-        tvShowReminderResponseDTO.setPersonalRating(currentTvShowReminder.getPersonalRating());
-
-        return tvShowReminderResponseDTO;
-    }*/
-
     public TvShowReminderResponseDTO getTvShowReminderResponseDTO (Integer idTvShowReminder) {
 
         // Get the tv show reminder of the user
@@ -110,17 +63,6 @@ public class TvShowReminderService {
 
         return tvShowReminderResponseDTO;
     }
-
-
-
-
-
-
-
-
-
-
-
 
     public List<TvShowReminder> getAllTvShowsReminder() {
         return tvShowReminderRepository.findAll();

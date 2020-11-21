@@ -6,47 +6,26 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VideoResultsDTO {
 
-    /*@JsonIgnore
-    private String id;
-
-    @JsonIgnore
-    private String iso_639_1;
-
-    @JsonIgnore
-    private String iso_3166_1;
-
-    private String key;
-
-    @JsonIgnore
-    private String name;
-
-    @JsonIgnore
-    private String site;
-
-    @JsonIgnore
-    private Integer size;
-
-    @JsonIgnore
-    private String type;
-    */
-
     // Attributes
     private String site;
     private String key;
     private String type;
 
+    @JsonIgnoreProperties
+    private String completeUrl;
+
     // Constructors
-    public VideoResultsDTO(String site, String key, String type) {
+    public VideoResultsDTO(String site, String key, String type, String completeUrl) {
         this.site = site;
         this.key = key;
         this.type = type;
+        this.completeUrl = completeUrl;
     }
 
     public VideoResultsDTO() {
     }
 
     // getters and setters
-
 
     public String getSite() {
         return site;
@@ -70,5 +49,13 @@ public class VideoResultsDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getCompleteUrl() {
+        return completeUrl;
+    }
+
+    public void setCompleteUrl(String completeUrl) {
+        this.completeUrl = completeUrl;
     }
 }
