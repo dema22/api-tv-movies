@@ -58,11 +58,12 @@ public class TvShowDetailsService {
         tvShowDetailsDTO.setBackdrop_path("https://image.tmdb.org/t/p/original" + tvShowDetailsDTO.getBackdrop_path());
         tvShowDetailsDTO.setPoster_path("https://image.tmdb.org/t/p/original" + tvShowDetailsDTO.getPoster_path());
 
+        /*
         // Loading run time array
         tvShowDetailsDTO.setEpisode_run_time(tvShowDetailsDTO.getEpisode_run_time());
 
         // Load genres of the show
-        tvShowDetailsDTO.setGenres(tvShowDetailsDTO.getGenres());
+        tvShowDetailsDTO.setGenres(tvShowDetailsDTO.getGenres());*/
 
         // Build the complete url for the videos.
         /*for(VideoResultsDTO video: tvShowDetailsDTO.getVideos().getResults()){
