@@ -1,12 +1,16 @@
 package com.example.spring.controllers;
 
+import com.example.spring.dto.TvShowReminderPatchDTO;
 import com.example.spring.dto.TvShowReminderResponseDTO;
 import com.example.spring.models.TvShowReminder;
+import com.example.spring.models.User;
 import com.example.spring.services.TvShowReminderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/tvShowReminder")
@@ -42,7 +46,13 @@ public class TvShowReminderController {
     }
 
     @PatchMapping("/{idTvShowReminder}")
-    public void updateTvShowReminder(@RequestBody TvShowReminder tvShowReminderToUpdate,@PathVariable  Integer idTvShowReminder){
+    public void updateTvShowReminder(@RequestBody @Valid TvShowReminderPatchDTO tvShowReminderToUpdate, @PathVariable  Integer idTvShowReminder){
         tvShowReminderService.updateTvShowReminder(tvShowReminderToUpdate,idTvShowReminder);
     }
+
+    @GetMapping("/entity/{idTvShowReminder}")
+    public Optional<TvShowReminder> getTvShowReminder (@PathVariable Integer idTvShowReminder){
+        return tvShowReminderService.getTvShowReminder(idTvShowReminder);
+    }
+
 }

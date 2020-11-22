@@ -1,6 +1,7 @@
 package com.example.spring.services;
 
 import com.example.spring.dto.TvShowDetailsResponseDTO;
+import com.example.spring.dto.TvShowReminderPatchDTO;
 import com.example.spring.dto.TvShowReminderResponseDTO;
 import com.example.spring.models.BasicTvShowInfo;
 import com.example.spring.models.TvShowReminder;
@@ -120,7 +121,31 @@ public class TvShowReminderService {
         tvShowReminderRepository.deleteById(idTvShowReminder);
     }
 
-    public void updateTvShowReminder(TvShowReminder tvShowReminderToUpdate, Integer idTvShowReminder) {
-        System.out.println(tvShowReminderToUpdate);
+    // Get a tv show reminder entity by its id
+    public Optional<TvShowReminder> getTvShowReminder (Integer idTvShowReminder) {
+        return tvShowReminderRepository.findById(idTvShowReminder);
+    }
+
+    public void updateTvShowReminder(TvShowReminderPatchDTO tvShowReminderToUpdate, Integer idTvShowReminder) {
+        Optional<TvShowReminder> tvShowReminder = getTvShowReminder(idTvShowReminder);
+        TvShowReminder currentTvShowReminder = tvShowReminder.get();
+
+        if (tvShowReminderToUpdate.getCompleted() != null) {
+            currentTvShowReminder.setCompleted(tvShowReminderToUpdate.getCompleted());
+        }
+
+        if (tvShowReminderToUpdate.getCurrentSeason() != null) {
+            currentTvShowReminder.setCurrentSeason(tvShowReminderToUpdate.getCurrentSeason());
+        }
+
+        if (tvShowReminderToUpdate.getCurrentEpisode() != null) {
+            currentTvShowReminder.setCurrentEpisode(tvShowReminderToUpdate.getCurrentEpisode());
+        }
+
+        if (tvShowReminderToUpdate.getPersonalRating() != null) {
+            currentTvShowReminder.setPersonalRating(tvShowReminderToUpdate.getPersonalRating());
+        }
+
+        tvShowReminderRepository.save(currentTvShowReminder);
     }
 }
