@@ -55,6 +55,7 @@ public class TvShowReminderService {
         // Build the Tv Show Reminder Response DTO with all the information we manage to get so far.
         TvShowReminderResponseDTO tvShowReminderResponseDTO = new TvShowReminderResponseDTO();
 
+        tvShowReminderResponseDTO.setIdTvShowReminder(currentTvShowReminder.getIdTvShowReminder());
         tvShowReminderResponseDTO.setUser(currentTvShowReminder.getUser());
         tvShowReminderResponseDTO.setUserTvShow(currentTvShowReminder.getUserTvShow());
         tvShowReminderResponseDTO.setTvShowDetailsResponseDTO(tvShowDetailsResponseDTO);
@@ -93,7 +94,7 @@ public class TvShowReminderService {
 
             // Build the Tv Show Reminder DTO with all the information we manage to get so far.
             TvShowReminderResponseDTO tvShowReminderResponseDTO = new TvShowReminderResponseDTO();
-
+            tvShowReminderResponseDTO.setIdTvShowReminder(tvShowReminder.getIdTvShowReminder());
             tvShowReminderResponseDTO.setUser(tvShowReminder.getUser());
             tvShowReminderResponseDTO.setUserTvShow(tvShowReminder.getUserTvShow());
             tvShowReminderResponseDTO.setTvShowDetailsResponseDTO(tvShowDetailsResponseDTO);
@@ -114,7 +115,12 @@ public class TvShowReminderService {
         return tvShowReminderRepository.findByUser_IdUser(idUser);
     }
 
+    // Delete a tv show reminder.
     public void deleteTvShowReminder(Integer idTvShowReminder) {
         tvShowReminderRepository.deleteById(idTvShowReminder);
+    }
+
+    public void updateTvShowReminder(TvShowReminder tvShowReminderToUpdate, Integer idTvShowReminder) {
+        System.out.println(tvShowReminderToUpdate);
     }
 }

@@ -40,4 +40,9 @@ public class TvShowReminderController {
     public void deleteTvShowReminder(@PathVariable Integer idTvShowReminder){
         tvShowReminderService.deleteTvShowReminder(idTvShowReminder);
     }
+
+    @PatchMapping("/{idTvShowReminder}")
+    public void updateTvShowReminder(@RequestBody TvShowReminder tvShowReminderToUpdate,@PathVariable  Integer idTvShowReminder){
+        tvShowReminderService.updateTvShowReminder(tvShowReminderToUpdate,idTvShowReminder);
+    }
 }

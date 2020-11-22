@@ -5,6 +5,7 @@ import com.example.spring.models.UserTvShow;
 
 public class TvShowReminderResponseDTO {
     // Attributes
+    private Integer idTvShowReminder;
     private User user;
     private UserTvShow userTvShow;
     private TvShowDetailsResponseDTO tvShowDetailsResponseDTO;
@@ -14,7 +15,8 @@ public class TvShowReminderResponseDTO {
     private Integer personalRating;
 
     // Constructor
-    public TvShowReminderResponseDTO(User user, UserTvShow userTvShow, TvShowDetailsResponseDTO tvShowDetailsResponseDTO, Boolean completed, Integer currentSeason, Integer currentEpisode, Integer personalRating) {
+    public TvShowReminderResponseDTO(Integer idTvShowReminder, User user, UserTvShow userTvShow, TvShowDetailsResponseDTO tvShowDetailsResponseDTO, Boolean completed, Integer currentSeason, Integer currentEpisode, Integer personalRating) {
+        this.idTvShowReminder = idTvShowReminder;
         this.user = user;
         this.userTvShow = userTvShow;
         this.tvShowDetailsResponseDTO = tvShowDetailsResponseDTO;
@@ -28,6 +30,13 @@ public class TvShowReminderResponseDTO {
     }
 
     // Getters and setters
+    public Integer getIdTvShowReminder() {
+        return idTvShowReminder;
+    }
+
+    public void setIdTvShowReminder(Integer idTvShowReminder) {
+        this.idTvShowReminder = idTvShowReminder;
+    }
 
     public User getUser() {
         return user;
