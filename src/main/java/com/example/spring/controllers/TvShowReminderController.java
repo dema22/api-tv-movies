@@ -31,8 +31,9 @@ public class TvShowReminderController {
     }
 
     @GetMapping("/")
-    public List<TvShowReminder> getAllTvShowsReminder(){
-        return tvShowReminderService.getAllTvShowsReminder();
+    public List<TvShowReminderResponseDTO> getAllTvShowsReminderDTO(){
+        // Set a default a id user that will use to query all tv show reminder with that particular id.
+        return tvShowReminderService.getAllTvShowsReminderDTO(1);
     }
 
     @DeleteMapping("/{idTvShowReminder}")

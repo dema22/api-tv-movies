@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class TvShowReminderService {
         tvShowReminderRepository.save(tvShowReminder);
     }
 
+    // Get a tv show reminder dto by its id.
     public TvShowReminderResponseDTO getTvShowReminderResponseDTO (Integer idTvShowReminder) {
 
         // Get the tv show reminder of the user
@@ -64,8 +66,52 @@ public class TvShowReminderService {
         return tvShowReminderResponseDTO;
     }
 
-    public List<TvShowReminder> getAllTvShowsReminder() {
-        return tvShowReminderRepository.findAll();
+    // Get all tv show reminder DTO based on the user id.
+    public List<TvShowReminderResponseDTO> getAllTvShowsReminderDTO (Integer idUser) {
+
+        // Get all the tv show reminder of the user
+        List<TvShowReminder> tvShowRemindersList = getAllTvShowsReminderEntities(idUser);
+
+        // Create a list of the tv show reminders DTO
+        List<TvShowReminderResponseDTO> tvShowReminderListDTO = new ArrayList<>();
+
+        for(TvShowReminder tvShowReminder: tvShowRemindersList) {
+
+            // Get the basic tv show info object
+            BasicTvShowInfo basicTvShowInfo = tvShowReminder.getBasicTvShowInfo();
+
+            // Create the dto object for the details of the tv show
+            TvShowDetailsResponseDTO tvShowDetailsResponseDTO = new TvShowDetailsResponseDTO();
+
+            // Get the details of the show.
+            if (basicTvShowInfo != null) {
+
+                if (basicTvShowInfo.getId() != null) {
+                    tvShowDetailsResponseDTO = tvShowDetailsService.getTvShowDetails(basicTvShowInfo.getId());
+                }
+            }
+
+            // Build the Tv Show Reminder DTO with all the information we manage to get so far.
+            TvShowReminderResponseDTO tvShowReminderResponseDTO = new TvShowReminderResponseDTO();
+
+            tvShowReminderResponseDTO.setUser(tvShowReminder.getUser());
+            tvShowReminderResponseDTO.setUserTvShow(tvShowReminder.getUserTvShow());
+            tvShowReminderResponseDTO.setTvShowDetailsResponseDTO(tvShowDetailsResponseDTO);
+            tvShowReminderResponseDTO.setCompleted(tvShowReminder.getCompleted());
+            tvShowReminderResponseDTO.setCurrentSeason(tvShowReminder.getCurrentSeason());
+            tvShowReminderResponseDTO.setCurrentEpisode(tvShowReminder.getCurrentEpisode());
+            tvShowReminderResponseDTO.setPersonalRating(tvShowReminder.getPersonalRating());
+
+            // We add the reminder dto to the list
+            tvShowReminderListDTO.add(tvShowReminderResponseDTO);
+        }
+
+        return tvShowReminderListDTO;
+    }
+
+    // Get all the show reminders entity searching by the user id.
+    public List<TvShowReminder> getAllTvShowsReminderEntities (Integer idUser) {
+        return tvShowReminderRepository.findByUser_IdUser(idUser);
     }
 
     public void deleteTvShowReminder(Integer idTvShowReminder) {

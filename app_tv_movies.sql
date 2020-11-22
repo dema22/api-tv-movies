@@ -104,8 +104,4 @@ select * from basic_tv_show_info where original_name = 'Friday Night Lights';
 
 
 select * from basic_movie_info where original_title = 'Le Chaland qui passe';
-
-
-
-
-
+INSERT INTO user (id_user, first_name, last_name, username, password) VALUES(2,"ALejandro","Demaria","lobo","pelado");
