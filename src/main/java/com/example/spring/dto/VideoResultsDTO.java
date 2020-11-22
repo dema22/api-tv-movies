@@ -11,15 +11,11 @@ public class VideoResultsDTO {
     private String key;
     private String type;
 
-    @JsonIgnoreProperties
-    private String completeUrl;
-
     // Constructors
-    public VideoResultsDTO(String site, String key, String type, String completeUrl) {
+    public VideoResultsDTO(String site, String key, String type) {
         this.site = site;
         this.key = key;
         this.type = type;
-        this.completeUrl = completeUrl;
     }
 
     public VideoResultsDTO() {
@@ -49,13 +45,5 @@ public class VideoResultsDTO {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getCompleteUrl() {
-        return completeUrl;
-    }
-
-    public void setCompleteUrl(String completeUrl) {
-        this.completeUrl = completeUrl;
     }
 }

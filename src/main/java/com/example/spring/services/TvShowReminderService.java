@@ -1,6 +1,6 @@
 package com.example.spring.services;
 
-import com.example.spring.dto.TvShowDetailsDTO;
+import com.example.spring.dto.TvShowDetailsResponseDTO;
 import com.example.spring.dto.TvShowReminderResponseDTO;
 import com.example.spring.models.BasicTvShowInfo;
 import com.example.spring.models.TvShowReminder;
@@ -40,13 +40,13 @@ public class TvShowReminderService {
         // Get the basic tv show info object
         BasicTvShowInfo basicTvShowInfo = currentTvShowReminder.getBasicTvShowInfo();
 
-        TvShowDetailsDTO tvShowDetailsDTO = new TvShowDetailsDTO();
+        TvShowDetailsResponseDTO tvShowDetailsResponseDTO = new TvShowDetailsResponseDTO();
 
         // Get the details of the show.
         if(basicTvShowInfo != null) {
 
             if (basicTvShowInfo.getId() != null) {
-                tvShowDetailsDTO = tvShowDetailsService.getTvShowDetails(basicTvShowInfo.getId());
+                tvShowDetailsResponseDTO = tvShowDetailsService.getTvShowDetails(basicTvShowInfo.getId());
             }
         }
 
@@ -55,7 +55,7 @@ public class TvShowReminderService {
 
         tvShowReminderResponseDTO.setUser(currentTvShowReminder.getUser());
         tvShowReminderResponseDTO.setUserTvShow(currentTvShowReminder.getUserTvShow());
-        tvShowReminderResponseDTO.setTvShowDetailsDTO(tvShowDetailsDTO);
+        tvShowReminderResponseDTO.setTvShowDetailsResponseDTO(tvShowDetailsResponseDTO);
         tvShowReminderResponseDTO.setCompleted(currentTvShowReminder.getCompleted());
         tvShowReminderResponseDTO.setCurrentSeason(currentTvShowReminder.getCurrentSeason());
         tvShowReminderResponseDTO.setCurrentEpisode(currentTvShowReminder.getCurrentEpisode());

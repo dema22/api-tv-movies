@@ -7,16 +7,17 @@ public class TvShowReminderResponseDTO {
     // Attributes
     private User user;
     private UserTvShow userTvShow;
-    private TvShowDetailsDTO tvShowDetailsDTO;
+    private TvShowDetailsResponseDTO tvShowDetailsResponseDTO;
     private Boolean completed;
     private Integer currentSeason;
     private Integer currentEpisode;
     private Integer personalRating;
 
-    public TvShowReminderResponseDTO(User user, UserTvShow userTvShow, TvShowDetailsDTO tvShowDetailsDTO, Boolean completed, Integer currentSeason, Integer currentEpisode, Integer personalRating) {
+    // Constructor
+    public TvShowReminderResponseDTO(User user, UserTvShow userTvShow, TvShowDetailsResponseDTO tvShowDetailsResponseDTO, Boolean completed, Integer currentSeason, Integer currentEpisode, Integer personalRating) {
         this.user = user;
         this.userTvShow = userTvShow;
-        this.tvShowDetailsDTO = tvShowDetailsDTO;
+        this.tvShowDetailsResponseDTO = tvShowDetailsResponseDTO;
         this.completed = completed;
         this.currentSeason = currentSeason;
         this.currentEpisode = currentEpisode;
@@ -44,12 +45,12 @@ public class TvShowReminderResponseDTO {
         this.userTvShow = userTvShow;
     }
 
-    public TvShowDetailsDTO getTvShowDetailsDTO() {
-        return tvShowDetailsDTO;
+    public TvShowDetailsResponseDTO getTvShowDetailsResponseDTO() {
+        return tvShowDetailsResponseDTO;
     }
 
-    public void setTvShowDetailsDTO(TvShowDetailsDTO tvShowDetailsDTO) {
-        this.tvShowDetailsDTO = tvShowDetailsDTO;
+    public void setTvShowDetailsResponseDTO(TvShowDetailsResponseDTO tvShowDetailsResponseDTO) {
+        this.tvShowDetailsResponseDTO = tvShowDetailsResponseDTO;
     }
 
     public Boolean getCompleted() {
