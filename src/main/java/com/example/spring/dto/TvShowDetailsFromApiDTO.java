@@ -6,7 +6,7 @@ import java.util.List;
 
 // It will ignore all unknown properties that we did not specified in the class.
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TvShowDetailsDTO {
+public class TvShowDetailsFromApiDTO {
 
     // Attributes
     private String backdrop_path;
@@ -25,7 +25,7 @@ public class TvShowDetailsDTO {
 
     // Constructor
 
-    public TvShowDetailsDTO(String backdrop_path, List<Integer> episode_run_time, List<GenreDTO> genres, String name, Integer number_of_episodes, Integer number_of_seasons, String original_language, String overview, String poster_path, String status, String tagline, String type, VideosDTO videos) {
+    public TvShowDetailsFromApiDTO(String backdrop_path, List<Integer> episode_run_time, List<GenreDTO> genres, String name, Integer number_of_episodes, Integer number_of_seasons, String original_language, String overview, String poster_path, String status, String tagline, String type, VideosDTO videos) {
         this.backdrop_path = backdrop_path;
         this.episode_run_time = episode_run_time;
         this.genres = genres;
@@ -41,7 +41,7 @@ public class TvShowDetailsDTO {
         this.videos = videos;
     }
 
-    public TvShowDetailsDTO() {
+    public TvShowDetailsFromApiDTO() {
     }
 
     // Getters and Setters

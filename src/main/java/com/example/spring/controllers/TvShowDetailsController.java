@@ -1,6 +1,5 @@
 package com.example.spring.controllers;
 
-import com.example.spring.dto.TvShowDetailsDTO;
 import com.example.spring.dto.TvShowDetailsResponseDTO;
 import com.example.spring.services.TvShowDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
