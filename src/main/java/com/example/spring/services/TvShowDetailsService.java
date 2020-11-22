@@ -43,12 +43,7 @@ public class TvShowDetailsService {
     }
 
     // We are going to call the method that give us the details from the API.
-    // We are going to manipulate it to make some changes:
-    // * We are going to set the complete image urls
-    // * We are going to filter the video results
-    // * Also the structure of the object is way simpler because we are going to have less boilerplate information
-    // * that we do not want.
-    // Finally we return the details of a tv show that the client will use in the UI.
+    // Create a new DTO based on this information we get from the API.
 
     public TvShowDetailsResponseDTO getTvShowDetails(Integer idTvShow) {
 
@@ -60,9 +55,13 @@ public class TvShowDetailsService {
         return tvShowDetailsResponseDTO;
     }
 
-    public void creatingTvShowDetailsResponseDTO (TvShowDetailsFromApiDTO tvShowDetailsFromApiDTO, TvShowDetailsResponseDTO tvShowDetailsResponseDTO) {
 
-        // Mapping the information from the api details to our response details.
+    // Mapped the information from the tv show details from the api into another DTO details.
+    // We also we are going to call some methods to:
+    // * Set the complete image urls.
+    // * Filter the video results.
+
+    public void creatingTvShowDetailsResponseDTO (TvShowDetailsFromApiDTO tvShowDetailsFromApiDTO, TvShowDetailsResponseDTO tvShowDetailsResponseDTO) {
         tvShowDetailsResponseDTO.setBackdropPath(tvShowDetailsFromApiDTO.getBackdrop_path());
         tvShowDetailsResponseDTO.setPosterPath(tvShowDetailsFromApiDTO.getPoster_path());
         buildCompleteImageURLS(tvShowDetailsResponseDTO);
@@ -79,7 +78,7 @@ public class TvShowDetailsService {
         tvShowDetailsResponseDTO.setType(tvShowDetailsFromApiDTO.getType());
     }
 
-    // We are going to store each genre name from the API in our details.
+    // We are going to store each genre name we get from the API in our tv show DTO response.
     public void populateGenreArray(TvShowDetailsFromApiDTO tvShowDetailsFromApiDTO, TvShowDetailsResponseDTO tvShowDetailsResponseDTO) {
         List<String> listGenres = new ArrayList<>();
 
@@ -95,6 +94,10 @@ public class TvShowDetailsService {
         tvShowDetailsResponseDTO.setBackdropPath(baseImageURL + tvShowDetailsResponseDTO.getBackdropPath());
         tvShowDetailsResponseDTO.setPosterPath(baseImageURL + tvShowDetailsResponseDTO.getPosterPath());
     }
+
+    // We are going to filter all the videos that are trailers and build their complete url to that video.
+    // We are going to store each complete url in a list.
+    // Finally, store this list in the tvShowDetailsResponseDTO object.
 
     public void filterTrailers(TvShowDetailsFromApiDTO tvShowDetailsFromApiDTO, TvShowDetailsResponseDTO tvShowDetailsResponseDTO) {
 
