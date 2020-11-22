@@ -8,7 +8,7 @@ public class GenreDTO {
 
     private String name;
 
-    // contructor
+    // Constructor
     public GenreDTO(String name) {
         this.name = name;
     }
