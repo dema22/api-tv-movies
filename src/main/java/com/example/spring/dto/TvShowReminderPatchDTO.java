@@ -1,14 +1,16 @@
 package com.example.spring.dto;
 
+import java.util.Optional;
+
 public class TvShowReminderPatchDTO {
     // Attributes
-    private Boolean completed;
-    private Integer currentSeason;
-    private Integer currentEpisode;
-    private Integer personalRating;
+    private Optional<Boolean> completed;
+    private Optional<Integer> currentSeason;
+    private Optional<Integer> currentEpisode;
+    private Optional<Integer> personalRating;
 
     // Constructor
-    public TvShowReminderPatchDTO(Boolean completed, Integer currentSeason, Integer currentEpisode, Integer personalRating) {
+    public TvShowReminderPatchDTO(Optional<Boolean> completed, Optional<Integer> currentSeason, Optional<Integer> currentEpisode, Optional<Integer> personalRating) {
         this.completed = completed;
         this.currentSeason = currentSeason;
         this.currentEpisode = currentEpisode;
@@ -20,35 +22,35 @@ public class TvShowReminderPatchDTO {
 
     // Getters and Setters
 
-    public Boolean getCompleted() {
+    public Optional<Boolean> getCompleted() {
         return completed;
     }
 
-    public void setCompleted(Boolean completed) {
+    public void setCompleted(Optional<Boolean> completed) {
         this.completed = completed;
     }
 
-    public Integer getCurrentSeason() {
+    public Optional<Integer> getCurrentSeason() {
         return currentSeason;
     }
 
-    public void setCurrentSeason(Integer currentSeason) {
+    public void setCurrentSeason(Optional<Integer> currentSeason) {
         this.currentSeason = currentSeason;
     }
 
-    public Integer getCurrentEpisode() {
+    public Optional<Integer> getCurrentEpisode() {
         return currentEpisode;
     }
 
-    public void setCurrentEpisode(Integer currentEpisode) {
+    public void setCurrentEpisode(Optional<Integer> currentEpisode) {
         this.currentEpisode = currentEpisode;
     }
 
-    public Integer getPersonalRating() {
+    public Optional<Integer> getPersonalRating() {
         return personalRating;
     }
 
-    public void setPersonalRating(Integer personalRating) {
+    public void setPersonalRating(Optional<Integer> personalRating) {
         this.personalRating = personalRating;
     }
 }

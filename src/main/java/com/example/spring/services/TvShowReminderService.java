@@ -130,20 +130,36 @@ public class TvShowReminderService {
         Optional<TvShowReminder> tvShowReminder = getTvShowReminder(idTvShowReminder);
         TvShowReminder currentTvShowReminder = tvShowReminder.get();
 
-        if (tvShowReminderToUpdate.getCompleted() != null) {
-            currentTvShowReminder.setCompleted(tvShowReminderToUpdate.getCompleted());
+        if(tvShowReminderToUpdate.getCompleted() != null) {
+            if (tvShowReminderToUpdate.getCompleted().isPresent()) {
+                currentTvShowReminder.setCompleted(tvShowReminderToUpdate.getCompleted().get());
+            } else {
+                currentTvShowReminder.setCompleted(null);
+            }
         }
 
-        if (tvShowReminderToUpdate.getCurrentSeason() != null) {
-            currentTvShowReminder.setCurrentSeason(tvShowReminderToUpdate.getCurrentSeason());
+        if(tvShowReminderToUpdate.getCurrentSeason() != null) {
+            if (tvShowReminderToUpdate.getCurrentSeason().isPresent()) {
+                currentTvShowReminder.setCurrentSeason(tvShowReminderToUpdate.getCurrentSeason().get());
+            } else {
+                currentTvShowReminder.setCurrentSeason(null);
+            }
         }
 
-        if (tvShowReminderToUpdate.getCurrentEpisode() != null) {
-            currentTvShowReminder.setCurrentEpisode(tvShowReminderToUpdate.getCurrentEpisode());
+        if(tvShowReminderToUpdate.getCurrentEpisode() != null) {
+            if (tvShowReminderToUpdate.getCurrentEpisode().isPresent()) {
+                currentTvShowReminder.setCurrentEpisode(tvShowReminderToUpdate.getCurrentEpisode().get());
+            } else {
+                currentTvShowReminder.setCurrentEpisode(null);
+            }
         }
 
-        if (tvShowReminderToUpdate.getPersonalRating() != null) {
-            currentTvShowReminder.setPersonalRating(tvShowReminderToUpdate.getPersonalRating());
+        if(tvShowReminderToUpdate.getPersonalRating() != null) {
+            if (tvShowReminderToUpdate.getPersonalRating().isPresent()) {
+                currentTvShowReminder.setPersonalRating(tvShowReminderToUpdate.getPersonalRating().get());
+            } else {
+                currentTvShowReminder.setPersonalRating(null);
+            }
         }
 
         tvShowReminderRepository.save(currentTvShowReminder);
