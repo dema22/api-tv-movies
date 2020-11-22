@@ -12,8 +12,6 @@ import java.util.Optional;
 public class BasicTvShowInfoService {
 
     private final BasicTvShowInfoRepository basicTvShowInfoRepository;
-    //@PersistenceContext
-    //private EntityManager em;
 
     @Autowired
     public BasicTvShowInfoService(BasicTvShowInfoRepository basicTvShowInfoRepository) {
