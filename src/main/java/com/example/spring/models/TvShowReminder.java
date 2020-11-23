@@ -1,6 +1,8 @@
 package com.example.spring.models;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -29,6 +31,7 @@ public class TvShowReminder {
 
     @ManyToOne()
     @JoinColumn(name= "id_tv_show_created_by_user")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserTvShow userTvShow;
 
     private Boolean completed;

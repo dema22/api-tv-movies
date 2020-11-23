@@ -1,6 +1,8 @@
 CREATE DATABASE app_tv_movies;
 DROP DATABASE app_tv_movies;
 USE app_tv_movies;
+SHOW VARIABLES LIKE 'foreign_key_checks';
+SHOW CREATE TABLE tv_show_reminder;
 
 CREATE TABLE user(
 	id_user 				int auto_increment not null,
@@ -32,8 +34,9 @@ CREATE TABLE tv_show_created_by_user (
     genre varchar(50) not null,
     production_company varchar(50) not null,
     constraint pk_id_tv_show_created_by_user primary key (id_tv_show_created_by_user)
-);
+)ENGINE=InnoDB;
 DROP TABLE tv_show_created_by_user;
+select * from tv_show_created_by_user;
 
 CREATE TABLE tv_show_reminder (
 	id_tv_show_reminder int auto_increment not null,
@@ -47,8 +50,8 @@ CREATE TABLE tv_show_reminder (
 	constraint pk_id_tv_show_reminder primary key (id_tv_show_reminder),
     constraint fk_id_user foreign key (id_user) references user (id_user),
     constraint fk_id_basic_tv_show_info foreign key (id_basic_tv_show_info) references basic_tv_show_info (id_basic_tv_show_info),
-	constraint fk_id_tv_show_created_by_user foreign key (id_tv_show_created_by_user) references tv_show_created_by_user (id_tv_show_created_by_user)
-);
+	constraint fk_id_tv_show_created_by_user foreign key (id_tv_show_created_by_user) references tv_show_created_by_user (id_tv_show_created_by_user) ON DELETE CASCADE
+)ENGINE=InnoDB;
 DROP TABLE tv_show_reminder;
 select * from tv_show_reminder;
 
