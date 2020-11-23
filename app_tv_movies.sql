@@ -31,12 +31,13 @@ DROP TABLE basic_movie_info;
 CREATE TABLE tv_show_created_by_user (
 	id_tv_show_created_by_user int auto_increment not null,
     name_tv_show varchar(50) not null,
-    genre varchar(50) not null,
-    production_company varchar(50) not null,
+    genre varchar(50),
+    production_company varchar(50),
     constraint pk_id_tv_show_created_by_user primary key (id_tv_show_created_by_user)
 )ENGINE=InnoDB;
 DROP TABLE tv_show_created_by_user;
 select * from tv_show_created_by_user;
+insert into tv_show_created_by_user (name_tv_show, genre, production_company) values (null,null,null); 
 
 CREATE TABLE tv_show_reminder (
 	id_tv_show_reminder int auto_increment not null,

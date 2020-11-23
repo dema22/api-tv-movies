@@ -1,11 +1,14 @@
 package com.example.spring.controllers;
 
+import com.example.spring.dto.UserTvShowPatchDTO;
 import com.example.spring.models.UserTvShow;
 import com.example.spring.services.UserTvShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -28,5 +31,15 @@ public class UserTvShowController {
     public List<UserTvShow> getAllTvShowsCreatedByUser (){
         List<UserTvShow> userTvShows = userTvShowService.getAllTvShowsCreatedByUser();
         return userTvShows;
+    }
+
+    @GetMapping("/{idUserTvShow}")
+    public Optional<UserTvShow> getUserTvShow (@PathVariable Integer idUserTvShow){
+        return userTvShowService.getUserTvShow(idUserTvShow);
+    }
+
+    @PatchMapping("/{idUserTvShow}")
+    public void updateUserTvShow(@RequestBody @Valid UserTvShowPatchDTO userTvShowPatchDTO, @PathVariable  Integer idUserTvShow){
+        userTvShowService.updateUserTvShow(userTvShowPatchDTO,idUserTvShow);
     }
 }

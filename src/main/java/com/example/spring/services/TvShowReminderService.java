@@ -127,39 +127,29 @@ public class TvShowReminderService {
     }
 
     public void updateTvShowReminder(TvShowReminderPatchDTO tvShowReminderToUpdate, Integer idTvShowReminder) {
-        Optional<TvShowReminder> tvShowReminder = getTvShowReminder(idTvShowReminder);
-        TvShowReminder currentTvShowReminder = tvShowReminder.get();
+        Optional<TvShowReminder> optionalTvShowReminder = getTvShowReminder(idTvShowReminder);
 
-        if(tvShowReminderToUpdate.getCompleted() != null) {
-            if (tvShowReminderToUpdate.getCompleted().isPresent()) {
-                currentTvShowReminder.setCompleted(tvShowReminderToUpdate.getCompleted().get());
-            } else {
-                currentTvShowReminder.setCompleted(null);
-            }
+        // If optional not present throw an exception
+        /*if (!optionalTvShowReminder.isPresent()) {
+            return new Exception();
+        }¨*/
+
+        TvShowReminder currentTvShowReminder = optionalTvShowReminder.get();
+
+        if (tvShowReminderToUpdate.getCompleted().isPresent()) {
+            currentTvShowReminder.setCompleted(tvShowReminderToUpdate.getCompleted().get());
         }
 
-        if(tvShowReminderToUpdate.getCurrentSeason() != null) {
-            if (tvShowReminderToUpdate.getCurrentSeason().isPresent()) {
-                currentTvShowReminder.setCurrentSeason(tvShowReminderToUpdate.getCurrentSeason().get());
-            } else {
-                currentTvShowReminder.setCurrentSeason(null);
-            }
+        if (tvShowReminderToUpdate.getCurrentSeason().isPresent()) {
+            currentTvShowReminder.setCurrentSeason(tvShowReminderToUpdate.getCurrentSeason().get());
         }
 
-        if(tvShowReminderToUpdate.getCurrentEpisode() != null) {
-            if (tvShowReminderToUpdate.getCurrentEpisode().isPresent()) {
-                currentTvShowReminder.setCurrentEpisode(tvShowReminderToUpdate.getCurrentEpisode().get());
-            } else {
-                currentTvShowReminder.setCurrentEpisode(null);
-            }
+        if (tvShowReminderToUpdate.getCurrentEpisode().isPresent()) {
+            currentTvShowReminder.setCurrentEpisode(tvShowReminderToUpdate.getCurrentEpisode().get());
         }
 
-        if(tvShowReminderToUpdate.getPersonalRating() != null) {
-            if (tvShowReminderToUpdate.getPersonalRating().isPresent()) {
-                currentTvShowReminder.setPersonalRating(tvShowReminderToUpdate.getPersonalRating().get());
-            } else {
-                currentTvShowReminder.setPersonalRating(null);
-            }
+        if (tvShowReminderToUpdate.getPersonalRating().isPresent()) {
+            currentTvShowReminder.setPersonalRating(tvShowReminderToUpdate.getPersonalRating().get());
         }
 
         tvShowReminderRepository.save(currentTvShowReminder);

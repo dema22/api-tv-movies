@@ -3,7 +3,6 @@ package com.example.spring.controllers;
 import com.example.spring.dto.TvShowReminderPatchDTO;
 import com.example.spring.dto.TvShowReminderResponseDTO;
 import com.example.spring.models.TvShowReminder;
-import com.example.spring.models.User;
 import com.example.spring.services.TvShowReminderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
