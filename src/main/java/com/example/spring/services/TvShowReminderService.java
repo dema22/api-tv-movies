@@ -8,7 +8,6 @@ import com.example.spring.models.TvShowReminder;
 import com.example.spring.repositories.TvShowReminderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +17,11 @@ import java.util.Optional;
 public class TvShowReminderService {
     private final TvShowDetailsService tvShowDetailsService;
     private final TvShowReminderRepository tvShowReminderRepository;
-    private final RestTemplate restTemplate;
 
     @Autowired
-    public TvShowReminderService(TvShowDetailsService tvShowDetailsService, TvShowReminderRepository tvShowReminderRepository, RestTemplate restTemplate) {
+    public TvShowReminderService(TvShowDetailsService tvShowDetailsService, TvShowReminderRepository tvShowReminderRepository) {
         this.tvShowDetailsService = tvShowDetailsService;
         this.tvShowReminderRepository = tvShowReminderRepository;
-        this.restTemplate = restTemplate;
     }
 
     public void addTvShowReminder(TvShowReminder tvShowReminder) {

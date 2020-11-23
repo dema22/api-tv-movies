@@ -48,10 +48,4 @@ public class TvShowReminderController {
     public void updateTvShowReminder(@RequestBody @Valid TvShowReminderPatchDTO tvShowReminderToUpdate, @PathVariable  Integer idTvShowReminder){
         tvShowReminderService.updateTvShowReminder(tvShowReminderToUpdate,idTvShowReminder);
     }
-
-    @GetMapping("/entity/{idTvShowReminder}")
-    public Optional<TvShowReminder> getTvShowReminder (@PathVariable Integer idTvShowReminder){
-        return tvShowReminderService.getTvShowReminder(idTvShowReminder);
-    }
-
 }

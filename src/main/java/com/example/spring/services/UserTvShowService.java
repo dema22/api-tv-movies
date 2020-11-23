@@ -23,10 +23,10 @@ public class UserTvShowService {
         userTvShowRepository.save(userTvShow);
     }
 
+    // We need to refactor this endpoint to get all the user tv shows by a particular user id.
     public List<UserTvShow> getAllTvShowsCreatedByUser() {
         return userTvShowRepository.findAll();
     }
-
 
     // Get a tv show created by the user by its ID.
     public Optional<UserTvShow> getUserTvShow(Integer idUserTvShow){

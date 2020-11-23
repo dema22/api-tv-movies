@@ -27,6 +27,7 @@ public class UserTvShowController {
         userTvShowService.addUserTvShow(userTvShow);
     }
 
+    // This endpoint is returning all tv shows in the database we need to query them by the user.
     @GetMapping("/")
     public List<UserTvShow> getAllTvShowsCreatedByUser (){
         List<UserTvShow> userTvShows = userTvShowService.getAllTvShowsCreatedByUser();
