@@ -39,7 +39,7 @@ public class UserTvShowController {
     }
 
     @PatchMapping("/{idUserTvShow}")
-    public void updateUserTvShow(@RequestBody @Valid UserTvShowPatchDTO userTvShowPatchDTO, @PathVariable  Integer idUserTvShow){
+    public void updateUserTvShow(@Valid @RequestBody UserTvShowPatchDTO userTvShowPatchDTO, @PathVariable  Integer idUserTvShow){
         userTvShowService.updateUserTvShow(userTvShowPatchDTO,idUserTvShow);
     }
 }

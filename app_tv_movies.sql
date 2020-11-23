@@ -37,7 +37,6 @@ CREATE TABLE tv_show_created_by_user (
 )ENGINE=InnoDB;
 DROP TABLE tv_show_created_by_user;
 select * from tv_show_created_by_user;
-insert into tv_show_created_by_user (name_tv_show, genre, production_company) values (null,null,null); 
 
 CREATE TABLE tv_show_reminder (
 	id_tv_show_reminder int auto_increment not null,

@@ -8,7 +8,6 @@ public class UserTvShowPatchDTO {
     // Attributes
 
     /// This will make the application return a 400 error if the value of name is not omitted and explicitly set to null.
-    // For some reason its not working.
     @NotNull
     private JsonNullable<String> nameTvShow = JsonNullable.undefined();
     private JsonNullable<String> genre = JsonNullable.undefined();
