@@ -40,7 +40,7 @@ public class TvShowReminderService {
         // Get the basic tv show info object
         BasicTvShowInfo basicTvShowInfo = currentTvShowReminder.getBasicTvShowInfo();
 
-        TvShowDetailsResponseDTO tvShowDetailsResponseDTO = new TvShowDetailsResponseDTO();
+        TvShowDetailsResponseDTO tvShowDetailsResponseDTO = null;
 
         // Get the details of the show.
         if(basicTvShowInfo != null) {
@@ -49,18 +49,9 @@ public class TvShowReminderService {
                 tvShowDetailsResponseDTO = tvShowDetailsService.getTvShowDetails(basicTvShowInfo.getId());
             }
         }
-
         // Build the Tv Show Reminder Response DTO with all the information we manage to get so far.
         TvShowReminderResponseDTO tvShowReminderResponseDTO = new TvShowReminderResponseDTO();
-
-        tvShowReminderResponseDTO.setIdTvShowReminder(currentTvShowReminder.getIdTvShowReminder());
-        tvShowReminderResponseDTO.setUser(currentTvShowReminder.getUser());
-        tvShowReminderResponseDTO.setUserTvShow(currentTvShowReminder.getUserTvShow());
-        tvShowReminderResponseDTO.setTvShowDetailsResponseDTO(tvShowDetailsResponseDTO);
-        tvShowReminderResponseDTO.setCompleted(currentTvShowReminder.getCompleted());
-        tvShowReminderResponseDTO.setCurrentSeason(currentTvShowReminder.getCurrentSeason());
-        tvShowReminderResponseDTO.setCurrentEpisode(currentTvShowReminder.getCurrentEpisode());
-        tvShowReminderResponseDTO.setPersonalRating(currentTvShowReminder.getPersonalRating());
+        buildTvShowReminderDTO(tvShowReminderResponseDTO, currentTvShowReminder, tvShowDetailsResponseDTO);
 
         return tvShowReminderResponseDTO;
     }
@@ -80,7 +71,7 @@ public class TvShowReminderService {
             BasicTvShowInfo basicTvShowInfo = tvShowReminder.getBasicTvShowInfo();
 
             // Create the dto object for the details of the tv show
-            TvShowDetailsResponseDTO tvShowDetailsResponseDTO = new TvShowDetailsResponseDTO();
+            TvShowDetailsResponseDTO tvShowDetailsResponseDTO = null;
 
             // Get the details of the show.
             if (basicTvShowInfo != null) {
@@ -92,20 +83,33 @@ public class TvShowReminderService {
 
             // Build the Tv Show Reminder DTO with all the information we manage to get so far.
             TvShowReminderResponseDTO tvShowReminderResponseDTO = new TvShowReminderResponseDTO();
-            tvShowReminderResponseDTO.setIdTvShowReminder(tvShowReminder.getIdTvShowReminder());
-            tvShowReminderResponseDTO.setUser(tvShowReminder.getUser());
-            tvShowReminderResponseDTO.setUserTvShow(tvShowReminder.getUserTvShow());
-            tvShowReminderResponseDTO.setTvShowDetailsResponseDTO(tvShowDetailsResponseDTO);
-            tvShowReminderResponseDTO.setCompleted(tvShowReminder.getCompleted());
-            tvShowReminderResponseDTO.setCurrentSeason(tvShowReminder.getCurrentSeason());
-            tvShowReminderResponseDTO.setCurrentEpisode(tvShowReminder.getCurrentEpisode());
-            tvShowReminderResponseDTO.setPersonalRating(tvShowReminder.getPersonalRating());
+            buildTvShowReminderDTO(tvShowReminderResponseDTO, tvShowReminder, tvShowDetailsResponseDTO);
 
             // We add the reminder dto to the list
             tvShowReminderListDTO.add(tvShowReminderResponseDTO);
         }
 
         return tvShowReminderListDTO;
+    }
+
+    public void buildTvShowReminderDTO (TvShowReminderResponseDTO tvShowReminderResponseDTO,
+                                        TvShowReminder currentTvShowReminder,
+                                        TvShowDetailsResponseDTO tvShowDetailsResponseDTO) {
+
+        tvShowReminderResponseDTO.setIdTvShowReminder(currentTvShowReminder.getIdTvShowReminder());
+        tvShowReminderResponseDTO.setUser(currentTvShowReminder.getUser());
+        tvShowReminderResponseDTO.setUserTvShow(currentTvShowReminder.getUserTvShow());
+
+        if(tvShowDetailsResponseDTO != null){
+            tvShowReminderResponseDTO.setTvShowDetailsResponseDTO(tvShowDetailsResponseDTO);
+        }else{
+            tvShowReminderResponseDTO.setTvShowDetailsResponseDTO(null);
+        }
+
+        tvShowReminderResponseDTO.setCompleted(currentTvShowReminder.getCompleted());
+        tvShowReminderResponseDTO.setCurrentSeason(currentTvShowReminder.getCurrentSeason());
+        tvShowReminderResponseDTO.setCurrentEpisode(currentTvShowReminder.getCurrentEpisode());
+        tvShowReminderResponseDTO.setPersonalRating(currentTvShowReminder.getPersonalRating());
     }
 
     // Get all the show reminders entity searching by the user id.
