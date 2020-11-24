@@ -1,5 +1,6 @@
 package com.example.spring.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 
 import javax.persistence.Column;
@@ -18,8 +19,9 @@ public class BasicTvShowInfo {
     private Integer id;
 
     @Column(name = "original_name")
+    @JsonProperty("original_name")
     @NotNull
-    private String original_name;
+    private String originalName;
 
     // getters and setters
     public Integer getId() {
@@ -30,11 +32,11 @@ public class BasicTvShowInfo {
         this.id = id;
     }
 
-    public String getOriginal_name() {
-        return original_name;
+    public String getOriginalName() {
+        return originalName;
     }
 
-    public void setOriginal_name(String original_name) {
-        this.original_name = original_name;
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
     }
 }

@@ -3,6 +3,7 @@ package com.example.spring.controllers;
 import com.example.spring.models.BasicTvShowInfo;
 import com.example.spring.services.BasicTvShowInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,5 +25,10 @@ public class TvShowController {
             basicTvShowInfoService.saveListOfBasicTvShows(listBasicTvShowInfo);
         }catch (OutOfMemoryError e){
         }
+    }
+
+    @GetMapping("/")
+    public List<BasicTvShowInfo> searchBasicTvShowInfo (@RequestParam String originalNameTvShow){
+        return basicTvShowInfoService.searchBasicTvShowInfo(originalNameTvShow);
     }
 }
