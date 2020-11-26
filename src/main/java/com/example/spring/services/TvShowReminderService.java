@@ -1,5 +1,6 @@
 package com.example.spring.services;
 
+import com.example.spring.dto.PageTvShowRemindersResponseDTO;
 import com.example.spring.dto.TvShowDetailsResponseDTO;
 import com.example.spring.dto.TvShowReminderPatchDTO;
 import com.example.spring.dto.TvShowReminderResponseDTO;
@@ -7,6 +8,8 @@ import com.example.spring.models.BasicTvShowInfo;
 import com.example.spring.models.TvShowReminder;
 import com.example.spring.repositories.TvShowReminderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -59,7 +62,7 @@ public class TvShowReminderService {
     // Get all tv show reminder DTO based on the user id.
     public List<TvShowReminderResponseDTO> getAllTvShowsReminderDTO (Integer idUser) {
 
-        // Get all the tv show reminder of the user
+        // Get all the tv show reminder of the user.
         List<TvShowReminder> tvShowRemindersList = getAllTvShowsReminderEntities(idUser);
 
         // Create a list of the tv show reminders DTO
