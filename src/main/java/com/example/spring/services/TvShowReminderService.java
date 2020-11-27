@@ -159,6 +159,7 @@ public class TvShowReminderService {
 
     // Add a new method to return a paginated list of tv show reminders
     public Page<TvShowReminder> getPaginatedTvShowReminders(Integer page, Integer size, Integer idUser) {
+        // Sort.by(Sort.Direction.ASC, "basicTvShowInfo.originalName")
         return tvShowReminderRepository.findByUser_IdUser(PageRequest.of(page,size),idUser);
     }
 
@@ -218,8 +219,8 @@ public class TvShowReminderService {
                            Page pageTvShowReminder) {
         page.setTvShowRemindersResponseDTO(tvShowReminderListDTO);
         PageDescriptionDTO pageDescription = new PageDescriptionDTO();
-        pageDescription.setTotalPages(pageTvShowReminder.getTotalPages()); // Total pages we have
-        pageDescription.setTotalElements(pageTvShowReminder.getTotalElements());// Total elements we have
+        pageDescription.setTotalPages(pageTvShowReminder.getTotalPages()); // For the  number of total pages.
+        pageDescription.setTotalElements(pageTvShowReminder.getTotalElements());// For total items stored in database.
         pageDescription.setNumberOfElementsReturn(pageTvShowReminder.getNumberOfElements());// Total elements we return on the page.
         page.setPageDescriptionDTO(pageDescription);
     }
