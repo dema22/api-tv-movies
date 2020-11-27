@@ -1,5 +1,6 @@
 package com.example.spring.controllers;
 
+import com.example.spring.dto.PageTvShowRemindersResponseDTO;
 import com.example.spring.dto.TvShowReminderPatchDTO;
 import com.example.spring.dto.TvShowReminderResponseDTO;
 import com.example.spring.models.TvShowReminder;
@@ -46,5 +47,16 @@ public class TvShowReminderController {
     @PatchMapping("/{idTvShowReminder}")
     public void updateTvShowReminder(@RequestBody @Valid TvShowReminderPatchDTO tvShowReminderToUpdate, @PathVariable  Integer idTvShowReminder){
         tvShowReminderService.updateTvShowReminder(tvShowReminderToUpdate,idTvShowReminder);
+    }
+
+    // Pagination
+    // Add a new method to return PageTvShowRemindersResponseDTO.
+    // This object has a list of tv show reminders response dto and also has the pageDTO information.
+    // Request parameters default in true -> mandatory.
+    @GetMapping("/paginated")
+    public PageTvShowRemindersResponseDTO getPaginatedTvShowReminderResponseDTO(@RequestParam Integer page, @RequestParam Integer size){
+        // Set a default a id user that will use to query all tv show reminder with that particular id.
+        // We will get the user info from the jwt token when we implement Spring Security on the Api.
+        return tvShowReminderService.getPaginatedTvShowReminderResponseDTO(page,size,1);
     }
 }

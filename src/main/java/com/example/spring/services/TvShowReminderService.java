@@ -1,9 +1,6 @@
 package com.example.spring.services;
 
-import com.example.spring.dto.PageTvShowRemindersResponseDTO;
-import com.example.spring.dto.TvShowDetailsResponseDTO;
-import com.example.spring.dto.TvShowReminderPatchDTO;
-import com.example.spring.dto.TvShowReminderResponseDTO;
+import com.example.spring.dto.*;
 import com.example.spring.models.BasicTvShowInfo;
 import com.example.spring.models.TvShowReminder;
 import com.example.spring.repositories.TvShowReminderRepository;
@@ -157,5 +154,73 @@ public class TvShowReminderService {
         }
 
         tvShowReminderRepository.save(currentTvShowReminder);
+    }
+
+
+    // Add a new method to return a paginated list of tv show reminders
+    public Page<TvShowReminder> getPaginatedTvShowReminders(Integer page, Integer size, Integer idUser) {
+        return tvShowReminderRepository.findByUser_IdUser(PageRequest.of(page,size),idUser);
+    }
+
+    public PageTvShowRemindersResponseDTO getPaginatedTvShowReminderResponseDTO (Integer page, Integer size, Integer idUser) {
+
+        // Get a page of the tv show reminder entity.
+        Page<TvShowReminder> pageTvShowReminder = getPaginatedTvShowReminders(page,size,idUser);
+
+        PageTvShowRemindersResponseDTO tvShowReminderResponseDTOS = buildPageTvShowReminderResponseDTO(pageTvShowReminder);
+
+        return tvShowReminderResponseDTOS;
+    }
+
+    // We will get a PageTvShowReminderResponseDTO with the information of the tv show reminders DTO in a list AND
+    // the information of the page.
+    public PageTvShowRemindersResponseDTO buildPageTvShowReminderResponseDTO (Page pageTvShowReminder) {
+
+        // Get all the tv show reminder of the user.
+        List<TvShowReminder> tvShowRemindersList = pageTvShowReminder.getContent();
+
+        // Create a list of the tv show reminders DTO
+        List<TvShowReminderResponseDTO> tvShowReminderListDTO = new ArrayList<>();
+
+        for(TvShowReminder tvShowReminder: tvShowRemindersList) {
+
+            // Get the basic tv show info object
+            BasicTvShowInfo basicTvShowInfo = tvShowReminder.getBasicTvShowInfo();
+
+            // Create the dto object for the details of the tv show
+            TvShowDetailsResponseDTO tvShowDetailsResponseDTO = null;
+
+            // Get the details of the show.
+            if (basicTvShowInfo != null) {
+
+                if (basicTvShowInfo.getId() != null) {
+                    tvShowDetailsResponseDTO = tvShowDetailsService.getTvShowDetails(basicTvShowInfo.getId());
+                }
+            }
+
+            // Build the Tv Show Reminder DTO with all the information we manage to get so far.
+            TvShowReminderResponseDTO tvShowReminderResponseDTO = new TvShowReminderResponseDTO();
+            buildTvShowReminderDTO(tvShowReminderResponseDTO, tvShowReminder, tvShowDetailsResponseDTO);
+
+            // We add the reminder dto to the list
+            tvShowReminderListDTO.add(tvShowReminderResponseDTO);
+        }
+
+        // Build the page to return the list of tv show reminders DTO and description of the page.
+        PageTvShowRemindersResponseDTO<TvShowReminderResponseDTO> pageTvShowReminderResponseDTO = new PageTvShowRemindersResponseDTO<>();
+        buildPage(pageTvShowReminderResponseDTO, tvShowReminderListDTO, pageTvShowReminder);
+
+        return pageTvShowReminderResponseDTO;
+    }
+
+    private void buildPage(PageTvShowRemindersResponseDTO<TvShowReminderResponseDTO> page,
+                           List<TvShowReminderResponseDTO> tvShowReminderListDTO,
+                           Page pageTvShowReminder) {
+        page.setTvShowRemindersResponseDTO(tvShowReminderListDTO);
+        PageDescriptionDTO pageDescription = new PageDescriptionDTO();
+        pageDescription.setTotalPages(pageTvShowReminder.getTotalPages()); // Total pages we have
+        pageDescription.setTotalElements(pageTvShowReminder.getTotalElements());// Total elements we have
+        pageDescription.setNumberOfElementsReturn(pageTvShowReminder.getNumberOfElements());// Total elements we return on the page.
+        page.setPageDescriptionDTO(pageDescription);
     }
 }

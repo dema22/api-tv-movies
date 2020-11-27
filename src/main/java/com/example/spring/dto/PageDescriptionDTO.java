@@ -2,16 +2,17 @@ package com.example.spring.dto;
 
 public class PageDescriptionDTO {
     // Attributes
-    private Integer page;
-    private Integer size;
-    private Integer total;
+    private Integer totalPages;
+    private Long totalElements;
+    private Integer numberOfElementsReturn;
 
     // Constructor
 
-    public PageDescriptionDTO(Integer page, Integer size, Integer total) {
-        this.page = page;
-        this.size = size;
-        this.total = total;
+
+    public PageDescriptionDTO(Integer totalPages, Long totalElements, Integer numberOfElementsReturn) {
+        this.totalPages = totalPages;
+        this.totalElements = totalElements;
+        this.numberOfElementsReturn = numberOfElementsReturn;
     }
 
     public PageDescriptionDTO() {
@@ -19,27 +20,27 @@ public class PageDescriptionDTO {
 
     // Getters and Setters
 
-    public Integer getPage() {
-        return page;
+    public Integer getTotalPages() {
+        return totalPages;
     }
 
-    public void setPage(Integer page) {
-        this.page = page;
+    public void setTotalPages(Integer totalPages) {
+        this.totalPages = totalPages;
     }
 
-    public Integer getSize() {
-        return size;
+    public Long getTotalElements() {
+        return totalElements;
     }
 
-    public void setSize(Integer size) {
-        this.size = size;
+    public void setTotalElements(Long totalElements) {
+        this.totalElements = totalElements;
     }
 
-    public Integer getTotal() {
-        return total;
+    public Integer getNumberOfElementsReturn() {
+        return numberOfElementsReturn;
     }
 
-    public void setTotal(Integer total) {
-        this.total = total;
+    public void setNumberOfElementsReturn(Integer numberOfElementsReturn) {
+        this.numberOfElementsReturn = numberOfElementsReturn;
     }
 }
