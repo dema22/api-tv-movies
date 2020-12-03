@@ -18,7 +18,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-
 public class UserController {
     private AuthenticationManager authenticationManager;
     private MyUserDetailsService userDetailsService;
@@ -32,7 +31,7 @@ public class UserController {
         this.jwtTokenUtil = jwtTokenUtil;
         this.userService = userService;
     }
-    
+
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authenticationRequest) throws Exception {
 
@@ -55,6 +54,10 @@ public class UserController {
         return ResponseEntity.ok(new AuthenticationResponseDTO(jwt));
     }
 
+    @GetMapping("/hello" )
+    public String firstPage() {
+        return "Hello World";
+    }
 
     @PostMapping("/")
     public void addUser(@RequestBody User user) {

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-    // Now its hardcoded, but we need to get the user from our databse with the help of a jpa repository.
+    // Now its hardcoded, but we need to get the user from our database with the help of a jpa repository.
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         return new User("foo", "foo", new ArrayList<>());
