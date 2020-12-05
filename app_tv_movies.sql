@@ -10,6 +10,7 @@ CREATE TABLE user(
     last_name				varchar(50) not null,
     username				varchar(50) not null,
     password	    		varchar(50) not null,
+    email					varchar(50) not null,
 	constraint pk_id_client primary key (id_user)	
 );
 DROP TABLE user;
