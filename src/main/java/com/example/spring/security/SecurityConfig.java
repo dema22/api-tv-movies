@@ -10,13 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -64,10 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Set permissions on endpoints
         http.authorizeRequests()
                 // Our public endpoints:
-                .antMatchers(HttpMethod.GET, "/user/forUser").permitAll()
-                .antMatchers(HttpMethod.GET, "/user/forAdmin").permitAll()
                 .antMatchers(HttpMethod.POST, "/user/authenticate").permitAll()
-                .antMatchers(HttpMethod.POST, "/").permitAll()
+                .antMatchers(HttpMethod.POST, "/user/").permitAll()
                 // Our private endpoints
                 .anyRequest().authenticated();
 
@@ -93,10 +88,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

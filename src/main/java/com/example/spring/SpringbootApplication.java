@@ -8,7 +8,6 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 public class SpringbootApplication {
 
-
     @Bean
     public RestTemplate getRestTemplate() {
        return new RestTemplate();
