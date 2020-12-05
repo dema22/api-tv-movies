@@ -2,6 +2,7 @@ package com.example.spring.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -63,9 +64,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Set permissions on endpoints
         http.authorizeRequests()
                 // Our public endpoints:
-                .antMatchers("/user/forUser").permitAll()
-                .antMatchers("/user/forAdmin").permitAll()
-                .antMatchers("/user/authenticate").permitAll()
+                .antMatchers(HttpMethod.GET, "/user/forUser").permitAll()
+                .antMatchers(HttpMethod.GET, "/user/forAdmin").permitAll()
+                .antMatchers(HttpMethod.POST, "/user/authenticate").permitAll()
+                .antMatchers(HttpMethod.POST, "/").permitAll()
                 // Our private endpoints
                 .anyRequest().authenticated();
 
