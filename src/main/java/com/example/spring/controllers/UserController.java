@@ -8,6 +8,7 @@ import com.example.spring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -57,16 +58,19 @@ public class UserController {
         return "Hello User " + idUser;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/forAdmin")
-    public String helloAdmin() {
-        return "Hello Admin";
+    public String helloAdmin(@RequestHeader(name="Authorization") String header) {
+        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
+        Integer idUser = jwtTokenUtil.getUserId(token);
+        return "Hello Admin " + idUser + " you are allowed to enter in this method.";
     }
 
     @PostMapping("/")
     public void addUser(@RequestBody User user) {
         userService.addUser(user);
     }
-
+    
     @GetMapping("/")
     public List<User> getAllUser(){
         List<User> users = userService.getAllUsers();

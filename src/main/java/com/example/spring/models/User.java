@@ -2,9 +2,11 @@ package com.example.spring.models;
 
 import com.sun.istack.NotNull;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Collection;
 
 @Entity
@@ -33,6 +35,11 @@ public class User implements UserDetails {
 
     @NotNull
     private String email;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name="id_role")
+    @NotNull
+    private Role role;
 
     // Getters and Setters
     public Integer getIdUser() {
@@ -83,10 +90,19 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     // Override methods
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Arrays.asList(new SimpleGrantedAuthority(role.getRoleName()));
+        //return null;
     }
 
     @Override

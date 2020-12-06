@@ -11,9 +11,21 @@ CREATE TABLE user(
     username				varchar(50) not null,
     password	    		varchar(150) not null,
     email					varchar(50) not null,
-	constraint pk_id_client primary key (id_user)	
+    id_role					int not null,
+	constraint pk_id_client primary key (id_user),
+	constraint fk_id_role foreign key (id_role) references user_role (id_role)
 );
 DROP TABLE user;
+
+CREATE TABLE user_role (
+	id_role			    int auto_increment not null,
+    role_name			varchar(50) not null,
+    constraint  pk_id_role primary key (id_role)
+);
+DROP TABLE user_role;
+INSERT INTO user_role (role_name) VALUES ("ROLE_USER");
+INSERT INTO user_role (role_name) VALUES ("ROLE_ADMIN");
+
 
 CREATE TABLE basic_tv_show_info (
 	id_basic_tv_show_info 	    		int not null,
