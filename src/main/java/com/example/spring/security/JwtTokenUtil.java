@@ -23,12 +23,13 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-    public String getUserId(String token){
+    public Integer getUserId(String token){
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
-        return claims.getSubject().split(",")[0];
+        String userId = claims.getSubject().split(",")[0];
+        return Integer.parseInt(userId);
     }
 
     public String getUsername(String token){
@@ -56,5 +57,9 @@ public class JwtTokenUtil {
             System.out.println("Invalid token");
             return false;
         }
+    }
+
+    public String getTokenFromAuthorizationHeader(String header){
+        return header.split(" ")[1].trim();
     }
 }

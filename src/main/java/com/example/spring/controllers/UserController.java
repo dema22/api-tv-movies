@@ -1,11 +1,11 @@
 package com.example.spring.controllers;
 
 import com.example.spring.dto.AuthenticationRequestDTO;
+import com.example.spring.dto.AuthenticationResponseDTO;
 import com.example.spring.models.User;
 import com.example.spring.security.JwtTokenUtil;
 import com.example.spring.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,13 +40,10 @@ public class UserController {
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
 
-            User user = (User) authenticate.getPrincipal();
+            final User user = (User) authenticate.getPrincipal();
+            final String jwt = jwtTokenUtil.generateToken(user);
 
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.AUTHORIZATION,
-                            jwtTokenUtil.generateToken(user)
-                    )
-                    .body(user);
+            return ResponseEntity.ok(new AuthenticationResponseDTO(jwt));
         }
         catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -54,8 +51,10 @@ public class UserController {
     }
 
     @GetMapping("/forUser")
-    public String helloUser() {
-        return "Hello User";
+    public String helloUser(@RequestHeader(name="Authorization") String header) {
+        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
+        Integer idUser = jwtTokenUtil.getUserId(token);
+        return "Hello User " + idUser;
     }
 
     @GetMapping("/forAdmin")
