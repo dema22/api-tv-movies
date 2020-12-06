@@ -70,7 +70,7 @@ public class UserController {
     public void addUser(@RequestBody User user) {
         userService.addUser(user);
     }
-    
+
     @GetMapping("/")
     public List<User> getAllUser(){
         List<User> users = userService.getAllUsers();
