@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -20,11 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private PasswordEncoder passwordEncoder;
     private JwtTokenFilter jwtTokenFilter;
     private UserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityConfig(JwtTokenFilter jwtTokenFilter, UserDetailsService userDetailsService) {
+    public SecurityConfig(PasswordEncoder passwordEncoder, JwtTokenFilter jwtTokenFilter, UserDetailsService userDetailsService) {
+        this.passwordEncoder = passwordEncoder;
         this.jwtTokenFilter = jwtTokenFilter;
         this.userDetailsService = userDetailsService;
     }
@@ -32,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // Configure the authentication manager with the correct provider.
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     // Configure the web security.
