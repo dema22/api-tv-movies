@@ -66,6 +66,14 @@ public class UserController {
         return "Hello Admin " + idUser + " you are allowed to enter in this method.";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')")
+    @GetMapping("/forBoth")
+    public String helloBoth(@RequestHeader(name="Authorization") String header) {
+        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
+        Integer idUser = jwtTokenUtil.getUserId(token);
+        return "Hello admin or user";
+    }
+
     @PostMapping("/")
     public void addUser(@RequestBody User user) {
         userService.addUser(user);
