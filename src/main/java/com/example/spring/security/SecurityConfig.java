@@ -78,7 +78,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Our public endpoints:
                 .antMatchers(HttpMethod.POST, "/user/authenticate").permitAll()
                 .antMatchers(HttpMethod.POST, "/user/").permitAll()
-                .antMatchers(HttpMethod.GET, "/user/").permitAll()
                 // Our private endpoints
                 .anyRequest().authenticated();
 

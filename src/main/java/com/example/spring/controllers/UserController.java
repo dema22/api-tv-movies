@@ -79,7 +79,6 @@ public class UserController {
         return "Hello admin or user";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')")
     @PostMapping("/")
     public void addUser(@RequestBody @Valid User user) {
         userService.addUser(user);

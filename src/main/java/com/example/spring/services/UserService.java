@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -23,8 +24,13 @@ public class UserService {
     }
 
     public void addUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        Optional.ofNullable(user).map((userToSave) -> {
+            userToSave.setPassword(passwordEncoder.encode(userToSave.getPassword()));
+            return userRepository.save(userToSave);
+        }).orElse(null);
+
+        //user.setPassword(passwordEncoder.encode(user.getPassword()));
+        //userRepository.save(user);
     }
 
     public List<User> getAllUsers() {

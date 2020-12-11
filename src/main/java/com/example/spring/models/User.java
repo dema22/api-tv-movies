@@ -25,7 +25,7 @@ public class User implements UserDetails {
     private String name;
 
     @Column(name = "last_name")
-    @NotNull(message="Provide last name please")
+    @NotNull//(message="Provide last name please")
     private String lastName;
 
     @NotNull
