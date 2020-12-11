@@ -1,10 +1,12 @@
 package com.example.spring.services;
 
 import com.example.spring.dto.UserDTO;
+import com.example.spring.exception.ResourceAlreadyExistsException;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.User;
 import com.example.spring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Optionals;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +25,13 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void addUser(User user) {
-        Optional.ofNullable(user).map((userToSave) -> {
-            userToSave.setPassword(passwordEncoder.encode(userToSave.getPassword()));
-            return userRepository.save(userToSave);
-        }).orElse(null);
-
-        //user.setPassword(passwordEncoder.encode(user.getPassword()));
-        //userRepository.save(user);
+    public void addUser(User user) throws ResourceAlreadyExistsException {
+        Optional<User> userOptional = userRepository.findByUsername(user.getUsername());
+        if(userOptional.isPresent()){
+            throw new ResourceAlreadyExistsException("Resource user already exists with username: " + user.getUsername());
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
 
     public List<User> getAllUsers() {

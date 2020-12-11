@@ -4,6 +4,7 @@ import com.example.spring.dto.AuthenticationRequestDTO;
 import com.example.spring.dto.AuthenticationResponseDTO;
 import com.example.spring.dto.UserDTO;
 import com.example.spring.exception.ForbiddenActionExcepction;
+import com.example.spring.exception.ResourceAlreadyExistsException;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.User;
 import com.example.spring.security.JwtTokenUtil;
@@ -80,8 +81,9 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public void addUser(@RequestBody @Valid User user) {
+    public ResponseEntity addUser(@RequestBody @Valid User user) throws ResourceAlreadyExistsException {
         userService.addUser(user);
+        return ResponseEntity.ok().build();
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
