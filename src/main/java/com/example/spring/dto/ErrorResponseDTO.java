@@ -1,35 +1,35 @@
 package com.example.spring.dto;
 
-import org.springframework.http.HttpStatus;
-
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDateTime;
 
 public class ErrorResponseDTO {
 
-    private Date timestamp;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy h:mm a") //HH:mm a 24 hour format - h:mm a 12 hour format
+    private LocalDateTime timestamp;
     private Integer statusCode;
     private String descriptionCode;
-    private String message;
+    private String messageErrors;
     private String path;
 
     public ErrorResponseDTO() {
     }
 
-    public ErrorResponseDTO(Date timestamp, Integer statusCode, String descriptionCode, String message, String path) {
+    public ErrorResponseDTO(LocalDateTime timestamp, Integer statusCode, String descriptionCode, String messageErrors, String path) {
         this.timestamp = timestamp;
         this.statusCode = statusCode;
         this.descriptionCode = descriptionCode;
-        this.message = message;
+        this.messageErrors = messageErrors;
         this.path = path;
     }
 
     // Getters and setters
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -49,12 +49,12 @@ public class ErrorResponseDTO {
         this.descriptionCode = descriptionCode;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMessageErrors() {
+        return messageErrors;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMessageErrors(String messageErrors) {
+        this.messageErrors = messageErrors;
     }
 
     public String getPath() {
