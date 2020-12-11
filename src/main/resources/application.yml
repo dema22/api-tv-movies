@@ -6,4 +6,5 @@ spring.hibernate.jdbc.batch_size: 25
 spring.hibernate.order_inserts: true
 spring.hibernate.order_updates: true
 spring.jpa.databasePlatform: org.hibernate.dialect.MySQL5InnoDBDialect
-
+server.error.include-message: always
+server.error.include-binding-errors: always

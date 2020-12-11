@@ -2,6 +2,9 @@ package com.example.spring.controllers;
 
 import com.example.spring.dto.AuthenticationRequestDTO;
 import com.example.spring.dto.AuthenticationResponseDTO;
+import com.example.spring.dto.UserDTO;
+import com.example.spring.exception.ForbiddenActionExcepction;
+import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.User;
 import com.example.spring.security.JwtTokenUtil;
 import com.example.spring.services.UserService;
@@ -15,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -51,6 +55,7 @@ public class UserController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/forUser")
     public String helloUser(@RequestHeader(name="Authorization") String header) {
         String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
@@ -74,14 +79,36 @@ public class UserController {
         return "Hello admin or user";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')")
     @PostMapping("/")
-    public void addUser(@RequestBody User user) {
+    public void addUser(@RequestBody @Valid User user) {
         userService.addUser(user);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/{idUser}/profile")
+    public ResponseEntity<UserDTO> getProfile(@RequestHeader(name="Authorization") String header,
+                                              @PathVariable Integer idUser) throws ForbiddenActionExcepction {
+        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
+        Integer idLoggedUser = jwtTokenUtil.getUserId(token);
+
+        if(idUser != idLoggedUser){
+            throw new ForbiddenActionExcepction("You want to query a profile that is not yours." +
+                    " Please, verify that the user id to search is the same as your user id.");
+        }
+        return ResponseEntity.ok(userService.getProfile(idUser));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/")
-    public List<User> getAllUser(){
+    public ResponseEntity<List<User>> getAllUser(){
         List<User> users = userService.getAllUsers();
-        return users;
+        return (users.size() > 0) ? ResponseEntity.ok(users) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/{idUser}")
+    public ResponseEntity getUser(@PathVariable  Integer idUser) throws ResourceNotFoundException {
+        return ResponseEntity.ok(userService.getOneUser(idUser));
     }
 }

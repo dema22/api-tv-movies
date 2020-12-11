@@ -1,6 +1,5 @@
 package com.example.spring.models;
 
-import com.sun.istack.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
+import javax.validation.constraints.NotNull;
+
 
 @Entity
 public class User implements UserDetails {
@@ -24,7 +25,7 @@ public class User implements UserDetails {
     private String name;
 
     @Column(name = "last_name")
-    @NotNull
+    @NotNull(message="Provide last name please")
     private String lastName;
 
     @NotNull
