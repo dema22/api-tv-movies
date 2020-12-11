@@ -1,5 +1,7 @@
 package com.example.spring.dto;
 
+import org.springframework.http.HttpStatus;
+
 import java.util.Date;
 
 public class ErrorResponseDTO {

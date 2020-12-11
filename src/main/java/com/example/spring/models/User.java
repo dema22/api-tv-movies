@@ -20,25 +20,25 @@ public class User implements UserDetails {
     private Integer idUser;
 
     @Column(name = "first_name")
-    @NotNull
+    @NotNull(message = "Provided a name")
     private String name;
 
     @Column(name = "last_name")
-    @NotNull//(message="Provide last name please")
+    @NotNull(message="Provide last name please")
     private String lastName;
 
-    @NotNull
+    @NotNull(message = "Provide username")
     private String username;
 
-    @NotNull
+    @NotNull(message = "Provide password")
     private String password;
 
-    @NotNull
+    @NotNull(message = "Provide email")
     private String email;
 
     @ManyToOne(optional = false)
     @JoinColumn(name="id_role")
-    @NotNull
+    @NotNull(message = "Provided rol")
     private Role role;
 
     // Getters and Setters
