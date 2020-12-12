@@ -55,35 +55,10 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/forUser")
-    public String helloUser(@RequestHeader(name="Authorization") String header) {
-        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
-        Integer idUser = jwtTokenUtil.getUserId(token);
-        return "Hello User " + idUser;
-    }
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/forAdmin")
-    public String helloAdmin(@RequestHeader(name="Authorization") String header) {
-        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
-        Integer idUser = jwtTokenUtil.getUserId(token);
-        return "Hello Admin " + idUser + " you are allowed to enter in this method.";
-    }
-
-    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')")
-    @GetMapping("/forBoth")
-    public String helloBoth(@RequestHeader(name="Authorization") String header) {
-        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
-        Integer idUser = jwtTokenUtil.getUserId(token);
-        return "Hello admin or user";
-    }
-
+    
     @PostMapping("/")
-    public ResponseEntity addUser(@RequestBody @Valid User user) throws ResourceAlreadyExistsException {
+    public void addUser(@RequestBody @Valid User user) throws ResourceAlreadyExistsException {
         userService.addUser(user);
-        return ResponseEntity.ok().build();
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
