@@ -1,7 +1,7 @@
 package com.example.spring.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,12 +15,12 @@ public class BasicTvShowInfo {
 
     @Id
     @Column(name = "id_basic_tv_show_info")
-    @NotNull
+    @NotNull(message = "Provide id (Integer)")
     private Integer id;
 
     @Column(name = "original_name")
     @JsonProperty("original_name")
-    @NotNull
+    @NotNull(message = "Provide original_name (String)")
     private String originalName;
 
     // getters and setters

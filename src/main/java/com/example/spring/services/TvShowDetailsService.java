@@ -4,6 +4,7 @@ import com.example.spring.dto.GenreDTO;
 import com.example.spring.dto.TvShowDetailsFromApiDTO;
 import com.example.spring.dto.TvShowDetailsResponseDTO;
 import com.example.spring.dto.VideoResultsDTO;
+import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.BasicTvShowInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,9 +30,9 @@ public class TvShowDetailsService {
     // We search if this id exists in our table basic_tv_show_info.
     // After that, we make a GET request to the external API, to get the full details of the tv show.
 
-    public TvShowDetailsFromApiDTO getTvShowDetailsFromAPI(Integer idTvShow) {
+    public TvShowDetailsFromApiDTO getTvShowDetailsFromAPI(Integer idTvShow) throws ResourceNotFoundException {
 
-        Optional<BasicTvShowInfo> basicTvShowInfo = basicTvShowInfoService.getBasicTvShowInfo(idTvShow);
+        BasicTvShowInfo basicTvShowInfo = basicTvShowInfoService.getBasicTvShowInfoById(idTvShow);
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -45,7 +46,7 @@ public class TvShowDetailsService {
     // We are going to call the method that give us the details from the API.
     // Create a new DTO based on this information we get from the API.
 
-    public TvShowDetailsResponseDTO getTvShowDetails(Integer idTvShow) {
+    public TvShowDetailsResponseDTO getTvShowDetails(Integer idTvShow) throws ResourceNotFoundException {
 
         TvShowDetailsFromApiDTO tvShowDetailsFromApiDTO = getTvShowDetailsFromAPI(idTvShow);
         TvShowDetailsResponseDTO tvShowDetailsResponseDTO = new TvShowDetailsResponseDTO();

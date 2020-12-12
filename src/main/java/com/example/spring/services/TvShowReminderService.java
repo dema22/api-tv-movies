@@ -1,6 +1,7 @@
 package com.example.spring.services;
 
 import com.example.spring.dto.*;
+import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.BasicTvShowInfo;
 import com.example.spring.models.TvShowReminder;
 import com.example.spring.repositories.TvShowReminderRepository;
@@ -29,7 +30,7 @@ public class TvShowReminderService {
     }
 
     // Get a tv show reminder dto by its id.
-    public TvShowReminderResponseDTO getTvShowReminderResponseDTO (Integer idTvShowReminder) {
+    public TvShowReminderResponseDTO getTvShowReminderResponseDTO (Integer idTvShowReminder) throws ResourceNotFoundException {
 
         // Get the tv show reminder of the user
         Optional<TvShowReminder> tvShowReminder = tvShowReminderRepository.findById(idTvShowReminder);
@@ -57,7 +58,7 @@ public class TvShowReminderService {
     }
 
     // Get all tv show reminder DTO based on the user id.
-    public List<TvShowReminderResponseDTO> getAllTvShowsReminderDTO (Integer idUser) {
+    public List<TvShowReminderResponseDTO> getAllTvShowsReminderDTO (Integer idUser) throws ResourceNotFoundException {
 
         // Get all the tv show reminder of the user.
         List<TvShowReminder> tvShowRemindersList = getAllTvShowsReminderEntities(idUser);
@@ -163,7 +164,7 @@ public class TvShowReminderService {
         return tvShowReminderRepository.findByUser_IdUser(PageRequest.of(page,size),idUser);
     }
 
-    public PageTvShowRemindersResponseDTO getPaginatedTvShowReminderResponseDTO (Integer page, Integer size, Integer idUser) {
+    public PageTvShowRemindersResponseDTO getPaginatedTvShowReminderResponseDTO (Integer page, Integer size, Integer idUser) throws ResourceNotFoundException {
 
         // Get a page of the tv show reminder entity.
         Page<TvShowReminder> pageTvShowReminder = getPaginatedTvShowReminders(page,size,idUser);
@@ -175,7 +176,7 @@ public class TvShowReminderService {
 
     // We will get a PageTvShowReminderResponseDTO with the information of the tv show reminders DTO in a list AND
     // the information of the page.
-    public PageTvShowRemindersResponseDTO buildPageTvShowReminderResponseDTO (Page pageTvShowReminder) {
+    public PageTvShowRemindersResponseDTO buildPageTvShowReminderResponseDTO (Page pageTvShowReminder) throws ResourceNotFoundException {
 
         // Get all the tv show reminder of the user.
         List<TvShowReminder> tvShowRemindersList = pageTvShowReminder.getContent();

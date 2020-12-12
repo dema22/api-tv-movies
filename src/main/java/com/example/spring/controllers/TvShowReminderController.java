@@ -3,6 +3,7 @@ package com.example.spring.controllers;
 import com.example.spring.dto.PageTvShowRemindersResponseDTO;
 import com.example.spring.dto.TvShowReminderPatchDTO;
 import com.example.spring.dto.TvShowReminderResponseDTO;
+import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.TvShowReminder;
 import com.example.spring.services.TvShowReminderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class TvShowReminderController {
     }
 
     @GetMapping("/{idTvShowReminder}")
-    public TvShowReminderResponseDTO getTvShowReminderResponseDTO(@PathVariable Integer idTvShowReminder){
+    public TvShowReminderResponseDTO getTvShowReminderResponseDTO(@PathVariable Integer idTvShowReminder) throws ResourceNotFoundException {
         return tvShowReminderService.getTvShowReminderResponseDTO(idTvShowReminder);
     }
 
@@ -34,7 +35,7 @@ public class TvShowReminderController {
     }
 
     @GetMapping("/")
-    public List<TvShowReminderResponseDTO> getAllTvShowsReminderDTO(){
+    public List<TvShowReminderResponseDTO> getAllTvShowsReminderDTO() throws ResourceNotFoundException {
         // Set a default a id user that will use to query all tv show reminder with that particular id.
         return tvShowReminderService.getAllTvShowsReminderDTO(1);
     }
@@ -54,7 +55,7 @@ public class TvShowReminderController {
     // This object has a list of tv show reminders response dto and also has the pageDTO information.
     // Request parameters default in true -> mandatory.
     @GetMapping("/paginated")
-    public PageTvShowRemindersResponseDTO getPaginatedTvShowReminderResponseDTO(@RequestParam Integer page, @RequestParam Integer size){
+    public PageTvShowRemindersResponseDTO getPaginatedTvShowReminderResponseDTO(@RequestParam Integer page, @RequestParam Integer size) throws ResourceNotFoundException {
         // Set a default a id user that will use to query all tv show reminder with that particular id.
         // We will get the user info from the jwt token when we implement Spring Security on the Api.
         return tvShowReminderService.getPaginatedTvShowReminderResponseDTO(page,size,1);
