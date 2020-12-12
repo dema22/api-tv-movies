@@ -22,6 +22,7 @@ public class TvShowController {
         this.basicTvShowInfoService = basicTvShowInfoService;
     }
 
+    // Only the admin can load the file from themoviedb API with the tv shows information.
     @PostMapping("/loadTvShowTable")
     public void generateTvShowTable(@RequestBody List<BasicTvShowInfo> listBasicTvShowInfo) {
         try {
