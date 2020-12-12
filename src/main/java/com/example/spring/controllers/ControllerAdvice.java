@@ -31,7 +31,7 @@ public class ControllerAdvice  extends ResponseEntityExceptionHandler {
         return new ErrorResponseDTO(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), ex.getMessage(), request.getRequestURI());
     }
 
-    // 204: No Content -> no content for the target resource.
+    // 404: Not found -> This means the file or page that the browser is requesting wasn't found by the server.
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     protected ErrorResponseDTO handleEntityNotFound(HttpServletRequest request, ResourceNotFoundException ex) {

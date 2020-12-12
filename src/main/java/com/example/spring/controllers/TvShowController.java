@@ -43,4 +43,6 @@ public class TvShowController {
     public ResponseEntity<BasicTvShowInfo> searchTvShowInfoById (@PathVariable Integer idTvShow) throws ResourceNotFoundException {
         return ResponseEntity.ok(basicTvShowInfoService.getBasicTvShowInfoById(idTvShow));
     }
+
+    // Is it better to Include a endpoint "/{idTvShow}/tvShowDetails" instead of having a controller of tv show details ?
 }
