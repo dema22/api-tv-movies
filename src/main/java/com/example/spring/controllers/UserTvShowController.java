@@ -1,46 +1,52 @@
 package com.example.spring.controllers;
 
+import com.example.spring.dto.UserTvShowDTO;
 import com.example.spring.dto.UserTvShowPatchDTO;
+import com.example.spring.exception.ResourceAlreadyExistsException;
+import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.UserTvShow;
+import com.example.spring.security.JwtTokenUtil;
 import com.example.spring.services.UserTvShowService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/userTvShow")
 
 public class UserTvShowController {
     private final UserTvShowService userTvShowService;
+    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public UserTvShowController(UserTvShowService userTvShowService) {
+    public UserTvShowController(UserTvShowService userTvShowService, JwtTokenUtil jwtTokenUtil) {
         this.userTvShowService = userTvShowService;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/")
-    public void addUserTvShow(@RequestBody UserTvShow userTvShow) {
+    public void addUserTvShow(@RequestBody UserTvShow userTvShow) throws ResourceAlreadyExistsException {
         userTvShowService.addUserTvShow(userTvShow);
     }
 
-    // This endpoint is returning all tv shows in the database we need to query them by the user.
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/")
-    public List<UserTvShow> getAllTvShowsCreatedByUser (){
-        List<UserTvShow> userTvShows = userTvShowService.getAllTvShowsCreatedByUser();
-        return userTvShows;
+    public ResponseEntity<List<UserTvShowDTO>> getAllTvShowsCreatedByUser (@RequestHeader(name="Authorization") String header){
+        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
+        Integer idUser = jwtTokenUtil.getUserId(token);
+        List<UserTvShowDTO> userTvShows = userTvShowService.getAllTvShowsCreatedByUser(idUser);
+        return (userTvShows.size() > 0) ? ResponseEntity.ok(userTvShows) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/{idUserTvShow}")
-    public Optional<UserTvShow> getUserTvShow (@PathVariable Integer idUserTvShow){
-        return userTvShowService.getUserTvShow(idUserTvShow);
-    }
-
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping("/{idUserTvShow}")
-    public void updateUserTvShow(@Valid @RequestBody UserTvShowPatchDTO userTvShowPatchDTO, @PathVariable  Integer idUserTvShow){
+    public void updateUserTvShow(@RequestBody @Valid UserTvShowPatchDTO userTvShowPatchDTO, @PathVariable  Integer idUserTvShow) throws ResourceNotFoundException {
         userTvShowService.updateUserTvShow(userTvShowPatchDTO,idUserTvShow);
     }
 }

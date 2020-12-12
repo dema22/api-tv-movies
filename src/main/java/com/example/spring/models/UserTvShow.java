@@ -1,6 +1,6 @@
 package com.example.spring.models;
 
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
 
@@ -9,22 +9,23 @@ import javax.persistence.*;
 public class UserTvShow {
 
     // Attributes
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tv_show_created_by_user")
-    @NotNull
     private Integer idTvShowCreatedByUser;
 
+    @ManyToOne()
+    @JoinColumn(name= "id_user")
+    @NotNull(message = "Provide user {idUser}")
+    private User user;
+
     @Column(name = "name_tv_show")
-    @NotNull
+    @NotNull(message = "Provide nameTvShow (String)")
     private String nameTvShow;
 
-    @NotNull
     private String genre;
 
     @Column(name = "production_company")
-    @NotNull
     private String productionCompany;
 
     // Getters and Setters
@@ -35,6 +36,14 @@ public class UserTvShow {
 
     public void setIdTvShowCreatedByUser(Integer idTvShowCreatedByUser) {
         this.idTvShowCreatedByUser = idTvShowCreatedByUser;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getNameTvShow() {

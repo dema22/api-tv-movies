@@ -26,7 +26,6 @@ DROP TABLE user_role;
 INSERT INTO user_role (role_name) VALUES ("ROLE_USER");
 INSERT INTO user_role (role_name) VALUES ("ROLE_ADMIN");
 
-
 CREATE TABLE basic_tv_show_info (
 	id_basic_tv_show_info 	    		int not null,
     original_name 						varchar(500) not null,
@@ -43,10 +42,12 @@ DROP TABLE basic_movie_info;
 
 CREATE TABLE tv_show_created_by_user (
 	id_tv_show_created_by_user int auto_increment not null,
+    id_user int not null,
     name_tv_show varchar(50) not null,
     genre varchar(50),
     production_company varchar(50),
-    constraint pk_id_tv_show_created_by_user primary key (id_tv_show_created_by_user)
+    constraint pk_id_tv_show_created_by_user primary key (id_tv_show_created_by_user),
+	constraint fk_id_user_that_created_the_show foreign key (id_user) references user (id_user)
 )ENGINE=InnoDB;
 DROP TABLE tv_show_created_by_user;
 select * from tv_show_created_by_user;
