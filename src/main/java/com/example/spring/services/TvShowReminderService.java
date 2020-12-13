@@ -203,7 +203,6 @@ public class TvShowReminderService {
         tvShowReminderRepository.save(currentTvShowReminder);
     }
 
-
     // Add a new method to return a paginated list of tv show reminders
     public Page<TvShowReminder> getPaginatedTvShowReminders(Integer page, Integer size, Integer idUser) {
         // Sort.by(Sort.Direction.ASC, "basicTvShowInfo.originalName")
