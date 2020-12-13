@@ -11,6 +11,8 @@ import com.example.spring.models.TvShowReminder;
 import com.example.spring.security.JwtTokenUtil;
 import com.example.spring.services.TvShowReminderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,10 +51,14 @@ public class TvShowReminderController {
         tvShowReminderService.addTvShowReminder(tvShowReminder);
     }
 
+    // Done
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/")
-    public List<TvShowReminderResponseDTO> getAllTvShowsReminderDTO() throws ResourceNotFoundException {
-        // Set a default a id user that will use to query all tv show reminder with that particular id.
-        return tvShowReminderService.getAllTvShowsReminderDTO(1);
+    public ResponseEntity<List<TvShowReminderResponseDTO>> getAllTvShowsReminderDTO(@RequestHeader(name="Authorization") String header) throws ResourceNotFoundException {
+        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
+        Integer idUser = jwtTokenUtil.getUserId(token);
+        List<TvShowReminderResponseDTO> tvShowReminderResponseDTOList = tvShowReminderService.getAllTvShowsReminderDTO(idUser);
+        return (tvShowReminderResponseDTOList.size() > 0) ? ResponseEntity.ok(tvShowReminderResponseDTOList) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/{idTvShowReminder}")

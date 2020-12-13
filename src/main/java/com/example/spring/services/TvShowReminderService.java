@@ -7,6 +7,7 @@ import com.example.spring.exception.ResourceAlreadyExistsException;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.BasicTvShowInfo;
 import com.example.spring.models.TvShowReminder;
+import com.example.spring.models.UserTvShow;
 import com.example.spring.repositories.TvShowReminderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,20 +20,24 @@ import java.util.Optional;
 
 @Service
 public class TvShowReminderService {
+    private final UserTvShowService userTvShowService;
     private final TvShowDetailsService tvShowDetailsService;
     private final TvShowReminderRepository tvShowReminderRepository;
 
     @Autowired
-    public TvShowReminderService(TvShowDetailsService tvShowDetailsService, TvShowReminderRepository tvShowReminderRepository) {
+    public TvShowReminderService(UserTvShowService userTvShowService, TvShowDetailsService tvShowDetailsService, TvShowReminderRepository tvShowReminderRepository) {
+        this.userTvShowService = userTvShowService;
         this.tvShowDetailsService = tvShowDetailsService;
         this.tvShowReminderRepository = tvShowReminderRepository;
     }
 
+    // Done
     public void addTvShowReminder(TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure {
         validateExistenceOfTvShowReminder(tvShowReminder);
         tvShowReminderRepository.save(tvShowReminder);
     }
 
+    // Done
     private void validateExistenceOfTvShowReminder(TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure {
         Optional<TvShowReminder> tvShowReminderOptional = Optional.of(new TvShowReminder());
         String messageError = null;
@@ -67,6 +72,7 @@ public class TvShowReminderService {
         }
     }
 
+    // Done
     // Get a tv show reminder dto by its id.
     public TvShowReminderResponseDTO getTvShowReminderResponseDTO (Integer idTvShowReminder) throws ResourceNotFoundException {
 
@@ -95,6 +101,7 @@ public class TvShowReminderService {
         return tvShowReminderResponseDTO;
     }
 
+    // Done
     // Get all tv show reminder DTO based on the user id.
     public List<TvShowReminderResponseDTO> getAllTvShowsReminderDTO (Integer idUser) throws ResourceNotFoundException {
 
@@ -131,13 +138,20 @@ public class TvShowReminderService {
         return tvShowReminderListDTO;
     }
 
+    // Done
     public void buildTvShowReminderDTO (TvShowReminderResponseDTO tvShowReminderResponseDTO,
                                         TvShowReminder currentTvShowReminder,
                                         TvShowDetailsResponseDTO tvShowDetailsResponseDTO) {
 
         tvShowReminderResponseDTO.setIdTvShowReminder(currentTvShowReminder.getIdTvShowReminder());
-        tvShowReminderResponseDTO.setUser(currentTvShowReminder.getUser());
-        tvShowReminderResponseDTO.setUserTvShow(currentTvShowReminder.getUserTvShow());
+
+        if(currentTvShowReminder.getUserTvShow() != null){
+            UserTvShowDTO userTvShowDTO = new UserTvShowDTO();
+            userTvShowService.buildUserTvShowDTO(currentTvShowReminder.getUserTvShow(), userTvShowDTO);
+            tvShowReminderResponseDTO.setUserTvShowDTO(userTvShowDTO);
+        }else{
+            tvShowReminderResponseDTO.setUserTvShowDTO(null);
+        }
 
         if(tvShowDetailsResponseDTO != null){
             tvShowReminderResponseDTO.setTvShowDetailsResponseDTO(tvShowDetailsResponseDTO);
@@ -151,6 +165,7 @@ public class TvShowReminderService {
         tvShowReminderResponseDTO.setPersonalRating(currentTvShowReminder.getPersonalRating());
     }
 
+    // Done
     // Get all the show reminders entity searching by the user id.
     public List<TvShowReminder> getAllTvShowsReminderEntities (Integer idUser) {
         return tvShowReminderRepository.findByUser_IdUser(idUser);

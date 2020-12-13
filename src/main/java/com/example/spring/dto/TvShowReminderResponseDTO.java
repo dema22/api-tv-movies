@@ -1,13 +1,9 @@
 package com.example.spring.dto;
 
-import com.example.spring.models.User;
-import com.example.spring.models.UserTvShow;
-
 public class TvShowReminderResponseDTO {
     // Attributes
     private Integer idTvShowReminder;
-    private User user;
-    private UserTvShow userTvShow;
+    private UserTvShowDTO userTvShowDTO;
     private TvShowDetailsResponseDTO tvShowDetailsResponseDTO;
     private Boolean completed;
     private Integer currentSeason;
@@ -15,10 +11,9 @@ public class TvShowReminderResponseDTO {
     private Integer personalRating;
 
     // Constructor
-    public TvShowReminderResponseDTO(Integer idTvShowReminder, User user, UserTvShow userTvShow, TvShowDetailsResponseDTO tvShowDetailsResponseDTO, Boolean completed, Integer currentSeason, Integer currentEpisode, Integer personalRating) {
+    public TvShowReminderResponseDTO(Integer idTvShowReminder, UserTvShowDTO userTvShowDTO, TvShowDetailsResponseDTO tvShowDetailsResponseDTO, Boolean completed, Integer currentSeason, Integer currentEpisode, Integer personalRating) {
         this.idTvShowReminder = idTvShowReminder;
-        this.user = user;
-        this.userTvShow = userTvShow;
+        this.userTvShowDTO = userTvShowDTO;
         this.tvShowDetailsResponseDTO = tvShowDetailsResponseDTO;
         this.completed = completed;
         this.currentSeason = currentSeason;
@@ -38,20 +33,12 @@ public class TvShowReminderResponseDTO {
         this.idTvShowReminder = idTvShowReminder;
     }
 
-    public User getUser() {
-        return user;
+    public UserTvShowDTO getUserTvShowDTO() {
+        return userTvShowDTO;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public UserTvShow getUserTvShow() {
-        return userTvShow;
-    }
-
-    public void setUserTvShow(UserTvShow userTvShow) {
-        this.userTvShow = userTvShow;
+    public void setUserTvShowDTO(UserTvShowDTO userTvShowDTO) {
+        this.userTvShowDTO = userTvShowDTO;
     }
 
     public TvShowDetailsResponseDTO getTvShowDetailsResponseDTO() {
