@@ -2,12 +2,10 @@ package com.example.spring.services;
 
 import com.example.spring.dto.*;
 import com.example.spring.exception.BusinessLogicValidationFailure;
-import com.example.spring.exception.ForbiddenActionExcepction;
 import com.example.spring.exception.ResourceAlreadyExistsException;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.BasicTvShowInfo;
 import com.example.spring.models.TvShowReminder;
-import com.example.spring.models.UserTvShow;
 import com.example.spring.repositories.TvShowReminderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -176,20 +174,15 @@ public class TvShowReminderService {
         tvShowReminderRepository.deleteById(idTvShowReminder);
     }
 
-    // Get a tv show reminder entity by its id
-    public Optional<TvShowReminder> getTvShowReminder (Integer idTvShowReminder) {
-        return tvShowReminderRepository.findById(idTvShowReminder);
+    // Done
+    // Get a tv show reminder entity by its id and user id.
+    public TvShowReminder getTvShowReminder (Integer idUser, Integer idTvShowReminder) throws ResourceNotFoundException {
+        return tvShowReminderRepository.findByIdTvShowReminderAndUserId(idUser, idTvShowReminder).orElseThrow(() -> new ResourceNotFoundException("The user tv show reminder with the id : " + idTvShowReminder + " was not found."));
     }
 
-    public void updateTvShowReminder(TvShowReminderPatchDTO tvShowReminderToUpdate, Integer idTvShowReminder) {
-        Optional<TvShowReminder> optionalTvShowReminder = getTvShowReminder(idTvShowReminder);
-
-        // If optional not present throw an exception
-        /*if (!optionalTvShowReminder.isPresent()) {
-            return new Exception();
-        }¨*/
-
-        TvShowReminder currentTvShowReminder = optionalTvShowReminder.get();
+    // Done
+    public void updateTvShowReminder(Integer idUser, TvShowReminderPatchDTO tvShowReminderToUpdate, Integer idTvShowReminder) throws ResourceNotFoundException {
+        TvShowReminder currentTvShowReminder = getTvShowReminder(idUser, idTvShowReminder);
 
         if (tvShowReminderToUpdate.getCompleted().isPresent()) {
             currentTvShowReminder.setCompleted(tvShowReminderToUpdate.getCompleted().get());

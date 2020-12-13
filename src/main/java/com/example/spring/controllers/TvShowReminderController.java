@@ -33,6 +33,7 @@ public class TvShowReminderController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
+    // Review
     @GetMapping("/{idTvShowReminder}")
     public TvShowReminderResponseDTO getTvShowReminderResponseDTO(@PathVariable Integer idTvShowReminder) throws ResourceNotFoundException {
         return tvShowReminderService.getTvShowReminderResponseDTO(idTvShowReminder);
@@ -66,9 +67,15 @@ public class TvShowReminderController {
         tvShowReminderService.deleteTvShowReminder(idTvShowReminder);
     }
 
+    // Done
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping("/{idTvShowReminder}")
-    public void updateTvShowReminder(@RequestBody @Valid TvShowReminderPatchDTO tvShowReminderToUpdate, @PathVariable  Integer idTvShowReminder){
-        tvShowReminderService.updateTvShowReminder(tvShowReminderToUpdate,idTvShowReminder);
+    public void updateTvShowReminder(@RequestHeader(name="Authorization") String header,
+                                     @RequestBody @Valid TvShowReminderPatchDTO tvShowReminderToUpdate,
+                                     @PathVariable  Integer idTvShowReminder) throws ResourceNotFoundException {
+        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
+        Integer idUser = jwtTokenUtil.getUserId(token);
+        tvShowReminderService.updateTvShowReminder(idUser, tvShowReminderToUpdate,idTvShowReminder);
     }
 
     // Pagination

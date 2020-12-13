@@ -20,4 +20,7 @@ public interface TvShowReminderRepository extends JpaRepository<TvShowReminder, 
 
     @Query(value = "SELECT * FROM tv_show_reminder WHERE id_user = ?1 and id_tv_show_created_by_user = ?2", nativeQuery = true)
     Optional<TvShowReminder> findByUserIdAndTvShowCreatedByUserId(Integer idUser, Integer idTvShowCreatedByUser);
+
+    @Query(value = "SELECT * FROM tv_show_reminder WHERE id_user = ?1 and id_tv_show_reminder = ?2", nativeQuery = true)
+    Optional<TvShowReminder> findByIdTvShowReminderAndUserId(Integer idUser, Integer idTvShowReminder);
 }
