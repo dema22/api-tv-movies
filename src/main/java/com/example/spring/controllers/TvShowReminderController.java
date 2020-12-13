@@ -62,6 +62,7 @@ public class TvShowReminderController {
         return (tvShowReminderResponseDTOList.size() > 0) ? ResponseEntity.ok(tvShowReminderResponseDTOList) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    // Review
     @DeleteMapping("/{idTvShowReminder}")
     public void deleteTvShowReminder(@PathVariable Integer idTvShowReminder){
         tvShowReminderService.deleteTvShowReminder(idTvShowReminder);
@@ -78,6 +79,7 @@ public class TvShowReminderController {
         tvShowReminderService.updateTvShowReminder(idUser, tvShowReminderToUpdate,idTvShowReminder);
     }
 
+    // Done
     // Pagination
     // Add a new method to return PageTvShowRemindersResponseDTO.
     // This object has a list of tv show reminders response dto and also has the pageDTO information.

@@ -6,7 +6,10 @@ import com.example.spring.exception.ResourceAlreadyExistsException;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.BasicTvShowInfo;
 import com.example.spring.models.TvShowReminder;
+import com.example.spring.models.User;
+import com.example.spring.models.UserTvShow;
 import com.example.spring.repositories.TvShowReminderRepository;
+import com.example.spring.repositories.UserTvShowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,12 +24,14 @@ public class TvShowReminderService {
     private final UserTvShowService userTvShowService;
     private final TvShowDetailsService tvShowDetailsService;
     private final TvShowReminderRepository tvShowReminderRepository;
+    private final UserTvShowRepository userTvShowRepository;
 
     @Autowired
-    public TvShowReminderService(UserTvShowService userTvShowService, TvShowDetailsService tvShowDetailsService, TvShowReminderRepository tvShowReminderRepository) {
+    public TvShowReminderService(UserTvShowService userTvShowService, TvShowDetailsService tvShowDetailsService, TvShowReminderRepository tvShowReminderRepository, UserTvShowRepository userTvShowRepository) {
         this.userTvShowService = userTvShowService;
         this.tvShowDetailsService = tvShowDetailsService;
         this.tvShowReminderRepository = tvShowReminderRepository;
+        this.userTvShowRepository = userTvShowRepository;
     }
 
     // Done
@@ -39,6 +44,15 @@ public class TvShowReminderService {
     private void validateExistenceOfTvShowReminder(TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure {
         Optional<TvShowReminder> tvShowReminderOptional = Optional.of(new TvShowReminder());
         String messageError = null;
+
+        // First i validate if the user tv show we want to add to the reminder belongs to the logged user.
+        validateExistenceOfUserTvShow(tvShowReminder.getUserTvShow(), tvShowReminder.getUser().getIdUser());
+
+        // After that we check:
+        // If both the basic tv show info object and user tv show object ARE NULL -> exception
+        // If the basic tv show info object id already exists in the reminders table -> exception
+        // If the user tv show info object id already exists in the reminders table -> exception
+        // If both are null -> exception.
 
         if(tvShowReminder.getBasicTvShowInfo() != null && tvShowReminder.getUserTvShow() != null){
 
@@ -67,6 +81,16 @@ public class TvShowReminderService {
         // This method will return true if there is a tv show present in the optional OR returns false if is an empty optional (with null value).
         if(tvShowReminderOptional.isPresent()){
             throw new ResourceAlreadyExistsException(messageError);
+        }
+    }
+
+    private void validateExistenceOfUserTvShow(UserTvShow userTvShow, Integer idLoggedUser) throws BusinessLogicValidationFailure {
+        Optional<UserTvShow> completedUserTvShow = userTvShowRepository.findById(userTvShow.getIdTvShowCreatedByUser());
+
+        if(completedUserTvShow.isPresent() && completedUserTvShow.get().getUser().getIdUser() != idLoggedUser) {
+                throw new BusinessLogicValidationFailure("You are trying to create a tv show reminder with a user tv show id you haven't created.");
+        }else if(!completedUserTvShow.isPresent()){
+            throw new BusinessLogicValidationFailure("User tv show with this id : " + userTvShow.getIdTvShowCreatedByUser() + " does not exist.");
         }
     }
 
