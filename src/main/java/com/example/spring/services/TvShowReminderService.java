@@ -1,6 +1,9 @@
 package com.example.spring.services;
 
 import com.example.spring.dto.*;
+import com.example.spring.exception.BusinessLogicValidationFailure;
+import com.example.spring.exception.ForbiddenActionExcepction;
+import com.example.spring.exception.ResourceAlreadyExistsException;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.BasicTvShowInfo;
 import com.example.spring.models.TvShowReminder;
@@ -25,8 +28,42 @@ public class TvShowReminderService {
         this.tvShowReminderRepository = tvShowReminderRepository;
     }
 
-    public void addTvShowReminder(TvShowReminder tvShowReminder) {
+    public void addTvShowReminder(TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure {
+        validateExistenceOfTvShowReminder(tvShowReminder);
         tvShowReminderRepository.save(tvShowReminder);
+    }
+
+    private void validateExistenceOfTvShowReminder(TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure {
+        Optional<TvShowReminder> tvShowReminderOptional = Optional.of(new TvShowReminder());
+        String messageError = null;
+
+        // We cant have a reminder that point to a tv show from the moviedbapi and to a tv show created by user
+        if(tvShowReminder.getBasicTvShowInfo() != null && tvShowReminder.getUserTvShow() != null){
+
+            if(tvShowReminder.getBasicTvShowInfo().getId() != null && tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser() != null)
+                throw new BusinessLogicValidationFailure("You cant have a reminder that point to a tv show from the system and to a tv show created by user");
+
+        }else if(tvShowReminder.getBasicTvShowInfo() != null){
+
+            if(tvShowReminder.getBasicTvShowInfo().getId() != null) {
+                tvShowReminderOptional = tvShowReminderRepository.findByUserIdAndTvShowId(tvShowReminder.getUser().getIdUser(), tvShowReminder.getBasicTvShowInfo().getId());
+                messageError = "User already created a tv show reminder with the basicTvShowInfo id : " + tvShowReminder.getBasicTvShowInfo().getId();
+            }
+
+        }else if (tvShowReminder.getUserTvShow() != null){
+
+            if(tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser() != null) {
+                tvShowReminderOptional = tvShowReminderRepository.findByUserIdAndTvShowCreatedByUserId(tvShowReminder.getUser().getIdUser(), tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser());
+                messageError = "User already created a tv show reminder with a userTvShow id : " + tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser();
+            }
+
+        }/*else{
+            messageError = "To create a tv show reminder you have to provided a basicTvShowInfo id OR a userTvShow id";
+        }*/
+
+        if(tvShowReminderOptional.isPresent()){
+            throw new ResourceAlreadyExistsException(messageError);
+        }
     }
 
     // Get a tv show reminder dto by its id.

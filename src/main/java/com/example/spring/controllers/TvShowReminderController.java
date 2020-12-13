@@ -3,10 +3,14 @@ package com.example.spring.controllers;
 import com.example.spring.dto.PageTvShowRemindersResponseDTO;
 import com.example.spring.dto.TvShowReminderPatchDTO;
 import com.example.spring.dto.TvShowReminderResponseDTO;
+import com.example.spring.exception.BusinessLogicValidationFailure;
+import com.example.spring.exception.ForbiddenActionExcepction;
+import com.example.spring.exception.ResourceAlreadyExistsException;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.TvShowReminder;
 import com.example.spring.services.TvShowReminderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,8 +33,9 @@ public class TvShowReminderController {
         return tvShowReminderService.getTvShowReminderResponseDTO(idTvShowReminder);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/")
-    public void addTvShowReminder(@RequestBody TvShowReminder tvShowReminder) {
+    public void addTvShowReminder(@RequestBody @Valid TvShowReminder tvShowReminder) throws BusinessLogicValidationFailure, ResourceAlreadyExistsException {
         tvShowReminderService.addTvShowReminder(tvShowReminder);
     }
 

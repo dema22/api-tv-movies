@@ -80,9 +80,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/user/").permitAll()
                 .antMatchers(HttpMethod.GET, "/tvShow/").permitAll()
                 .antMatchers(HttpMethod.GET, "/tvShowDetails/{idTvShow}").permitAll()
-                //Eliminar:
-                .antMatchers(HttpMethod.POST, "/tvShowReminder/").permitAll()
-                .antMatchers(HttpMethod.PATCH, "/tvShowReminder/{idTvShowReminder}").permitAll()
                 // Our private endpoints
                 .anyRequest().authenticated();
 
