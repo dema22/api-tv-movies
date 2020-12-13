@@ -46,7 +46,9 @@ public class UserTvShowController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping("/{idUserTvShow}")
-    public void updateUserTvShow(@RequestBody @Valid UserTvShowPatchDTO userTvShowPatchDTO, @PathVariable  Integer idUserTvShow) throws ResourceNotFoundException {
-        userTvShowService.updateUserTvShow(userTvShowPatchDTO,idUserTvShow);
+    public void updateUserTvShow(@RequestHeader(name="Authorization") String header,@RequestBody @Valid UserTvShowPatchDTO userTvShowPatchDTO, @PathVariable  Integer idUserTvShow) throws ResourceNotFoundException {
+        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
+        Integer idUser = jwtTokenUtil.getUserId(token);
+        userTvShowService.updateUserTvShow(idUser, userTvShowPatchDTO,idUserTvShow);
     }
 }

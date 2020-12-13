@@ -55,7 +55,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-    
+
     @PostMapping("/")
     public void addUser(@RequestBody @Valid User user) throws ResourceAlreadyExistsException {
         userService.addUser(user);

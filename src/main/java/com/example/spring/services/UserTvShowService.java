@@ -50,13 +50,13 @@ public class UserTvShowService {
         userTvShowDTO.setProductionCompany(userTvShow.getProductionCompany());
     }
 
-    public UserTvShow getUserTvShow(Integer idUserTvShow) throws ResourceNotFoundException {
-        return userTvShowRepository.findById(idUserTvShow).orElseThrow(() -> new ResourceNotFoundException("The user tv show with the id : " + idUserTvShow + " was not found."));
+    public UserTvShow getUserTvShow(Integer idUser, Integer idUserTvShow) throws ResourceNotFoundException {
+        return userTvShowRepository.findByIdTvShowAndUserId(idUser, idUserTvShow).orElseThrow(() -> new ResourceNotFoundException("The user tv show with the id : " + idUserTvShow + " was not found."));
     }
 
     // Update a tv show created by the user
-    public void updateUserTvShow(UserTvShowPatchDTO userTvShowPatchDTO, Integer idUserTvShow) throws ResourceNotFoundException {
-        UserTvShow userTvShow = getUserTvShow(idUserTvShow);
+    public void updateUserTvShow(Integer idUser, UserTvShowPatchDTO userTvShowPatchDTO, Integer idUserTvShow) throws ResourceNotFoundException {
+        UserTvShow userTvShow = getUserTvShow(idUser, idUserTvShow);
 
         // Assign the information of the DTO to our entity and save it.
         if (userTvShowPatchDTO.getNameTvShow().isPresent()) {
