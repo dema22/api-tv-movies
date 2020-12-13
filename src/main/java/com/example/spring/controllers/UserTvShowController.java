@@ -31,7 +31,7 @@ public class UserTvShowController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/")
-    public void addUserTvShow(@RequestBody UserTvShow userTvShow) throws ResourceAlreadyExistsException {
+    public void addUserTvShow(@RequestBody @Valid UserTvShow userTvShow) throws ResourceAlreadyExistsException {
         userTvShowService.addUserTvShow(userTvShow);
     }
 

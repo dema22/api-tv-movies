@@ -84,7 +84,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{idUser}")
-    public ResponseEntity getUser(@PathVariable  Integer idUser) throws ResourceNotFoundException {
+    public ResponseEntity<User> getUser(@PathVariable  Integer idUser) throws ResourceNotFoundException {
         return ResponseEntity.ok(userService.getOneUser(idUser));
     }
 }

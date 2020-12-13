@@ -1,6 +1,5 @@
 package com.example.spring.repositories;
 
-import com.example.spring.models.TvShowReminder;
 import com.example.spring.models.UserTvShow;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
