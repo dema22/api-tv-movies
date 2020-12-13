@@ -203,12 +203,14 @@ public class TvShowReminderService {
         tvShowReminderRepository.save(currentTvShowReminder);
     }
 
+    // Done
     // Add a new method to return a paginated list of tv show reminders
     public Page<TvShowReminder> getPaginatedTvShowReminders(Integer page, Integer size, Integer idUser) {
         // Sort.by(Sort.Direction.ASC, "basicTvShowInfo.originalName")
         return tvShowReminderRepository.findByUser_IdUser(PageRequest.of(page,size),idUser);
     }
 
+    // Done
     public PageTvShowRemindersResponseDTO getPaginatedTvShowReminderResponseDTO (Integer page, Integer size, Integer idUser) throws ResourceNotFoundException {
 
         // Get a page of the tv show reminder entity.
@@ -219,6 +221,7 @@ public class TvShowReminderService {
         return tvShowReminderResponseDTOS;
     }
 
+    // Done
     // We will get a PageTvShowReminderResponseDTO with the information of the tv show reminders DTO in a list AND
     // the information of the page.
     public PageTvShowRemindersResponseDTO buildPageTvShowReminderResponseDTO (Page pageTvShowReminder) throws ResourceNotFoundException {
@@ -260,6 +263,7 @@ public class TvShowReminderService {
         return pageTvShowReminderResponseDTO;
     }
 
+    // Done
     private void buildPage(PageTvShowRemindersResponseDTO<TvShowReminderResponseDTO> page,
                            List<TvShowReminderResponseDTO> tvShowReminderListDTO,
                            Page pageTvShowReminder) {

@@ -82,10 +82,15 @@ public class TvShowReminderController {
     // Add a new method to return PageTvShowRemindersResponseDTO.
     // This object has a list of tv show reminders response dto and also has the pageDTO information.
     // Request parameters default in true -> mandatory.
+    // Note: a pageable object starts in index 0.
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/paginated")
-    public PageTvShowRemindersResponseDTO getPaginatedTvShowReminderResponseDTO(@RequestParam Integer page, @RequestParam Integer size) throws ResourceNotFoundException {
-        // Set a default a id user that will use to query all tv show reminder with that particular id.
-        // We will get the user info from the jwt token when we implement Spring Security on the Api.
-        return tvShowReminderService.getPaginatedTvShowReminderResponseDTO(page,size,1);
+    public ResponseEntity<PageTvShowRemindersResponseDTO> getPaginatedTvShowReminderResponseDTO(@RequestHeader(name="Authorization") String header,
+                                                                                @RequestParam Integer page,
+                                                                                @RequestParam Integer size) throws ResourceNotFoundException {
+        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
+        Integer idUser = jwtTokenUtil.getUserId(token);
+        PageTvShowRemindersResponseDTO pageTvShowRemindersResponseDTO = tvShowReminderService.getPaginatedTvShowReminderResponseDTO(page,size,idUser);
+        return (pageTvShowRemindersResponseDTO.getTvShowRemindersResponseDTO().size() > 0) ? ResponseEntity.ok(pageTvShowRemindersResponseDTO) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
