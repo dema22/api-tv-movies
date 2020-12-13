@@ -24,7 +24,7 @@ public class UserTvShowService {
     }
 
     public void addUserTvShow(UserTvShow userTvShow) throws ResourceAlreadyExistsException {
-        Optional<UserTvShow> userTvShowOptional = userTvShowRepository.findByNameTvShow(userTvShow.getNameTvShow());
+        Optional<UserTvShow> userTvShowOptional = userTvShowRepository.findByNameTvShowAndUserId(userTvShow.getNameTvShow(), userTvShow.getUser().getIdUser());
         if(userTvShowOptional.isPresent()){
             throw new ResourceAlreadyExistsException("User already created a tv show with the name:  " + userTvShow.getNameTvShow());
         }
@@ -51,7 +51,7 @@ public class UserTvShowService {
     }
 
     public UserTvShow getUserTvShow(Integer idUser, Integer idUserTvShow) throws ResourceNotFoundException {
-        return userTvShowRepository.findByIdTvShowAndUserId(idUser, idUserTvShow).orElseThrow(() -> new ResourceNotFoundException("The user tv show with the id : " + idUserTvShow + " was not found."));
+        return userTvShowRepository.findByIdTvShowAndUserId(idUserTvShow, idUser).orElseThrow(() -> new ResourceNotFoundException("The user tv show with the id : " + idUserTvShow + " was not found."));
     }
 
     // Update a tv show created by the user

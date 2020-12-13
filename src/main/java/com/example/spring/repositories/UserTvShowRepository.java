@@ -10,8 +10,11 @@ import java.util.Optional;
 
 @Repository
 public interface UserTvShowRepository extends JpaRepository<UserTvShow,Integer> {
-    @Query(value = "SELECT * FROM tv_show_created_by_user WHERE id_user = ?1 and id_tv_show_created_by_user = ?2", nativeQuery = true)
-    Optional<UserTvShow> findByIdTvShowAndUserId(Integer idUser, Integer idTvShow);
-    Optional<UserTvShow> findByNameTvShow(String nameTvShow);
+    @Query(value = "SELECT * FROM tv_show_created_by_user WHERE id_tv_show_created_by_user = ?1 and id_user = ?2", nativeQuery = true)
+    Optional<UserTvShow> findByIdTvShowAndUserId(Integer idTvShow, Integer idUser);
+
+    @Query(value = "SELECT * FROM tv_show_created_by_user WHERE name_tv_show = ?1 and id_user = ?2", nativeQuery = true)
+    Optional<UserTvShow> findByNameTvShowAndUserId(String nameTvShow, Integer idUser);
+
     List<UserTvShow> findByUser_IdUser(Integer idUser);
 }

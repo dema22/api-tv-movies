@@ -2,6 +2,7 @@ package com.example.spring.controllers;
 
 import com.example.spring.dto.UserTvShowDTO;
 import com.example.spring.dto.UserTvShowPatchDTO;
+import com.example.spring.exception.BusinessLogicValidationFailure;
 import com.example.spring.exception.ResourceAlreadyExistsException;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.UserTvShow;
@@ -29,11 +30,19 @@ public class UserTvShowController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
+
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/")
-    public void addUserTvShow(@RequestBody @Valid UserTvShow userTvShow) throws ResourceAlreadyExistsException {
+    public void addUserTvShow(@RequestHeader(name="Authorization") String header,
+                              @RequestBody @Valid UserTvShow userTvShow) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure {
+        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
+        Integer idLoggedUser = jwtTokenUtil.getUserId(token);
+        if(idLoggedUser != userTvShow.getUser().getIdUser()){
+            throw new BusinessLogicValidationFailure("The current logged user CANT add a tv show reminder to another user account.");
+        }
         userTvShowService.addUserTvShow(userTvShow);
     }
+
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/")
@@ -43,6 +52,7 @@ public class UserTvShowController {
         List<UserTvShowDTO> userTvShows = userTvShowService.getAllTvShowsCreatedByUser(idUser);
         return (userTvShows.size() > 0) ? ResponseEntity.ok(userTvShows) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping("/{idUserTvShow}")
