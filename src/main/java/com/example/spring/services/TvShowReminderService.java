@@ -37,7 +37,6 @@ public class TvShowReminderService {
         Optional<TvShowReminder> tvShowReminderOptional = Optional.of(new TvShowReminder());
         String messageError = null;
 
-        // We cant have a reminder that point to a tv show from the moviedbapi and to a tv show created by user
         if(tvShowReminder.getBasicTvShowInfo() != null && tvShowReminder.getUserTvShow() != null){
 
             if(tvShowReminder.getBasicTvShowInfo().getId() != null && tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser() != null)
@@ -57,10 +56,12 @@ public class TvShowReminderService {
                 messageError = "User already created a tv show reminder with a userTvShow id : " + tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser();
             }
 
-        }/*else{
+        }else{
             messageError = "To create a tv show reminder you have to provided a basicTvShowInfo id OR a userTvShow id";
-        }*/
+        }
 
+        // Each query findByUserIdAndTvShowId and findByUserIdAndTvShowCreatedByUserId return an optional with the tv show or an empty optional.
+        // This method will return true if there is a tv show present in the optional OR returns false if is an empty optional (with null value).
         if(tvShowReminderOptional.isPresent()){
             throw new ResourceAlreadyExistsException(messageError);
         }

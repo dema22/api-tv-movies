@@ -8,6 +8,7 @@ import com.example.spring.exception.ForbiddenActionExcepction;
 import com.example.spring.exception.ResourceAlreadyExistsException;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.TvShowReminder;
+import com.example.spring.security.JwtTokenUtil;
 import com.example.spring.services.TvShowReminderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,10 +23,12 @@ import java.util.List;
 public class TvShowReminderController {
 
     private final TvShowReminderService tvShowReminderService;
+    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public TvShowReminderController(TvShowReminderService tvShowReminderService) {
+    public TvShowReminderController(TvShowReminderService tvShowReminderService, JwtTokenUtil jwtTokenUtil) {
         this.tvShowReminderService = tvShowReminderService;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @GetMapping("/{idTvShowReminder}")
@@ -33,9 +36,16 @@ public class TvShowReminderController {
         return tvShowReminderService.getTvShowReminderResponseDTO(idTvShowReminder);
     }
 
+    // Done
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/")
-    public void addTvShowReminder(@RequestBody @Valid TvShowReminder tvShowReminder) throws BusinessLogicValidationFailure, ResourceAlreadyExistsException {
+    public void addTvShowReminder(@RequestHeader(name="Authorization") String header,
+                                  @RequestBody @Valid TvShowReminder tvShowReminder) throws BusinessLogicValidationFailure, ResourceAlreadyExistsException {
+        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
+        Integer idLoggedUser = jwtTokenUtil.getUserId(token);
+        if(idLoggedUser != tvShowReminder.getUser().getIdUser()){
+            throw new BusinessLogicValidationFailure("The current logged user CANT add a tv show reminder to another user account.");
+        }
         tvShowReminderService.addTvShowReminder(tvShowReminder);
     }
 

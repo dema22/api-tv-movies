@@ -1,6 +1,6 @@
 package com.example.spring.models;
 
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -14,7 +14,6 @@ public class TvShowReminder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "id_tv_show_reminder")
-    @NotNull
     private Integer idTvShowReminder;
 
     // By default is eager,so we will always get the nested tv show on the response.
@@ -22,7 +21,7 @@ public class TvShowReminder {
 
     @ManyToOne(optional = false)
     @JoinColumn(name="id_user")
-    @NotNull
+    @NotNull(message = "Provide user {idUser}")
     private User user;
 
     @ManyToOne()

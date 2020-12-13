@@ -29,7 +29,7 @@ public class ControllerAdvice  extends ResponseEntityExceptionHandler {
     // The HyperText Transfer Protocol (HTTP) 422 Unprocessable Entity response status code indicates that the server understands the content type of the request entity, and the syntax of the request entity is correct, but it was unable to process the contained instructions.
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(BusinessLogicValidationFailure.class)
-    protected ErrorResponseDTO handleBussinesLogicValidationFailure(HttpServletRequest request, ResourceNotFoundException ex) {
+    protected ErrorResponseDTO handleBussinesLogicValidationFailure(HttpServletRequest request, BusinessLogicValidationFailure ex) {
         return new ErrorResponseDTO(LocalDateTime.now(), HttpStatus.UNPROCESSABLE_ENTITY.value(), HttpStatus.UNPROCESSABLE_ENTITY.getReasonPhrase(), ex.getMessage(), request.getRequestURI());
     }
 
