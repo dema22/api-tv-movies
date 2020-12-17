@@ -84,9 +84,11 @@ public class TvShowReminderService {
         }
     }
 
+    // Done
     private void validateExistenceOfUserTvShow(UserTvShow userTvShow, Integer idLoggedUser) throws BusinessLogicValidationFailure {
         Optional<UserTvShow> completedUserTvShow = userTvShowRepository.findById(userTvShow.getIdTvShowCreatedByUser());
 
+        // We check if the current logged user created this userTvShow else If the userTvShow doesn t exists in the DB
         if(completedUserTvShow.isPresent() && completedUserTvShow.get().getUser().getIdUser() != idLoggedUser) {
                 throw new BusinessLogicValidationFailure("You are trying to create a tv show reminder with a user tv show id you haven't created.");
         }else if(!completedUserTvShow.isPresent()){
