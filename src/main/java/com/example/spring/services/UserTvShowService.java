@@ -2,6 +2,7 @@ package com.example.spring.services;
 
 import com.example.spring.dto.UserTvShowDTO;
 import com.example.spring.dto.UserTvShowPatchDTO;
+import com.example.spring.exception.BusinessLogicValidationFailure;
 import com.example.spring.exception.ResourceAlreadyExistsException;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.UserTvShow;
@@ -23,7 +24,11 @@ public class UserTvShowService {
         this.userTvShowRepository = userTvShowRepository;
     }
 
-    public void addUserTvShow(UserTvShow userTvShow) throws ResourceAlreadyExistsException {
+    public void addUserTvShow(Integer idLoggedUser, UserTvShow userTvShow) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure {
+        if(idLoggedUser != userTvShow.getUser().getIdUser()){
+            throw new BusinessLogicValidationFailure("The current logged user CANT add a tv show reminder to another user account.");
+        }
+
         Optional<UserTvShow> userTvShowOptional = userTvShowRepository.findByNameTvShowAndUserId(userTvShow.getNameTvShow(), userTvShow.getUser().getIdUser());
         if(userTvShowOptional.isPresent()){
             throw new ResourceAlreadyExistsException("User already created a tv show with the name:  " + userTvShow.getNameTvShow());

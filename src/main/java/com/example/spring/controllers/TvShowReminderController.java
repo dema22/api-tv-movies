@@ -46,10 +46,7 @@ public class TvShowReminderController {
                                   @RequestBody @Valid TvShowReminder tvShowReminder) throws BusinessLogicValidationFailure, ResourceAlreadyExistsException, ResourceNotFoundException {
         String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
         Integer idLoggedUser = jwtTokenUtil.getUserId(token);
-        if(idLoggedUser != tvShowReminder.getUser().getIdUser()){
-            throw new BusinessLogicValidationFailure("The current logged user CANT add a tv show reminder to another user account.");
-        }
-        tvShowReminderService.addTvShowReminder(tvShowReminder);
+        tvShowReminderService.addTvShowReminder(idLoggedUser,tvShowReminder);
     }
 
     // Done

@@ -35,9 +35,12 @@ public class TvShowReminderService {
     }
 
     // Done
-    public void addTvShowReminder(TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure, ResourceNotFoundException {
-        validateExistenceOfTvShowReminder(tvShowReminder);
-        tvShowReminderRepository.save(tvShowReminder);
+    public void addTvShowReminder(Integer idLoggedUser, TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure, ResourceNotFoundException {
+        if(idLoggedUser == tvShowReminder.getUser().getIdUser()) {
+            validateExistenceOfTvShowReminder(tvShowReminder);
+            tvShowReminderRepository.save(tvShowReminder);
+        }else
+            throw new BusinessLogicValidationFailure("The current logged user CANT add a tv show reminder to another user account.");
     }
 
     // Done
