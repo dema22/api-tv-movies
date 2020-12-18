@@ -6,7 +6,6 @@ import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.User;
 import com.example.spring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Optionals;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

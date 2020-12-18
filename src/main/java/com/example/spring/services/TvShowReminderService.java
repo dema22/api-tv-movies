@@ -6,8 +6,6 @@ import com.example.spring.exception.ResourceAlreadyExistsException;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.BasicTvShowInfo;
 import com.example.spring.models.TvShowReminder;
-import com.example.spring.models.User;
-import com.example.spring.models.UserTvShow;
 import com.example.spring.repositories.TvShowReminderRepository;
 import com.example.spring.repositories.UserTvShowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
