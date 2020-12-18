@@ -189,8 +189,10 @@ public class TvShowReminderService {
     }
 
     // Delete a tv show reminder.
-    public void deleteTvShowReminder(Integer idTvShowReminder) {
-        tvShowReminderRepository.deleteById(idTvShowReminder);
+    public void deleteTvShowReminder(Integer idUser, Integer idTvShowReminder) throws ResourceNotFoundException {
+        if(getTvShowReminder(idUser,idTvShowReminder) != null){
+            tvShowReminderRepository.deleteById(idTvShowReminder);
+        }
     }
 
     // Done

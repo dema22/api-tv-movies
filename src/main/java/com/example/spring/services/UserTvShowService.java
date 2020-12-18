@@ -73,4 +73,10 @@ public class UserTvShowService {
 
         userTvShowRepository.save(userTvShow);
     }
+
+    public void deleteUserTvShow(Integer idUser, Integer idUserTvShow) throws ResourceNotFoundException {
+        if(getUserTvShow(idUser,idUserTvShow) != null){
+            userTvShowRepository.deleteById(idUserTvShow);
+        }
+    }
 }

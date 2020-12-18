@@ -63,9 +63,13 @@ public class TvShowReminderController {
     }
 
     // Review
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/{idTvShowReminder}")
-    public void deleteTvShowReminder(@PathVariable Integer idTvShowReminder){
-        tvShowReminderService.deleteTvShowReminder(idTvShowReminder);
+    public void deleteTvShowReminder(@RequestHeader(name="Authorization") String header,
+                                     @PathVariable Integer idTvShowReminder) throws ResourceNotFoundException {
+        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
+        Integer idUser = jwtTokenUtil.getUserId(token);
+        tvShowReminderService.deleteTvShowReminder(idUser, idTvShowReminder);
     }
 
     // Done

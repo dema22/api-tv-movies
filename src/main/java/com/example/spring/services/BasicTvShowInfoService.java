@@ -25,7 +25,8 @@ public class BasicTvShowInfoService {
     }
 
     public BasicTvShowInfo getBasicTvShowInfoById (Integer idTvShow) throws ResourceNotFoundException {
-        return basicTvShowInfoRepository.findById(idTvShow).orElseThrow(() -> new ResourceNotFoundException("The tv show with the id : " + idTvShow + " was not found."));
+        return basicTvShowInfoRepository.findById(idTvShow).orElseThrow(() -> new ResourceNotFoundException(
+                "The tv show with the id : " + idTvShow + " was not found."));
     }
 
     // Will return a list of results of basic tv show information depending on the name of the show ( we look for matches in a LIKE pattern in our database)

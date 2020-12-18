@@ -61,4 +61,13 @@ public class UserTvShowController {
         Integer idUser = jwtTokenUtil.getUserId(token);
         userTvShowService.updateUserTvShow(idUser, userTvShowPatchDTO,idUserTvShow);
     }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping("/{idUserTvShow}")
+    public void deleteUserTvShow(@RequestHeader(name="Authorization") String header,
+                                     @PathVariable Integer idUserTvShow) throws ResourceNotFoundException {
+        String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
+        Integer idUser = jwtTokenUtil.getUserId(token);
+        userTvShowService.deleteUserTvShow(idUser, idUserTvShow);
+    }
 }

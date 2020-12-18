@@ -4,6 +4,11 @@ USE app_tv_movies;
 SHOW VARIABLES LIKE 'foreign_key_checks';
 SHOW CREATE TABLE tv_show_reminder;
 
+##
+select @@FOREIGN_KEY_CHECKS;
+set FOREIGN_KEY_CHECKS=1;
+##
+
 CREATE TABLE user(
 	id_user 				int auto_increment not null,
     first_name 				varchar(50) not null,
@@ -48,7 +53,7 @@ CREATE TABLE tv_show_created_by_user (
     production_company varchar(50),
     constraint pk_id_tv_show_created_by_user primary key (id_tv_show_created_by_user),
 	constraint fk_id_user_that_created_the_show foreign key (id_user) references user (id_user)
-)ENGINE=InnoDB;
+)ENGINE = InnoDB;
 DROP TABLE tv_show_created_by_user;
 select * from tv_show_created_by_user;
 
@@ -65,9 +70,21 @@ CREATE TABLE tv_show_reminder (
     constraint fk_id_user foreign key (id_user) references user (id_user),
     constraint fk_id_basic_tv_show_info foreign key (id_basic_tv_show_info) references basic_tv_show_info (id_basic_tv_show_info),
 	constraint fk_id_tv_show_created_by_user foreign key (id_tv_show_created_by_user) references tv_show_created_by_user (id_tv_show_created_by_user) ON DELETE CASCADE
-)ENGINE=InnoDB;
+)ENGINE = InnoDB;
 DROP TABLE tv_show_reminder;
 select * from tv_show_reminder;
+
+## Trigger that when deleting a record from the tv show reminder table, if the reminder has a tv show created
+## by user associated, we will delete this record.
+
+DELIMITER //
+CREATE TRIGGER delete_user_tv_show BEFORE DELETE ON tv_show_reminder FOR EACH ROW
+BEGIN
+  IF (OLD.id_tv_show_created_by_user IS NOT NULL) THEN
+    DELETE FROM tv_show_created_by_user
+    WHERE id_tv_show_created_by_user = old.id_tv_show_created_by_user;
+  END IF;
+END//
 
 # Trigger to check that we can not insert a tv show reminder if we have two null values at the same 
 # time in the id_basic_tv_show_info and id_tv_show_created_by_user columns.
