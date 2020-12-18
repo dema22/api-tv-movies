@@ -43,7 +43,7 @@ public class TvShowReminderController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/")
     public void addTvShowReminder(@RequestHeader(name="Authorization") String header,
-                                  @RequestBody @Valid TvShowReminder tvShowReminder) throws BusinessLogicValidationFailure, ResourceAlreadyExistsException {
+                                  @RequestBody @Valid TvShowReminder tvShowReminder) throws BusinessLogicValidationFailure, ResourceAlreadyExistsException, ResourceNotFoundException {
         String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
         Integer idLoggedUser = jwtTokenUtil.getUserId(token);
         if(idLoggedUser != tvShowReminder.getUser().getIdUser()){

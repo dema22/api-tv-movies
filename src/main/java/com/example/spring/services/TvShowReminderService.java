@@ -35,21 +35,20 @@ public class TvShowReminderService {
     }
 
     // Done
-    public void addTvShowReminder(TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure {
+    public void addTvShowReminder(TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure, ResourceNotFoundException {
         validateExistenceOfTvShowReminder(tvShowReminder);
         tvShowReminderRepository.save(tvShowReminder);
     }
 
     // Done
-    private void validateExistenceOfTvShowReminder(TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure {
-        Optional<TvShowReminder> tvShowReminderOptional = Optional.of(new TvShowReminder());
+    private void validateExistenceOfTvShowReminder(TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure, ResourceNotFoundException {
+        Optional<TvShowReminder> tvShowReminderOptional = Optional.empty();
         String messageError = null;
 
         // First i validate if the user tv show we want to add to the reminder belongs to the logged user.
-        validateExistenceOfUserTvShow(tvShowReminder.getUserTvShow(), tvShowReminder.getUser().getIdUser());
+        //userTvShowService.getUserTvShow(tvShowReminder.getUser().getIdUser(), tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser());
 
-        // After that we check:
-        // If both the basic tv show info object and user tv show object ARE NULL -> exception
+        // If both the basic tv show info object and user tv show object ARE PRESENT -> exception
         // If the basic tv show info object id already exists in the reminders table -> exception
         // If the user tv show info object id already exists in the reminders table -> exception
         // If both are null -> exception.
@@ -57,7 +56,7 @@ public class TvShowReminderService {
         if(tvShowReminder.getBasicTvShowInfo() != null && tvShowReminder.getUserTvShow() != null){
 
             if(tvShowReminder.getBasicTvShowInfo().getId() != null && tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser() != null)
-                throw new BusinessLogicValidationFailure("You cant have a reminder that point to a tv show from the system and to a tv show created by user");
+                throw new BusinessLogicValidationFailure("You cant have a reminder that point to a tv show from the system and to a tv show created by the user");
 
         }else if(tvShowReminder.getBasicTvShowInfo() != null){
 
@@ -69,30 +68,24 @@ public class TvShowReminderService {
         }else if (tvShowReminder.getUserTvShow() != null){
 
             if(tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser() != null) {
-                tvShowReminderOptional = tvShowReminderRepository.findByUserIdAndTvShowCreatedByUserId(tvShowReminder.getUser().getIdUser(), tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser());
-                messageError = "User already created a tv show reminder with a userTvShow id : " + tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser();
+
+                // Validate if the user tv show of the reminder actually belong to the logged user.
+                if(Optional.ofNullable(userTvShowService.getUserTvShow(tvShowReminder.getUser().getIdUser(), tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser())).isPresent()) {
+
+                    tvShowReminderOptional = tvShowReminderRepository.findByUserIdAndTvShowCreatedByUserId(tvShowReminder.getUser().getIdUser(), tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser());
+                    messageError = "User already created a tv show reminder with a userTvShow id : " + tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser();
+                }
             }
 
         }else{
             messageError = "To create a tv show reminder you have to provided a basicTvShowInfo id OR a userTvShow id";
+            throw new BusinessLogicValidationFailure(messageError);
         }
 
         // Each query findByUserIdAndTvShowId and findByUserIdAndTvShowCreatedByUserId return an optional with the tv show or an empty optional.
         // This method will return true if there is a tv show present in the optional OR returns false if is an empty optional (with null value).
         if(tvShowReminderOptional.isPresent()){
             throw new ResourceAlreadyExistsException(messageError);
-        }
-    }
-
-    // Done
-    private void validateExistenceOfUserTvShow(UserTvShow userTvShow, Integer idLoggedUser) throws BusinessLogicValidationFailure {
-        Optional<UserTvShow> completedUserTvShow = userTvShowRepository.findById(userTvShow.getIdTvShowCreatedByUser());
-
-        // We check if the current logged user created this userTvShow else If the userTvShow doesn t exists in the DB
-        if(completedUserTvShow.isPresent() && completedUserTvShow.get().getUser().getIdUser() != idLoggedUser) {
-                throw new BusinessLogicValidationFailure("You are trying to create a tv show reminder with a user tv show id you haven't created.");
-        }else if(!completedUserTvShow.isPresent()){
-            throw new BusinessLogicValidationFailure("User tv show with this id : " + userTvShow.getIdTvShowCreatedByUser() + " does not exist.");
         }
     }
 
