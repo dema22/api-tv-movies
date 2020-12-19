@@ -133,18 +133,9 @@ BEGIN
     SET MESSAGE_TEXT = '\'Field id_basic_tv_show_info \' and \'Field id_tv_show_created_by_user \' cannot both be null';
   END IF;
 END//
-CREATE TRIGGER bu_tv_show_reminder_check_nulls_in_fks BEFORE UPDATE ON tv_show_reminder FOR EACH ROW
-BEGIN
-  IF (NEW.id_basic_tv_show_info IS NULL AND NEW.id_tv_show_created_by_user IS NULL) THEN
-    SIGNAL SQLSTATE '45000'
-    SET MESSAGE_TEXT = '\'Field id_basic_tv_show_info \' and \'Field id_tv_show_created_by_user \' cannot both be null';
-  END IF;
-END//
-DELIMITER ;
 
 ##############
 DROP TRIGGER delete_user_tv_show;
 DROP TRIGGER bi_tv_show_reminder_check_nulls_in_fks;
-DROP TRIGGER bu_tv_show_reminder_check_nulls_in_fks;
 show triggers;
 #############
