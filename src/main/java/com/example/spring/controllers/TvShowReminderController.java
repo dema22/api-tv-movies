@@ -1,10 +1,9 @@
 package com.example.spring.controllers;
 
-import com.example.spring.dto.PageTvShowRemindersResponseDTO;
+import com.example.spring.dto.PageResponseDTO;
 import com.example.spring.dto.TvShowReminderPatchDTO;
 import com.example.spring.dto.TvShowReminderResponseDTO;
 import com.example.spring.exception.BusinessLogicValidationFailure;
-import com.example.spring.exception.ForbiddenActionExcepction;
 import com.example.spring.exception.ResourceAlreadyExistsException;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.TvShowReminder;
@@ -88,12 +87,12 @@ public class TvShowReminderController {
     // Note: a pageable object starts in index 0.
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/paginated")
-    public ResponseEntity<PageTvShowRemindersResponseDTO> getPaginatedTvShowReminderResponseDTO(@RequestHeader(name="Authorization") String header,
-                                                                                @RequestParam Integer page,
-                                                                                @RequestParam Integer size) throws ResourceNotFoundException {
+    public ResponseEntity<PageResponseDTO> getPaginatedTvShowReminderResponseDTO(@RequestHeader(name="Authorization") String header,
+                                                                                 @RequestParam Integer page,
+                                                                                 @RequestParam Integer size) throws ResourceNotFoundException {
         String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
         Integer idUser = jwtTokenUtil.getUserId(token);
-        PageTvShowRemindersResponseDTO pageTvShowRemindersResponseDTO = tvShowReminderService.getPaginatedTvShowReminderResponseDTO(page,size,idUser);
-        return (pageTvShowRemindersResponseDTO.getTvShowRemindersResponseDTO().size() > 0) ? ResponseEntity.ok(pageTvShowRemindersResponseDTO) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        PageResponseDTO pageTvShowRemindersResponseDTO = tvShowReminderService.getPaginatedTvShowReminderResponseDTO(page,size,idUser);
+        return (pageTvShowRemindersResponseDTO.getItems().size() > 0) ? ResponseEntity.ok(pageTvShowRemindersResponseDTO) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

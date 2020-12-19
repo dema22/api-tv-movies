@@ -233,12 +233,12 @@ public class TvShowReminderService {
     }
 
     // Done
-    public PageTvShowRemindersResponseDTO getPaginatedTvShowReminderResponseDTO (Integer page, Integer size, Integer idUser) throws ResourceNotFoundException {
+    public PageResponseDTO getPaginatedTvShowReminderResponseDTO (Integer page, Integer size, Integer idUser) throws ResourceNotFoundException {
 
         // Get a page of the tv show reminder entity.
         Page<TvShowReminder> pageTvShowReminder = getPaginatedTvShowReminders(page,size,idUser);
 
-        PageTvShowRemindersResponseDTO tvShowReminderResponseDTOS = buildPageTvShowReminderResponseDTO(pageTvShowReminder);
+        PageResponseDTO tvShowReminderResponseDTOS = buildPageTvShowReminderResponseDTO(pageTvShowReminder);
 
         return tvShowReminderResponseDTOS;
     }
@@ -246,7 +246,7 @@ public class TvShowReminderService {
     // Done
     // We will get a PageTvShowReminderResponseDTO with the information of the tv show reminders DTO in a list AND
     // the information of the page.
-    public PageTvShowRemindersResponseDTO buildPageTvShowReminderResponseDTO (Page pageTvShowReminder) throws ResourceNotFoundException {
+    public PageResponseDTO buildPageTvShowReminderResponseDTO (Page pageTvShowReminder) throws ResourceNotFoundException {
 
         // Get all the tv show reminder of the user.
         List<TvShowReminder> tvShowRemindersList = pageTvShowReminder.getContent();
@@ -279,17 +279,17 @@ public class TvShowReminderService {
         }
 
         // Build the page to return the list of tv show reminders DTO and description of the page.
-        PageTvShowRemindersResponseDTO<TvShowReminderResponseDTO> pageTvShowReminderResponseDTO = new PageTvShowRemindersResponseDTO<>();
+        PageResponseDTO<TvShowReminderResponseDTO> pageTvShowReminderResponseDTO = new PageResponseDTO<>();
         buildPage(pageTvShowReminderResponseDTO, tvShowReminderListDTO, pageTvShowReminder);
 
         return pageTvShowReminderResponseDTO;
     }
 
     // Done
-    private void buildPage(PageTvShowRemindersResponseDTO<TvShowReminderResponseDTO> page,
+    private void buildPage(PageResponseDTO<TvShowReminderResponseDTO> page,
                            List<TvShowReminderResponseDTO> tvShowReminderListDTO,
                            Page pageTvShowReminder) {
-        page.setTvShowRemindersResponseDTO(tvShowReminderListDTO);
+        page.setItems(tvShowReminderListDTO);
         PageDescriptionDTO pageDescription = new PageDescriptionDTO();
         pageDescription.setTotalPages(pageTvShowReminder.getTotalPages()); // For the  number of total pages.
         pageDescription.setTotalElements(pageTvShowReminder.getTotalElements());// For total items stored in database.
