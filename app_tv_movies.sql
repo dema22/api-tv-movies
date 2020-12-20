@@ -122,20 +122,7 @@ BEGIN
   END IF;
 END//
 
-# Trigger to check that we can not insert a tv show reminder if we have two null values at the same 
-# time in the id_basic_tv_show_info and id_tv_show_created_by_user columns.
-
-DELIMITER //
-CREATE TRIGGER bi_tv_show_reminder_check_nulls_in_fks BEFORE INSERT ON tv_show_reminder FOR EACH ROW
-BEGIN
-  IF (NEW.id_basic_tv_show_info IS NULL AND NEW.id_tv_show_created_by_user IS NULL) THEN
-    SIGNAL SQLSTATE '45000'
-    SET MESSAGE_TEXT = '\'Field id_basic_tv_show_info \' and \'Field id_tv_show_created_by_user \' cannot both be null';
-  END IF;
-END//
-
 ##############
 DROP TRIGGER delete_user_tv_show;
-DROP TRIGGER bi_tv_show_reminder_check_nulls_in_fks;
 show triggers;
 #############
