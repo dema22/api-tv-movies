@@ -37,7 +37,7 @@ public class TvShowController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/file")
     public void loadTvShows(@RequestParam("file") MultipartFile file) throws IOException {
-        basicTvShowInfoService.loadTvShowsToSystemTwo(file);
+        basicTvShowInfoService.processTvShowFile(file);
     }
 
     // Public endpoint, anyone will query basic tv show information.

@@ -57,6 +57,7 @@ public class ControllerAdvice  extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
        String uri = ((ServletWebRequest)request).getRequest().getRequestURI();
+       System.out.println(uri);
        List<String> errorMessages = new ArrayList<>();
        String joinedErrorMessages;
 

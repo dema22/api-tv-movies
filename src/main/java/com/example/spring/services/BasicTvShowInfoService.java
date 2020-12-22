@@ -4,6 +4,7 @@ import com.example.spring.dto.BasicTvShowInfoFromApiDTO;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.BasicTvShowInfo;
 import com.example.spring.repositories.BasicTvShowInfoRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,26 +12,31 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class BasicTvShowInfoService {
 
+    private final Integer batch_size = 50;
     private final BasicTvShowInfoRepository basicTvShowInfoRepository;
+    private final EntityManager entityManager;
 
     @Autowired
-    public BasicTvShowInfoService(BasicTvShowInfoRepository basicTvShowInfoRepository) {
+    public BasicTvShowInfoService(BasicTvShowInfoRepository basicTvShowInfoRepository, EntityManager entityManager) {
         this.basicTvShowInfoRepository = basicTvShowInfoRepository;
+        this.entityManager = entityManager;
     }
 
+    // 1 min y 44 seg / 2 min y 07 seg rewriteBatchedStatements=true
     public void saveListOfBasicTvShows(List<BasicTvShowInfo> listBasicTvShowInfo) {
         basicTvShowInfoRepository.saveAll(listBasicTvShowInfo);
     }
@@ -45,32 +51,54 @@ public class BasicTvShowInfoService {
         return basicTvShowInfoRepository.findByOriginalNameStartsWith(PageRequest.of(0,5),originalNameTvShow).getContent();
     }
 
-    public void loadTvShowsToSystem(MultipartFile file) throws IOException {
-        List<BasicTvShowInfo> listBasicTvShowInfo = new ArrayList<>();
-        BasicTvShowInfo tvShow = new BasicTvShowInfo();
-
-        InputStream inputStream = file.getInputStream();
-        Stream<String> stream = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8)).lines();//.forEach(this::readJsonFile);
-
+    @Transactional
+    public void saveListOfBasicTvShowsTwo(List<BasicTvShowInfo> listBasicTvShowInfo) {
+        entityManager.flush();
+        for (int i = 0; i < listBasicTvShowInfo.size(); i++) {
+            if (i > 0 && i % batch_size == 0) {
+                entityManager.flush();
+                entityManager.clear();
+            }
+            //BasicTvShowInfo basicTvShowInfo = listBasicTvShowInfo.get(i);
+            entityManager.persist(listBasicTvShowInfo.get(i));
+        }
+        entityManager.flush();
+        entityManager.clear();
     }
 
-    private void readJsonFile(String s) {
-        System.out.println(s);
+    @Transactional
+    public void processTvShowFile(MultipartFile file) throws IOException {
+        String jsonString = getJsonString(file);
+        List<BasicTvShowInfoFromApiDTO> listBasicTvShowInfoFromApiDTO = getListBasicTvShowInfoFromApiDTO(jsonString);
+        List<BasicTvShowInfo> listBasicTvShow = getListBasicTvShowInfo(listBasicTvShowInfoFromApiDTO);
+        saveListOfBasicTvShowsTwo(listBasicTvShow);
     }
 
-    public void loadTvShowsToSystemTwo(MultipartFile file) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-
+    public String getJsonString(MultipartFile file) throws IOException {
         // Load json file to string
         InputStream inputStream = file.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
         String jsonString =  reader.lines().collect(Collectors.joining());
-        System.out.println(jsonString);
-
-        // Convert string to json array
-        List<BasicTvShowInfoFromApiDTO> basicTvShowInfoJsonList = mapper.readValue(jsonString, new TypeReference<List<BasicTvShowInfoFromApiDTO>>(){});
-        System.out.println(basicTvShowInfoJsonList);
-
+        return jsonString;
     }
 
+    public List<BasicTvShowInfoFromApiDTO> getListBasicTvShowInfoFromApiDTO (String jsonString) throws JsonProcessingException {
+        // Convert json string to dto list
+        ObjectMapper mapper = new ObjectMapper();
+        List<BasicTvShowInfoFromApiDTO> basicTvShowInfoJsonList = mapper.readValue(jsonString, new TypeReference<List<BasicTvShowInfoFromApiDTO>>(){});
+        System.out.println(basicTvShowInfoJsonList);
+        return basicTvShowInfoJsonList;
+    }
+
+    public List<BasicTvShowInfo> getListBasicTvShowInfo(List<BasicTvShowInfoFromApiDTO> listBasicTvShowInfoFromApiDTO){
+        // Convert list of dto to a list of entities
+        List<BasicTvShowInfo> basicTvShowInfoList = new ArrayList<>();
+        for (BasicTvShowInfoFromApiDTO tvShowDTO: listBasicTvShowInfoFromApiDTO) {
+            BasicTvShowInfo tvShow = new BasicTvShowInfo();
+            tvShow.setId(tvShowDTO.getId());
+            tvShow.setOriginalName(tvShowDTO.getOriginalName());
+            basicTvShowInfoList.add(tvShow);
+        }
+        return basicTvShowInfoList;
+    }
 }
