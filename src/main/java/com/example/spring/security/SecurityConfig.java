@@ -36,6 +36,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private PasswordEncoder passwordEncoder;
     private JwtTokenFilter jwtTokenFilter;
     private UserDetailsService userDetailsService;
+    private static final String[] AUTH_WHITELIST = {
+            // -- swagger ui
+            "/v2/api-docs",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**"
+    };
 
     @Autowired
     public SecurityConfig(PasswordEncoder passwordEncoder, JwtTokenFilter jwtTokenFilter, UserDetailsService userDetailsService) {
@@ -80,6 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/user/").permitAll()
                 .antMatchers(HttpMethod.GET, "/tvShow/").permitAll()
                 .antMatchers(HttpMethod.GET, "/tvShowDetails/{idTvShow}").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 // Our private endpoints
                 .anyRequest().authenticated();
 
