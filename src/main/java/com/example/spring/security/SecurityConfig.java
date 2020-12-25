@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private PasswordEncoder passwordEncoder;
     private JwtTokenFilter jwtTokenFilter;
     private UserDetailsService userDetailsService;
-    private static final String[] AUTH_WHITELIST = {
+    private final String[] AUTH_WHITELIST = {
             // -- swagger ui
             "/v2/api-docs",
             "/swagger-resources/**",
