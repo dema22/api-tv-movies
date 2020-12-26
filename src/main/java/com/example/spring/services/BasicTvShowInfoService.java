@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// Done
 @Service
 public class BasicTvShowInfoService {
 
@@ -36,42 +36,41 @@ public class BasicTvShowInfoService {
         this.entityManager = entityManager;
     }
 
-    // 1 min y 44 seg / 2 min y 07 seg rewriteBatchedStatements=true
-    public void saveListOfBasicTvShows(List<BasicTvShowInfo> listBasicTvShowInfo) {
-        basicTvShowInfoRepository.saveAll(listBasicTvShowInfo);
-    }
-
     public BasicTvShowInfo getBasicTvShowInfoById (Integer idTvShow) throws ResourceNotFoundException {
         return basicTvShowInfoRepository.findById(idTvShow).orElseThrow(() -> new ResourceNotFoundException(
                 "The tv show with the id : " + idTvShow + " was not found."));
     }
 
-    // Will return a list of results of basic tv show information depending on the name of the show ( we look for matches in a LIKE pattern in our database)
+    // Will return a list of results of basic tv show information that starts with the name of the show.
+    // We will return the first 5 results that match the name.
     public List<BasicTvShowInfo> searchBasicTvShowInfo (String originalNameTvShow){
         return basicTvShowInfoRepository.findByOriginalNameStartsWith(PageRequest.of(0,5),originalNameTvShow).getContent();
     }
 
+    // Using Entity Manager we are going to flush memory and we are going to insert in batches of 50 so we dont make so much roundtrips to the DB.
     @Transactional
-    public void saveListOfBasicTvShowsTwo(List<BasicTvShowInfo> listBasicTvShowInfo) {
+    public void saveListOfBasicTvShows(List<BasicTvShowInfo> listBasicTvShowInfo) {
         entityManager.flush();
         for (int i = 0; i < listBasicTvShowInfo.size(); i++) {
             if (i > 0 && i % batch_size == 0) {
                 entityManager.flush();
                 entityManager.clear();
             }
-            //BasicTvShowInfo basicTvShowInfo = listBasicTvShowInfo.get(i);
             entityManager.persist(listBasicTvShowInfo.get(i));
         }
         entityManager.flush();
         entityManager.clear();
     }
 
+    // This method will receive the json file, convert it to a string in json format, then we are going to
+    // map this json string in a list of DTO. Finally, we are going to map this list of DTO to a list of Entities,
+    //, so we can save it in our DB.
     @Transactional
     public void processTvShowFile(MultipartFile file) throws IOException {
         String jsonString = getJsonString(file);
         List<BasicTvShowInfoFromApiDTO> listBasicTvShowInfoFromApiDTO = getListBasicTvShowInfoFromApiDTO(jsonString);
         List<BasicTvShowInfo> listBasicTvShow = getListBasicTvShowInfo(listBasicTvShowInfoFromApiDTO);
-        saveListOfBasicTvShowsTwo(listBasicTvShow);
+        saveListOfBasicTvShows(listBasicTvShow);
     }
 
     public String getJsonString(MultipartFile file) throws IOException {
@@ -83,10 +82,9 @@ public class BasicTvShowInfoService {
     }
 
     public List<BasicTvShowInfoFromApiDTO> getListBasicTvShowInfoFromApiDTO (String jsonString) throws JsonProcessingException {
-        // Convert json string to dto list
+        // Convert json string to a dto list.
         ObjectMapper mapper = new ObjectMapper();
         List<BasicTvShowInfoFromApiDTO> basicTvShowInfoJsonList = mapper.readValue(jsonString, new TypeReference<List<BasicTvShowInfoFromApiDTO>>(){});
-        System.out.println(basicTvShowInfoJsonList);
         return basicTvShowInfoJsonList;
     }
 

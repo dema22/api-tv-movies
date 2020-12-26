@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-
+//Done
 @RestController
 @RequestMapping("/tvShow")
 
@@ -24,16 +24,7 @@ public class TvShowController {
         this.basicTvShowInfoService = basicTvShowInfoService;
     }
 
-    // Only the admin can load the file from themoviedb API with the tv shows information.
-    @PostMapping("/loadTvShowTable")
-    public void generateTvShowTable(@RequestBody List<BasicTvShowInfo> listBasicTvShowInfo) {
-        try {
-            basicTvShowInfoService.saveListOfBasicTvShows(listBasicTvShowInfo);
-        }catch (OutOfMemoryError e){
-        }
-    }
-
-    // Admin endpoint , receives the json file.
+    // Admin endpoint , receives the json file of tv shows from "themoviedb" API.
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/file")
     public void loadTvShows(@RequestParam("file") MultipartFile file) throws IOException {
@@ -47,11 +38,10 @@ public class TvShowController {
         return (basicTvShowInfoList.size() > 0) ? ResponseEntity.ok(basicTvShowInfoList) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    // Only the admin can search basic tv show info by ID.
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{idTvShow}")
     public ResponseEntity<BasicTvShowInfo> searchTvShowInfoById (@PathVariable Integer idTvShow) throws ResourceNotFoundException {
         return ResponseEntity.ok(basicTvShowInfoService.getBasicTvShowInfoById(idTvShow));
     }
-
-    // Is it better to Include a endpoint "/{idTvShow}/tvShowDetails" instead of having a controller of tv show details ?
 }
