@@ -36,14 +36,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private PasswordEncoder passwordEncoder;
     private JwtTokenFilter jwtTokenFilter;
     private UserDetailsService userDetailsService;
-    private final String[] AUTH_WHITELIST = {
+    private final String[] SWAGGER = {
             // -- swagger ui
             "/v2/api-docs",
             "/swagger-resources/**",
             "/configuration/ui",
             "/configuration/security",
             "/swagger-ui.html",
-            "/webjars/**"
+            "/webjars/**",
+            "/swagger-resources/configuration/security",
+            "/",
+            "/csrf"
     };
 
     @Autowired
@@ -84,13 +87,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Set permissions on endpoints
         http.authorizeRequests()
-                // Our public endpoints:
+                // Our Api public endpoints
                 .antMatchers(HttpMethod.POST, "/user/authenticate").permitAll()
                 .antMatchers(HttpMethod.POST, "/user/").permitAll()
                 .antMatchers(HttpMethod.GET, "/tvShow/").permitAll()
                 .antMatchers(HttpMethod.GET, "/tvShowDetails/{idTvShow}").permitAll()
-                .antMatchers(AUTH_WHITELIST).permitAll()
-                // Our private endpoints
+                // Let swagger enter without providing authentication
+                .antMatchers(SWAGGER).permitAll()
+                // Our private endpoints -> all the rest.
                 .anyRequest().authenticated();
 
         // Add JWT token filter
@@ -116,9 +120,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-    /*@Bean
-    GrantedAuthorityDefaults grantedAuthorityDefaults() {
-        return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix
-    }*/
 }
