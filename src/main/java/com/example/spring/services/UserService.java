@@ -24,6 +24,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // Done
     public void addUser(User user) throws ResourceAlreadyExistsException {
         Optional<User> userOptional = userRepository.findByUsername(user.getUsername());
         if(userOptional.isPresent()){
@@ -33,19 +34,23 @@ public class UserService {
         userRepository.save(user);
     }
 
+    // Done
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
+    // Done
     public User getOneUser(Integer idUser) throws ResourceNotFoundException {
         return userRepository.findById(idUser).orElseThrow(() -> new ResourceNotFoundException("The user with the id : " + idUser + " was not found."));
     }
 
+    // Done
     public UserDTO getProfile(Integer idUser) {
         User user =  userRepository.findById(idUser).get();
         return createUserDTO(user);
     }
 
+    // Done
     private UserDTO createUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setName(user.getName());

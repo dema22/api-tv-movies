@@ -4,11 +4,14 @@ import com.example.spring.dto.AuthenticationRequestDTO;
 import com.example.spring.dto.AuthenticationResponseDTO;
 import com.example.spring.dto.UserDTO;
 import com.example.spring.exception.ForbiddenActionExcepction;
+import com.example.spring.exception.InvalidLoginException;
 import com.example.spring.exception.ResourceAlreadyExistsException;
 import com.example.spring.exception.ResourceNotFoundException;
 import com.example.spring.models.User;
 import com.example.spring.security.JwtTokenUtil;
 import com.example.spring.services.UserService;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +40,10 @@ public class UserController {
         this.userService = userService;
     }
 
+    // Done
+    /*@ApiResponses(value = {
+            @ApiResponse(code = 401, message = "Invalid username or password.")
+    })*/
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authenticationRequest) throws Exception {
 
@@ -52,29 +59,26 @@ public class UserController {
             return ResponseEntity.ok(new AuthenticationResponseDTO(jwt));
         }
         catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new InvalidLoginException("Invalid username or password.");
         }
     }
 
+    // Done
     @PostMapping("/")
     public void addUser(@RequestBody @Valid User user) throws ResourceAlreadyExistsException {
         userService.addUser(user);
     }
 
+    // Done
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/{idUser}/profile")
-    public ResponseEntity<UserDTO> getProfile(@RequestHeader(name="Authorization") String header,
-                                              @PathVariable Integer idUser) throws ForbiddenActionExcepction {
+    @GetMapping("/profile/me")
+    public ResponseEntity<UserDTO> getProfile(@RequestHeader(name="Authorization") String header) {
         String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
         Integer idLoggedUser = jwtTokenUtil.getUserId(token);
-
-        if(idUser != idLoggedUser){
-            throw new ForbiddenActionExcepction("You want to query a profile that is not yours." +
-                    " Please, verify that the user id to search is the same as your user id.");
-        }
-        return ResponseEntity.ok(userService.getProfile(idUser));
+        return ResponseEntity.ok(userService.getProfile(idLoggedUser));
     }
 
+    // Done
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/")
     public ResponseEntity<List<User>> getAllUser(){
@@ -82,6 +86,7 @@ public class UserController {
         return (users.size() > 0) ? ResponseEntity.ok(users) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    // Done
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{idUser}")
     public ResponseEntity<User> getUser(@PathVariable  Integer idUser) throws ResourceNotFoundException {
