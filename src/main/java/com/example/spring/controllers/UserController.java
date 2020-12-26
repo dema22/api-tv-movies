@@ -20,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -45,7 +46,7 @@ public class UserController {
             @ApiResponse(code = 401, message = "Invalid username or password.")
     })*/
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDTO authenticationRequest) throws InvalidLoginException {
 
         try {
             // We use the authentication manager of spring security to authenticate the AuthenticationRequestDTO that is coming in the request body.
@@ -59,7 +60,7 @@ public class UserController {
             return ResponseEntity.ok(new AuthenticationResponseDTO(jwt));
         }
         catch (BadCredentialsException e) {
-            throw new InvalidLoginException("Invalid username or password.");
+            throw new InvalidLoginException("Username or Password are incorrect.");
         }
     }
 
