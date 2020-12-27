@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// Done
 @Service
 public class TvShowDetailsService {
     private final String API_KEY = "e5fa1b7231771db70b84a998344fe4e3";
@@ -34,7 +34,6 @@ public class TvShowDetailsService {
         BasicTvShowInfo basicTvShowInfo = basicTvShowInfoService.getBasicTvShowInfoById(idTvShow);
 
         RestTemplate restTemplate = new RestTemplate();
-
         TvShowDetailsFromApiDTO tvShowDetailsFromApiDTO = restTemplate
                 .getForObject("https://api.themoviedb.org/3/tv/" +  idTvShow + "?api_key=" + API_KEY +
                 "&language=en-US&append_to_response=videos,images&include_image_language=en,null", TvShowDetailsFromApiDTO.class);
@@ -42,7 +41,7 @@ public class TvShowDetailsService {
         return tvShowDetailsFromApiDTO;
     }
 
-    // We are going to call the method that give us the details from the API.
+    // We are going to call the method that give us the details of a tv show from the "themoviedb" API.
     // Create a new DTO based on this information we get from the API.
 
     public TvShowDetailsResponseDTO getTvShowDetails(Integer idTvShow) throws ResourceNotFoundException {
@@ -50,7 +49,7 @@ public class TvShowDetailsService {
         TvShowDetailsFromApiDTO tvShowDetailsFromApiDTO = getTvShowDetailsFromAPI(idTvShow);
         TvShowDetailsResponseDTO tvShowDetailsResponseDTO = new TvShowDetailsResponseDTO();
 
-        creatingTvShowDetailsResponseDTO(tvShowDetailsFromApiDTO, tvShowDetailsResponseDTO);
+        createTvShowDetailsResponseDTO(tvShowDetailsFromApiDTO, tvShowDetailsResponseDTO);
 
         return tvShowDetailsResponseDTO;
     }
@@ -61,7 +60,7 @@ public class TvShowDetailsService {
     // * Set the complete image urls.
     // * Filter the video results.
 
-    public void creatingTvShowDetailsResponseDTO (TvShowDetailsFromApiDTO tvShowDetailsFromApiDTO, TvShowDetailsResponseDTO tvShowDetailsResponseDTO) {
+    public void createTvShowDetailsResponseDTO (TvShowDetailsFromApiDTO tvShowDetailsFromApiDTO, TvShowDetailsResponseDTO tvShowDetailsResponseDTO) {
         tvShowDetailsResponseDTO.setBackdropPath(tvShowDetailsFromApiDTO.getBackdrop_path());
         tvShowDetailsResponseDTO.setPosterPath(tvShowDetailsFromApiDTO.getPoster_path());
         buildCompleteImageURLS(tvShowDetailsResponseDTO);

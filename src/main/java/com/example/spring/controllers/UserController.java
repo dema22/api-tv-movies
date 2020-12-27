@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-
+// Done
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -37,7 +37,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Done
     /*@ApiResponses(value = {
             @ApiResponse(code = 401, message = "Invalid username or password.")
     })*/
@@ -60,13 +59,11 @@ public class UserController {
         }
     }
 
-    // Done
     @PostMapping("/")
     public void addUser(@RequestBody @Valid User user) throws ResourceAlreadyExistsException {
         userService.addUser(user);
     }
 
-    // Done
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/profile/me")
     public ResponseEntity<UserDTO> getProfile(@RequestHeader(name="Authorization") String header) {
@@ -75,7 +72,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getProfile(idLoggedUser));
     }
 
-    // Done
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/")
     public ResponseEntity<List<User>> getAllUser(){
@@ -83,7 +79,6 @@ public class UserController {
         return (users.size() > 0) ? ResponseEntity.ok(users) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    // Done
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{idUser}")
     public ResponseEntity<User> getUser(@PathVariable  Integer idUser) throws ResourceNotFoundException {
