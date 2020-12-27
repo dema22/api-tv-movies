@@ -21,7 +21,6 @@ import java.util.Collection;
 import static java.util.Optional.ofNullable;
 import static org.springframework.util.StringUtils.isEmpty;
 
-
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 

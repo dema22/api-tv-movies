@@ -61,8 +61,8 @@ CREATE TABLE tv_show_created_by_user (
     genre varchar(50),
     production_company varchar(50),
     constraint pk_id_tv_show_created_by_user primary key (id_tv_show_created_by_user),
-	constraint fk_id_user_that_created_the_show foreign key (id_user) references user (id_user),
-    constraint unique_name_tv_show UNIQUE (name_tv_show)
+	constraint fk_id_user_that_created_the_show foreign key (id_user) references user (id_user)#,
+    #constraint unique_name_tv_show UNIQUE (name_tv_show)
 )ENGINE = InnoDB;
 DROP TABLE tv_show_created_by_user;
 

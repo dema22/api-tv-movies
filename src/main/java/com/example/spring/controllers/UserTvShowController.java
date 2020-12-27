@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+// Done
 @RestController
 @RequestMapping("/userTvShow")
-
 public class UserTvShowController {
     private final UserTvShowService userTvShowService;
     private JwtTokenUtil jwtTokenUtil;
@@ -30,7 +30,6 @@ public class UserTvShowController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
-
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/")
     public void addUserTvShow(@RequestHeader(name="Authorization") String header,
@@ -40,7 +39,6 @@ public class UserTvShowController {
         userTvShowService.addUserTvShow(idLoggedUser, userTvShow);
     }
 
-
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/")
     public ResponseEntity<List<UserTvShowDTO>> getAllTvShowsCreatedByUser (@RequestHeader(name="Authorization") String header){
@@ -49,7 +47,6 @@ public class UserTvShowController {
         List<UserTvShowDTO> userTvShows = userTvShowService.getAllTvShowsCreatedByUser(idUser);
         return (userTvShows.size() > 0) ? ResponseEntity.ok(userTvShows) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping("/{idUserTvShow}")

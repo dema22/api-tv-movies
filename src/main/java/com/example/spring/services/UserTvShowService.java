@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+// Done
 @Service
 public class UserTvShowService {
 
@@ -59,11 +59,13 @@ public class UserTvShowService {
         return userTvShowRepository.findByIdTvShowAndUserId(idUserTvShow, idUser).orElseThrow(() -> new ResourceNotFoundException("The user tv show with the id : " + idUserTvShow + " was not found."));
     }
 
-    // Update a tv show created by the user
+    // Update a tv show created by the user ( We first check if the user tv show we want to update belongs to the logged user).
     public void updateUserTvShow(Integer idUser, UserTvShowPatchDTO userTvShowPatchDTO, Integer idUserTvShow) throws ResourceNotFoundException {
         UserTvShow userTvShow = getUserTvShow(idUser, idUserTvShow);
 
-        // Assign the information of the DTO to our entity and save it.
+        // I Assign the information of the patch DTO to our entity and save it.
+        // I only update if jsoNullable attributes from the UserTvShowPatchDTO has values if omitted we dont update.
+
         if (userTvShowPatchDTO.getNameTvShow().isPresent()) {
             userTvShow.setNameTvShow(userTvShowPatchDTO.getNameTvShow().get());
         }
@@ -79,6 +81,7 @@ public class UserTvShowService {
         userTvShowRepository.save(userTvShow);
     }
 
+    // First we check if the user tv show belongs to the logged user before we delete it.
     public void deleteUserTvShow(Integer idUser, Integer idUserTvShow) throws ResourceNotFoundException {
         if(getUserTvShow(idUser,idUserTvShow) != null){
             userTvShowRepository.deleteById(idUserTvShow);
