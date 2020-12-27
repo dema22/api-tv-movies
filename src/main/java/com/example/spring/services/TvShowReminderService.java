@@ -32,7 +32,6 @@ public class TvShowReminderService {
         this.userTvShowRepository = userTvShowRepository;
     }
 
-    // Done
     public void addTvShowReminder(Integer idLoggedUser, TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure, ResourceNotFoundException {
         if(idLoggedUser == tvShowReminder.getUser().getIdUser()) {
             validateExistenceOfTvShowReminder(tvShowReminder);
@@ -41,7 +40,6 @@ public class TvShowReminderService {
             throw new BusinessLogicValidationFailure("The current logged user CANT add a tv show reminder to another user account.");
     }
 
-    // Done
     private void validateExistenceOfTvShowReminder(TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure, ResourceNotFoundException {
         Optional<TvShowReminder> tvShowReminderOptional = Optional.empty();
         String messageError = null;
@@ -90,7 +88,6 @@ public class TvShowReminderService {
         }
     }
 
-    // Done
     // Get a tv show reminder dto by its id.
     public TvShowReminderResponseDTO getTvShowReminderResponseDTO (Integer idTvShowReminder) throws ResourceNotFoundException {
 
@@ -119,7 +116,6 @@ public class TvShowReminderService {
         return tvShowReminderResponseDTO;
     }
 
-    // Done
     // Get all tv show reminder DTO based on the user id.
     public List<TvShowReminderResponseDTO> getAllTvShowsReminderDTO (Integer idUser) throws ResourceNotFoundException {
 
@@ -156,7 +152,6 @@ public class TvShowReminderService {
         return tvShowReminderListDTO;
     }
 
-    // Done
     public void buildTvShowReminderDTO (TvShowReminderResponseDTO tvShowReminderResponseDTO,
                                         TvShowReminder currentTvShowReminder,
                                         TvShowDetailsResponseDTO tvShowDetailsResponseDTO) {
@@ -183,7 +178,6 @@ public class TvShowReminderService {
         tvShowReminderResponseDTO.setPersonalRating(currentTvShowReminder.getPersonalRating());
     }
 
-    // Done
     // Get all the show reminders entity searching by the user id.
     public List<TvShowReminder> getAllTvShowsReminderEntities (Integer idUser) {
         return tvShowReminderRepository.findByUser_IdUser(idUser);
@@ -196,13 +190,11 @@ public class TvShowReminderService {
         }
     }
 
-    // Done
     // Get a tv show reminder entity by its id and user id.
     public TvShowReminder getTvShowReminder (Integer idUser, Integer idTvShowReminder) throws ResourceNotFoundException {
         return tvShowReminderRepository.findByIdTvShowReminderAndUserId(idUser, idTvShowReminder).orElseThrow(() -> new ResourceNotFoundException("The user tv show reminder with the id : " + idTvShowReminder + " was not found."));
     }
 
-    // Done
     public void updateTvShowReminder(Integer idUser, TvShowReminderPatchDTO tvShowReminderToUpdate, Integer idTvShowReminder) throws ResourceNotFoundException {
         TvShowReminder currentTvShowReminder = getTvShowReminder(idUser, idTvShowReminder);
 
@@ -225,14 +217,12 @@ public class TvShowReminderService {
         tvShowReminderRepository.save(currentTvShowReminder);
     }
 
-    // Done
     // Add a new method to return a paginated list of tv show reminders
     public Page<TvShowReminder> getPaginatedTvShowReminders(Integer page, Integer size, Integer idUser) {
         // Sort.by(Sort.Direction.ASC, "basicTvShowInfo.originalName")
         return tvShowReminderRepository.findByUser_IdUser(PageRequest.of(page,size),idUser);
     }
 
-    // Done
     public PageResponseDTO getPaginatedTvShowReminderResponseDTO (Integer page, Integer size, Integer idUser) throws ResourceNotFoundException {
 
         // Get a page of the tv show reminder entity.
@@ -243,7 +233,6 @@ public class TvShowReminderService {
         return tvShowReminderResponseDTOS;
     }
 
-    // Done
     // We will get a PageTvShowReminderResponseDTO with the information of the tv show reminders DTO in a list AND
     // the information of the page.
     public PageResponseDTO buildPageTvShowReminderResponseDTO (Page pageTvShowReminder) throws ResourceNotFoundException {
@@ -285,7 +274,6 @@ public class TvShowReminderService {
         return pageTvShowReminderResponseDTO;
     }
 
-    // Done
     private void buildPage(PageResponseDTO<TvShowReminderResponseDTO> page,
                            List<TvShowReminderResponseDTO> tvShowReminderListDTO,
                            Page pageTvShowReminder) {

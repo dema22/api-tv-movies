@@ -58,7 +58,7 @@ public class ControllerAdvice  extends ResponseEntityExceptionHandler {
         return new ErrorResponseDTO(LocalDateTime.now(), HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase(), ex.getMessage(), request.getRequestURI());
     }
 
-    // Done
+    // Done ( Review Path -> Wrong syntax)
     /*
     I override handleMethodArgumentNotValid so we can capture the hibernate not null annotation we use in our entities.
     This annotations can have a validation message.

@@ -20,7 +20,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/tvShowReminder")
-
 public class TvShowReminderController {
 
     private final TvShowReminderService tvShowReminderService;
@@ -32,13 +31,11 @@ public class TvShowReminderController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    // Review
     @GetMapping("/{idTvShowReminder}")
     public TvShowReminderResponseDTO getTvShowReminderResponseDTO(@PathVariable Integer idTvShowReminder) throws ResourceNotFoundException {
         return tvShowReminderService.getTvShowReminderResponseDTO(idTvShowReminder);
     }
 
-    // Done
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/")
     public void addTvShowReminder(@RequestHeader(name="Authorization") String header,
@@ -48,7 +45,6 @@ public class TvShowReminderController {
         tvShowReminderService.addTvShowReminder(idLoggedUser,tvShowReminder);
     }
 
-    // Done
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/")
     public ResponseEntity<List<TvShowReminderResponseDTO>> getAllTvShowsReminderDTO(@RequestHeader(name="Authorization") String header) throws ResourceNotFoundException {
@@ -58,7 +54,6 @@ public class TvShowReminderController {
         return (tvShowReminderResponseDTOList.size() > 0) ? ResponseEntity.ok(tvShowReminderResponseDTOList) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    // Review
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/{idTvShowReminder}")
     public void deleteTvShowReminder(@RequestHeader(name="Authorization") String header,
@@ -68,7 +63,6 @@ public class TvShowReminderController {
         tvShowReminderService.deleteTvShowReminder(idUser, idTvShowReminder);
     }
 
-    // Done
     @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping("/{idTvShowReminder}")
     public void updateTvShowReminder(@RequestHeader(name="Authorization") String header,
@@ -79,7 +73,6 @@ public class TvShowReminderController {
         tvShowReminderService.updateTvShowReminder(idUser, tvShowReminderToUpdate,idTvShowReminder);
     }
 
-    // Done
     // Pagination
     // Add a new method to return PageTvShowRemindersResponseDTO.
     // This object has a list of tv show reminders response dto and also has the pageDTO information.
