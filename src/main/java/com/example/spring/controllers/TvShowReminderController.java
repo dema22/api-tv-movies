@@ -36,6 +36,7 @@ public class TvShowReminderController {
         return tvShowReminderService.getTvShowReminderResponseDTO(idTvShowReminder);
     }
 
+    // Review
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/")
     public void addTvShowReminder(@RequestHeader(name="Authorization") String header,
@@ -54,6 +55,7 @@ public class TvShowReminderController {
         return (tvShowReminderResponseDTOList.size() > 0) ? ResponseEntity.ok(tvShowReminderResponseDTOList) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    // Done
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/{idTvShowReminder}")
     public void deleteTvShowReminder(@RequestHeader(name="Authorization") String header,
@@ -63,6 +65,7 @@ public class TvShowReminderController {
         tvShowReminderService.deleteTvShowReminder(idUser, idTvShowReminder);
     }
 
+    // Done
     @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping("/{idTvShowReminder}")
     public void updateTvShowReminder(@RequestHeader(name="Authorization") String header,
@@ -73,19 +76,17 @@ public class TvShowReminderController {
         tvShowReminderService.updateTvShowReminder(idUser, tvShowReminderToUpdate,idTvShowReminder);
     }
 
-    // Pagination
-    // Add a new method to return PageTvShowRemindersResponseDTO.
-    // This object has a list of tv show reminders response dto and also has the pageDTO information.
-    // Request parameters default in true -> mandatory.
-    // Note: a pageable object starts in index 0.
+    // Done
+    // This endpoint returns a paginated result of tv shows reminders of the logged user.
+    // Request parameters default in true -> mandatory. To remember : a pageable object starts in index 0.
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/paginated")
-    public ResponseEntity<PageResponseDTO> getPaginatedTvShowReminderResponseDTO(@RequestHeader(name="Authorization") String header,
+    public ResponseEntity<PageResponseDTO> getPageResponseDTO(@RequestHeader(name="Authorization") String header,
                                                                                  @RequestParam Integer page,
                                                                                  @RequestParam Integer size) throws ResourceNotFoundException {
         String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
         Integer idUser = jwtTokenUtil.getUserId(token);
-        PageResponseDTO pageTvShowRemindersResponseDTO = tvShowReminderService.getPaginatedTvShowReminderResponseDTO(page,size,idUser);
+        PageResponseDTO pageTvShowRemindersResponseDTO = tvShowReminderService.getPageResponseDTO(page,size,idUser);
         return (pageTvShowRemindersResponseDTO.getItems().size() > 0) ? ResponseEntity.ok(pageTvShowRemindersResponseDTO) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

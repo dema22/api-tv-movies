@@ -152,6 +152,7 @@ public class TvShowReminderService {
         return tvShowReminderListDTO;
     }
 
+    // Done
     public void buildTvShowReminderDTO (TvShowReminderResponseDTO tvShowReminderResponseDTO,
                                         TvShowReminder currentTvShowReminder,
                                         TvShowDetailsResponseDTO tvShowDetailsResponseDTO) {
@@ -183,18 +184,21 @@ public class TvShowReminderService {
         return tvShowReminderRepository.findByUser_IdUser(idUser);
     }
 
-    // Delete a tv show reminder.
+    // Done
+    // Delete a tv show reminder by its id. We check if it belongs to the logged user first.
     public void deleteTvShowReminder(Integer idUser, Integer idTvShowReminder) throws ResourceNotFoundException {
         if(getTvShowReminder(idUser,idTvShowReminder) != null){
             tvShowReminderRepository.deleteById(idTvShowReminder);
         }
     }
 
+    // Done
     // Get a tv show reminder entity by its id and user id.
     public TvShowReminder getTvShowReminder (Integer idUser, Integer idTvShowReminder) throws ResourceNotFoundException {
         return tvShowReminderRepository.findByIdTvShowReminderAndUserId(idUser, idTvShowReminder).orElseThrow(() -> new ResourceNotFoundException("The user tv show reminder with the id : " + idTvShowReminder + " was not found."));
     }
 
+    // Done
     public void updateTvShowReminder(Integer idUser, TvShowReminderPatchDTO tvShowReminderToUpdate, Integer idTvShowReminder) throws ResourceNotFoundException {
         TvShowReminder currentTvShowReminder = getTvShowReminder(idUser, idTvShowReminder);
 
@@ -217,63 +221,59 @@ public class TvShowReminderService {
         tvShowReminderRepository.save(currentTvShowReminder);
     }
 
-    // Add a new method to return a paginated list of tv show reminders
+    // Done
+    // Add a new method to return a paginated list of tv show reminders entity
     public Page<TvShowReminder> getPaginatedTvShowReminders(Integer page, Integer size, Integer idUser) {
-        // Sort.by(Sort.Direction.ASC, "basicTvShowInfo.originalName")
-        return tvShowReminderRepository.findByUser_IdUser(PageRequest.of(page,size),idUser);
+        return tvShowReminderRepository.findByUser_IdUser(PageRequest.of(page,size),idUser); // Sort.by(Sort.Direction.ASC, "basicTvShowInfo.originalName")
     }
 
-    public PageResponseDTO getPaginatedTvShowReminderResponseDTO (Integer page, Integer size, Integer idUser) throws ResourceNotFoundException {
-
-        // Get a page of the tv show reminder entity.
+    // Done
+    // Get a page of the tv show reminder entity and then we build a PageResponseDTO based on the reminders.
+    public PageResponseDTO getPageResponseDTO (Integer page, Integer size, Integer idUser) throws ResourceNotFoundException {
         Page<TvShowReminder> pageTvShowReminder = getPaginatedTvShowReminders(page,size,idUser);
+        PageResponseDTO pageTvShowReminderDTO = buildPageTvShowReminderResponseDTO(pageTvShowReminder);
 
-        PageResponseDTO tvShowReminderResponseDTOS = buildPageTvShowReminderResponseDTO(pageTvShowReminder);
-
-        return tvShowReminderResponseDTOS;
+        return pageTvShowReminderDTO;
     }
 
-    // We will get a PageTvShowReminderResponseDTO with the information of the tv show reminders DTO in a list AND
-    // the information of the page.
+    // Done
+    // We will get a PageResponseDTO object with the information of the tv show reminders DTO in a list AND the information of the page.
     public PageResponseDTO buildPageTvShowReminderResponseDTO (Page pageTvShowReminder) throws ResourceNotFoundException {
 
-        // Get all the tv show reminder of the user.
-        List<TvShowReminder> tvShowRemindersList = pageTvShowReminder.getContent();
-
-        // Create a list of the tv show reminders DTO
+        List<TvShowReminder> tvShowRemindersList = pageTvShowReminder.getContent();// Get all the tv show reminder of the user.
         List<TvShowReminderResponseDTO> tvShowReminderListDTO = new ArrayList<>();
+
+        // If there is not content we return an empty PageResponseDTO
+        if(tvShowRemindersList.size() == 0){
+            return new PageResponseDTO(tvShowRemindersList, null);
+        }
 
         for(TvShowReminder tvShowReminder: tvShowRemindersList) {
 
-            // Get the basic tv show info object
             BasicTvShowInfo basicTvShowInfo = tvShowReminder.getBasicTvShowInfo();
-
-            // Create the dto object for the details of the tv show
             TvShowDetailsResponseDTO tvShowDetailsResponseDTO = null;
 
             // Get the details of the show.
             if (basicTvShowInfo != null) {
-
                 if (basicTvShowInfo.getId() != null) {
                     tvShowDetailsResponseDTO = tvShowDetailsService.getTvShowDetails(basicTvShowInfo.getId());
                 }
             }
-
-            // Build the Tv Show Reminder DTO with all the information we manage to get so far.
+            // We Build the Tv Show Reminder DTO with all the information we manage to get so far.
             TvShowReminderResponseDTO tvShowReminderResponseDTO = new TvShowReminderResponseDTO();
             buildTvShowReminderDTO(tvShowReminderResponseDTO, tvShowReminder, tvShowDetailsResponseDTO);
-
-            // We add the reminder dto to the list
             tvShowReminderListDTO.add(tvShowReminderResponseDTO);
         }
 
-        // Build the page to return the list of tv show reminders DTO and description of the page.
+        // Build the PageResponseDTO object so we can return the list of tv show reminders DTO and description of the page.
         PageResponseDTO<TvShowReminderResponseDTO> pageTvShowReminderResponseDTO = new PageResponseDTO<>();
         buildPage(pageTvShowReminderResponseDTO, tvShowReminderListDTO, pageTvShowReminder);
 
         return pageTvShowReminderResponseDTO;
     }
 
+    // Done
+    // We build the PageResponseDTO object.
     private void buildPage(PageResponseDTO<TvShowReminderResponseDTO> page,
                            List<TvShowReminderResponseDTO> tvShowReminderListDTO,
                            Page pageTvShowReminder) {
