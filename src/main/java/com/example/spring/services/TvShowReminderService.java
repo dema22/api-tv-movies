@@ -88,64 +88,27 @@ public class TvShowReminderService {
         }
     }
 
-    // Get a tv show reminder dto by its id.
-    public TvShowReminderResponseDTO getTvShowReminderResponseDTO (Integer idTvShowReminder) throws ResourceNotFoundException {
-
-        // Get the tv show reminder of the user
-        Optional<TvShowReminder> tvShowReminder = tvShowReminderRepository.findById(idTvShowReminder);
-
-        // Get current tv show reminder
-        TvShowReminder currentTvShowReminder = tvShowReminder.get();
-
-        // Get the basic tv show info object
-        BasicTvShowInfo basicTvShowInfo = currentTvShowReminder.getBasicTvShowInfo();
-
-        TvShowDetailsResponseDTO tvShowDetailsResponseDTO = null;
-
-        // Get the details of the show.
-        if(basicTvShowInfo != null) {
-
-            if (basicTvShowInfo.getId() != null) {
-                tvShowDetailsResponseDTO = tvShowDetailsService.getTvShowDetails(basicTvShowInfo.getId());
-            }
-        }
-        // Build the Tv Show Reminder Response DTO with all the information we manage to get so far.
-        TvShowReminderResponseDTO tvShowReminderResponseDTO = new TvShowReminderResponseDTO();
-        buildTvShowReminderDTO(tvShowReminderResponseDTO, currentTvShowReminder, tvShowDetailsResponseDTO);
-
-        return tvShowReminderResponseDTO;
-    }
-
+    // Done
     // Get all tv show reminder DTO based on the user id.
     public List<TvShowReminderResponseDTO> getAllTvShowsReminderDTO (Integer idUser) throws ResourceNotFoundException {
 
-        // Get all the tv show reminder of the user.
         List<TvShowReminder> tvShowRemindersList = getAllTvShowsReminderEntities(idUser);
-
-        // Create a list of the tv show reminders DTO
         List<TvShowReminderResponseDTO> tvShowReminderListDTO = new ArrayList<>();
 
         for(TvShowReminder tvShowReminder: tvShowRemindersList) {
 
-            // Get the basic tv show info object
             BasicTvShowInfo basicTvShowInfo = tvShowReminder.getBasicTvShowInfo();
-
-            // Create the dto object for the details of the tv show
             TvShowDetailsResponseDTO tvShowDetailsResponseDTO = null;
 
             // Get the details of the show.
             if (basicTvShowInfo != null) {
-
                 if (basicTvShowInfo.getId() != null) {
                     tvShowDetailsResponseDTO = tvShowDetailsService.getTvShowDetails(basicTvShowInfo.getId());
                 }
             }
-
             // Build the Tv Show Reminder DTO with all the information we manage to get so far.
             TvShowReminderResponseDTO tvShowReminderResponseDTO = new TvShowReminderResponseDTO();
             buildTvShowReminderDTO(tvShowReminderResponseDTO, tvShowReminder, tvShowDetailsResponseDTO);
-
-            // We add the reminder dto to the list
             tvShowReminderListDTO.add(tvShowReminderResponseDTO);
         }
 
@@ -179,6 +142,7 @@ public class TvShowReminderService {
         tvShowReminderResponseDTO.setPersonalRating(currentTvShowReminder.getPersonalRating());
     }
 
+    // Done
     // Get all the show reminders entity searching by the user id.
     public List<TvShowReminder> getAllTvShowsReminderEntities (Integer idUser) {
         return tvShowReminderRepository.findByUser_IdUser(idUser);

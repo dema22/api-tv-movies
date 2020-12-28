@@ -31,11 +31,6 @@ public class TvShowReminderController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    @GetMapping("/{idTvShowReminder}")
-    public TvShowReminderResponseDTO getTvShowReminderResponseDTO(@PathVariable Integer idTvShowReminder) throws ResourceNotFoundException {
-        return tvShowReminderService.getTvShowReminderResponseDTO(idTvShowReminder);
-    }
-
     // Review
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/")
@@ -46,6 +41,7 @@ public class TvShowReminderController {
         tvShowReminderService.addTvShowReminder(idLoggedUser,tvShowReminder);
     }
 
+    // Done
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/")
     public ResponseEntity<List<TvShowReminderResponseDTO>> getAllTvShowsReminderDTO(@RequestHeader(name="Authorization") String header) throws ResourceNotFoundException {
