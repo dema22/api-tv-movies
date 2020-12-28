@@ -33,7 +33,8 @@ public class TvShowDetailsService {
 
         BasicTvShowInfo basicTvShowInfo = basicTvShowInfoService.getBasicTvShowInfoById(idTvShow);
 
-        RestTemplate restTemplate = new RestTemplate();
+        //RestTemplate restTemplate = new RestTemplate();
+        System.out.println(restTemplate);
         TvShowDetailsFromApiDTO tvShowDetailsFromApiDTO = restTemplate
                 .getForObject("https://api.themoviedb.org/3/tv/" +  idTvShow + "?api_key=" + API_KEY +
                 "&language=en-US&append_to_response=videos,images&include_image_language=en,null", TvShowDetailsFromApiDTO.class);
