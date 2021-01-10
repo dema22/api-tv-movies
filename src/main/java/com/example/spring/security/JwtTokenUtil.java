@@ -12,13 +12,17 @@ import static java.lang.String.format;
 
 @Component
 public class JwtTokenUtil {
-    private final String jwtSecret = "zdtlD3JK56m6wTTgsNFhqzjqP";
+    private final String jwtSecret  = "ut1FfO9sSPjG1OKxVh";
 
     public String generateToken(User user) {
+        //System.out.println(new Date(System.currentTimeMillis() +  120000));
+        System.out.println("Exp in Seconds: " + (System.currentTimeMillis() +  120000) / 1000);
+        System.out.println("Exp in Milliseconds : " + (System.currentTimeMillis() +  120000));
+
         return Jwts.builder()
                 .setSubject(format("%s,%s", user.getIdUser(), user.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) // 1 week, i have to change this.
+                .setExpiration(new Date(System.currentTimeMillis() +  120000))// it will expire after 2 minutes.
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
