@@ -1,18 +1,22 @@
 package com.example.spring.dto;
 
+import com.example.spring.models.Role;
+
 public class UserDTO {
     // attributes
     private String name;
     private String lastName;
     private String username;
     private String email;
+    private Role role;
 
     // constructors
-    public UserDTO(String name, String lastName, String username, String email) {
+    public UserDTO(String name, String lastName, String username, String email, Role role) {
         this.name = name;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
+        this.role = role;
     }
 
     public UserDTO() {
@@ -49,5 +53,13 @@ public class UserDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
