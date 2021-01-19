@@ -20,7 +20,7 @@ public class JwtTokenUtil {
         System.out.println("Exp in Milliseconds : " + (System.currentTimeMillis() +  120000));
 
         return Jwts.builder()
-                .setSubject(format("%s,%s", user.getIdUser(), user.getUsername()))
+                .setSubject(format("%s,%s,%d", user.getIdUser(), user.getUsername(), user.getRole().getIdRole()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() +  120000))// it will expire after 2 minutes.
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)

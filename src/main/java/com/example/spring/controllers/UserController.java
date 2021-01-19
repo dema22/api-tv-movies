@@ -64,7 +64,7 @@ public class UserController {
         userService.addUser(user);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER') || hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/profile/me")
     public ResponseEntity<UserDTO> getProfile(@RequestHeader(name="Authorization") String header) {
         String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
