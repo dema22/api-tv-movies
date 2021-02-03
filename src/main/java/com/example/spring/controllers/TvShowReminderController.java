@@ -34,11 +34,11 @@ public class TvShowReminderController {
     // Review
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/")
-    public void addTvShowReminder(@RequestHeader(name="Authorization") String header,
-                                  @RequestBody @Valid TvShowReminder tvShowReminder) throws BusinessLogicValidationFailure, ResourceAlreadyExistsException, ResourceNotFoundException {
+    public ResponseEntity<TvShowReminderResponseDTO> addTvShowReminder(@RequestHeader(name="Authorization") String header,
+                                                                       @RequestBody @Valid TvShowReminder tvShowReminder) throws BusinessLogicValidationFailure, ResourceAlreadyExistsException, ResourceNotFoundException {
         String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
         Integer idLoggedUser = jwtTokenUtil.getUserId(token);
-        tvShowReminderService.addTvShowReminder(idLoggedUser,tvShowReminder);
+        return ResponseEntity.ok(tvShowReminderService.addTvShowReminder(idLoggedUser,tvShowReminder));
     }
 
     // Done

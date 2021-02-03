@@ -91,8 +91,12 @@ public class TvShowDetailsService {
 
     public void buildCompleteImageURLS (TvShowDetailsResponseDTO tvShowDetailsResponseDTO) {
         String baseImageURL = "https://image.tmdb.org/t/p/original";
-        tvShowDetailsResponseDTO.setBackdropPath(baseImageURL + tvShowDetailsResponseDTO.getBackdropPath());
-        tvShowDetailsResponseDTO.setPosterPath(baseImageURL + tvShowDetailsResponseDTO.getPosterPath());
+
+        if(tvShowDetailsResponseDTO.getBackdropPath() != null)
+            tvShowDetailsResponseDTO.setBackdropPath(baseImageURL + tvShowDetailsResponseDTO.getBackdropPath());
+
+        if(tvShowDetailsResponseDTO.getPosterPath() != null)
+            tvShowDetailsResponseDTO.setPosterPath(baseImageURL + tvShowDetailsResponseDTO.getPosterPath());
     }
 
     // We are going to filter all the videos that are trailers and build their complete url to that video.
@@ -110,6 +114,7 @@ public class TvShowDetailsService {
         for (VideoResultsDTO video: listVideoResultsDTO) {
             if (video.getSite().equals("YouTube") && video.getType().equals("Trailer")) {
                 completeUrl = youtubeBaseURL + video.getKey();
+                completeUrl = completeUrl.replace("watch?v=", "embed/");
                 trailersURL.add(completeUrl);
             } else if (video.getSite().equals("Vimeo") && video.getType().equals("Trailer")) {
                 completeUrl = vimeoBaseURL + video.getKey();

@@ -32,10 +32,12 @@ public class TvShowReminderService {
         this.userTvShowRepository = userTvShowRepository;
     }
 
-    public void addTvShowReminder(Integer idLoggedUser, TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure, ResourceNotFoundException {
+    public TvShowReminderResponseDTO addTvShowReminder(Integer idLoggedUser, TvShowReminder tvShowReminder) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure, ResourceNotFoundException {
         if(idLoggedUser == tvShowReminder.getUser().getIdUser()) {
             validateTvShowReminder(tvShowReminder);
             tvShowReminderRepository.save(tvShowReminder);
+            // Once the reminder was saved, I query to get a DTO of this reminder with extra info like its details.
+            return getTvShowReminderDTO(tvShowReminder);
         }else
             throw new BusinessLogicValidationFailure("The current logged user CANT add a tv show reminder to another user account.");
     }
@@ -95,6 +97,24 @@ public class TvShowReminderService {
             if(tvShowReminder.getBasicTvShowInfo().getId() == null && tvShowReminder.getUserTvShow().getIdTvShowCreatedByUser() == null) // check if the ids are null
                 throw new BusinessLogicValidationFailure(messageError);
         }
+    }
+
+    // Done
+    public TvShowReminderResponseDTO getTvShowReminderDTO(TvShowReminder tvShowReminder) throws ResourceNotFoundException {
+        BasicTvShowInfo basicTvShowInfo = tvShowReminder.getBasicTvShowInfo();
+        TvShowDetailsResponseDTO tvShowDetailsResponseDTO = new TvShowDetailsResponseDTO();
+        TvShowReminderResponseDTO tvShowReminderDTO = new TvShowReminderResponseDTO();
+
+        if(basicTvShowInfo != null) {
+            if(basicTvShowInfo.getId() != null) {
+                tvShowDetailsResponseDTO = tvShowDetailsService.getTvShowDetails(basicTvShowInfo.getId());
+            }
+        }
+
+        // Build the Tv Show Reminder DTO with all the information we manage to get so far.
+        buildTvShowReminderDTO(tvShowReminderDTO, tvShowReminder, tvShowDetailsResponseDTO);
+
+        return tvShowReminderDTO;
     }
 
     // Done
