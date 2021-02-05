@@ -32,11 +32,11 @@ public class UserTvShowController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/")
-    public void addUserTvShow(@RequestHeader(name="Authorization") String header,
+    public ResponseEntity<UserTvShowDTO> addUserTvShow(@RequestHeader(name="Authorization") String header,
                               @RequestBody @Valid UserTvShow userTvShow) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure {
         String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
         Integer idLoggedUser = jwtTokenUtil.getUserId(token);
-        userTvShowService.addUserTvShow(idLoggedUser, userTvShow);
+        return ResponseEntity.ok(userTvShowService.addUserTvShow(idLoggedUser, userTvShow));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")

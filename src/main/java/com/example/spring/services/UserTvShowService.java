@@ -24,16 +24,30 @@ public class UserTvShowService {
         this.userTvShowRepository = userTvShowRepository;
     }
 
-    public void addUserTvShow(Integer idLoggedUser, UserTvShow userTvShow) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure {
+    public UserTvShowDTO addUserTvShow(Integer idLoggedUser, UserTvShow userTvShow) throws ResourceAlreadyExistsException, BusinessLogicValidationFailure {
+
+        Optional<UserTvShow> searchDuplicationUserTvShowOptional;
+        Optional<UserTvShow> searchTheSavedUserTvShow;
+        UserTvShowDTO userTvShowDTO = new UserTvShowDTO();
+
         if(idLoggedUser != userTvShow.getUser().getIdUser()){
             throw new BusinessLogicValidationFailure("The current logged user CANT add a tv show reminder to another user account.");
         }
 
-        Optional<UserTvShow> userTvShowOptional = userTvShowRepository.findByNameTvShowAndUserId(userTvShow.getNameTvShow(), userTvShow.getUser().getIdUser());
-        if(userTvShowOptional.isPresent()){
+        searchDuplicationUserTvShowOptional = userTvShowRepository.findByNameTvShowAndUserId(userTvShow.getNameTvShow(), userTvShow.getUser().getIdUser());
+
+        if(searchDuplicationUserTvShowOptional.isPresent()){
             throw new ResourceAlreadyExistsException("User already created a tv show with the name:  " + userTvShow.getNameTvShow());
         }
+
+        // Saved the user tv show.
         userTvShowRepository.save(userTvShow);
+
+        // We look for the user tv show we just saved, we build its DTO and return it.
+        searchTheSavedUserTvShow = userTvShowRepository.findByNameTvShowAndUserId(userTvShow.getNameTvShow(), userTvShow.getUser().getIdUser());
+        buildUserTvShowDTO(searchTheSavedUserTvShow.get(), userTvShowDTO);
+
+        return userTvShowDTO;
     }
 
     public List<UserTvShowDTO> getAllTvShowsCreatedByUser(Integer idUser) {
