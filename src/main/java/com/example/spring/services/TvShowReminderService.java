@@ -192,7 +192,7 @@ public class TvShowReminderService {
     }
 
     // Done
-    public void updateTvShowReminder(Integer idUser, TvShowReminderPatchDTO tvShowReminderToUpdate, Integer idTvShowReminder) throws ResourceNotFoundException {
+    public TvShowReminderResponseDTO updateTvShowReminder(Integer idUser, TvShowReminderPatchDTO tvShowReminderToUpdate, Integer idTvShowReminder) throws ResourceNotFoundException {
         TvShowReminder currentTvShowReminder = getTvShowReminder(idUser, idTvShowReminder);
 
         if (tvShowReminderToUpdate.getCompleted().isPresent()) {
@@ -212,6 +212,8 @@ public class TvShowReminderService {
         }
 
         tvShowReminderRepository.save(currentTvShowReminder);
+        // Once the reminder was updated, I query to get a DTO of this reminder.
+        return getTvShowReminderDTO(currentTvShowReminder);
     }
 
     // Done

@@ -64,12 +64,12 @@ public class TvShowReminderController {
     // Done
     @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping("/{idTvShowReminder}")
-    public void updateTvShowReminder(@RequestHeader(name="Authorization") String header,
-                                     @RequestBody @Valid TvShowReminderPatchDTO tvShowReminderToUpdate,
-                                     @PathVariable  Integer idTvShowReminder) throws ResourceNotFoundException {
+    public ResponseEntity<TvShowReminderResponseDTO> updateTvShowReminder(@RequestHeader(name="Authorization") String header,
+                                                                          @RequestBody @Valid TvShowReminderPatchDTO tvShowReminderToUpdate,
+                                                                          @PathVariable  Integer idTvShowReminder) throws ResourceNotFoundException {
         String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
         Integer idUser = jwtTokenUtil.getUserId(token);
-        tvShowReminderService.updateTvShowReminder(idUser, tvShowReminderToUpdate,idTvShowReminder);
+        return ResponseEntity.ok(tvShowReminderService.updateTvShowReminder(idUser, tvShowReminderToUpdate,idTvShowReminder));
     }
 
     // Done
