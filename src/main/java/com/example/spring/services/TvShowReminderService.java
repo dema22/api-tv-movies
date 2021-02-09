@@ -179,10 +179,17 @@ public class TvShowReminderService {
 
     // Done
     // Delete a tv show reminder by its id. We check if it belongs to the logged user first.
-    public void deleteTvShowReminder(Integer idUser, Integer idTvShowReminder) throws ResourceNotFoundException {
+    // If the user want to query the page of reminders without the reminder we return it.
+    public PageResponseDTO deleteTvShowReminder(Integer idUser, Integer idTvShowReminder, PageInfoDTO pageInfo) throws ResourceNotFoundException {
+        List<TvShowReminderResponseDTO> tvShowReminderListDTO = new ArrayList<>();
+        PageResponseDTO pageResponse = new PageResponseDTO(tvShowReminderListDTO,null);
+
         if(getTvShowReminder(idUser,idTvShowReminder) != null){
             tvShowReminderRepository.deleteById(idTvShowReminder);
+            if(pageInfo != null)
+                pageResponse = getPageResponseDTO(pageInfo.getPageIndex(), pageInfo.getSize(), idUser);
         }
+        return pageResponse;
     }
 
     // Done
