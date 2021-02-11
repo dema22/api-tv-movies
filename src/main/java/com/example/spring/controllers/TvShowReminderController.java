@@ -55,13 +55,13 @@ public class TvShowReminderController {
     // Done
     @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/{idTvShowReminder}")
-    public ResponseEntity<PageResponseDTO> deleteTvShowReminder(@RequestHeader(name="Authorization") String header,
+    public ResponseEntity<List<TvShowReminder>> deleteTvShowReminder(@RequestHeader(name="Authorization") String header,
                                      @PathVariable Integer idTvShowReminder,
                                      @RequestBody(required = false) @Valid PageInfoDTO pageInfo) throws ResourceNotFoundException {
         String token = jwtTokenUtil.getTokenFromAuthorizationHeader(header);
         Integer idUser = jwtTokenUtil.getUserId(token);
         PageResponseDTO pageTvShowReminder = tvShowReminderService.deleteTvShowReminder(idUser, idTvShowReminder,pageInfo);
-        return (pageTvShowReminder.getItems().size() > 0) ? ResponseEntity.ok(pageTvShowReminder) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return (pageTvShowReminder.getItems().size() > 0) ? ResponseEntity.ok(pageTvShowReminder.getItems()) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     // Done
