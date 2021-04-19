@@ -22,7 +22,7 @@ public class JwtTokenUtil {
         return Jwts.builder()
                 .setSubject(format("%s,%s,%d", user.getIdUser(), user.getUsername(), user.getRole().getIdRole()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() +  120000))// it will expire after 2 minutes.
+                .setExpiration(new Date(System.currentTimeMillis() +  480000))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
